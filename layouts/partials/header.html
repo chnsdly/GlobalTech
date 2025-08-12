@@ -9,7 +9,7 @@
 
 <a class="skip-link" href="#main-content">跳到主要内容</a>
 
-<header class="site-header" id="site-header" data-header data-autohide="false">
+<header class="site-header" id="site-header" data-header data-autohide="true">
   <div class="container site-header__inner">
 
     {{/* LOGO：图片优先 */}}
@@ -115,6 +115,7 @@
 <link rel="stylesheet" href="{{ "css/nav.css" | relURL }}">
 
 <script>
+// nav.js — Ultimate Sticky Nav (mobile-only autohide)
 (() => {
   "use strict";
 
@@ -124,10 +125,18 @@
   const drawerOverlay = document.querySelector(".drawer-overlay");
   if (!header || !nav || !navToggle) return;
 
+  // ===== Constants / State =====
   const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-  let lastActive = null;
+  const MOBILE_BP = 992; // 与 CSS 断点保持一致
+  const AUTOHIDE_ENABLED = (header.getAttribute("data-autohide") || "false") === "true";
 
-  // 给每个子菜单绑定 aria-controls（提升可访问性）
+  const SHADOW_T = 10; // 阴影阈值
+  const HIDE_T   = 18; // 下滑隐藏阈值
+  let lastActive = null;
+  let lastY      = window.scrollY;
+  let hidden     = false;
+
+  // ===== A11y: 关联子菜单 id / aria-controls =====
   nav.querySelectorAll(".main-nav__item--has-submenu").forEach((li, idx) => {
     const submenu = li.querySelector(".main-nav__submenu");
     const toggle  = li.querySelector(".main-nav__submenu-toggle");
@@ -139,6 +148,7 @@
     link.setAttribute("aria-controls", id);
   });
 
+  // ===== Drawer open/close =====
   function setDrawerOpen(isOpen){
     if (isOpen){
       lastActive = document.activeElement;
@@ -152,17 +162,19 @@
       nav.setAttribute("aria-hidden", "true");
       if (lastActive && document.body.contains(lastActive)) lastActive.focus();
 
-      // 收拢展开的移动端子菜单与语言菜单
+      // 收拢展开的移动端子菜单
       nav.querySelectorAll(".main-nav__item--has-submenu.is-open").forEach(li => {
         li.classList.remove("is-open");
         const link = li.querySelector(".main-nav__link");
         if (link) link.setAttribute("aria-expanded", "false");
       });
-      document.querySelectorAll(".lang-switch__menu.is-open").forEach(m => m.classList.remove("is-open"));
-      document.querySelectorAll(".lang-switch__toggle[aria-expanded='true']").forEach(t => t.setAttribute("aria-expanded", "false"));
+
+      // 关闭任何开启的语言菜单
+      closeAllLangMenus();
     }
   }
 
+  // ===== Focus trap inside drawer =====
   function trapFocus(e){
     if (!document.body.classList.contains("drawer-is-open") || e.key !== "Tab") return;
     const nodes = Array.from(nav.querySelectorAll(FOCUSABLE));
@@ -175,17 +187,23 @@
     }
   }
 
+  // Toggle drawer
   navToggle.addEventListener("click", () => {
     const open = navToggle.getAttribute("aria-expanded") === "true";
     setDrawerOpen(!open);
   });
-  drawerOverlay?.addEventListener("click", () => setDrawerOpen(false));
+  if (drawerOverlay){
+    drawerOverlay.addEventListener("click", () => setDrawerOpen(false));
+  }
+
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && document.body.classList.contains("drawer-is-open")) setDrawerOpen(false);
+    if (e.key === "Escape" && document.body.classList.contains("drawer-is-open")) {
+      setDrawerOpen(false);
+    }
     trapFocus(e);
   });
 
-  // 移动端子菜单：用按钮开合，不拦截父链接跳转
+  // ===== Mobile submenu toggle (button controls; parent link still navigates) =====
   nav.querySelectorAll(".main-nav__item--has-submenu").forEach(li => {
     const toggle = li.querySelector(".main-nav__submenu-toggle");
     const link   = li.querySelector(".main-nav__link");
@@ -197,19 +215,24 @@
     });
   });
 
-  // 语言切换（桌面 & 抽屉）
+  // ===== Language switch (desktop & drawer) =====
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const langSwitches = [];
   document.querySelectorAll("[data-lang-switch]").forEach(container => {
     const toggle = container.querySelector(".lang-switch__toggle");
     const menu   = container.querySelector(".lang-switch__menu");
     if (!toggle || !menu) return;
 
+    langSwitches.push({ container, toggle, menu });
+
+    // Click toggle (all platforms)
     toggle.addEventListener("click", (e) => {
       e.stopPropagation();
       const isOpen = menu.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", String(isOpen));
     });
 
-    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    // Desktop hover open/close
     if (canHover) {
       let hoverTimer = null;
       container.addEventListener('mouseenter', () => {
@@ -224,45 +247,78 @@
         }, 80);
       });
     }
+  });
 
-    document.addEventListener("click", (e) => {
+  function closeAllLangMenus(){
+    langSwitches.forEach(({ toggle, menu }) => {
+      if (menu.classList.contains("is-open")) {
+        menu.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  // Close language menus when clicking outside / pressing ESC
+  document.addEventListener("click", (e) => {
+    langSwitches.forEach(({ container, toggle, menu }) => {
       if (menu.classList.contains("is-open") && !container.contains(e.target)) {
         menu.classList.remove("is-open");
         toggle.setAttribute("aria-expanded", "false");
       }
     });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && menu.classList.contains("is-open")) {
-        menu.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
-      }
-    });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeAllLangMenus();
   });
 
-  // 滚动阴影 & 可选自动隐藏
-  const enableAutohide = (header.getAttribute("data-autohide") || "false") === "true";
-  let lastY = window.scrollY, hidden = false;
-  const SHADOW_T = 10, HIDE_T = 18;
+  // ===== Scroll shadow & mobile-only autohide =====
   const onScroll = () => {
     const y = window.scrollY;
+    const isMobile = window.innerWidth < MOBILE_BP;
+
+    // 阴影（桌/移一致）
     header.classList.toggle("is-scrolled", y > SHADOW_T);
-    if (!enableAutohide || document.body.classList.contains("drawer-is-open")) { lastY = y; return; }
+
+    // 仅移动端 + 启用时才自动隐藏；抽屉打开时不隐藏
+    if (!(AUTOHIDE_ENABLED && isMobile) || document.body.classList.contains("drawer-is-open")) {
+      // 一旦不是移动端，确保 header 显示
+      if (!isMobile && hidden) {
+        header.classList.remove("is-hidden");
+        hidden = false;
+      }
+      lastY = y;
+      return;
+    }
+
     const goingDown = y > lastY;
     if (goingDown && y - lastY > HIDE_T && !hidden) {
-      header.classList.add("is-hidden"); hidden = true;
+      header.classList.add("is-hidden");
+      hidden = true;
     } else if (!goingDown && lastY - y > 4 && hidden) {
-      header.classList.remove("is-hidden"); hidden = false;
+      header.classList.remove("is-hidden");
+      hidden = false;
     }
     lastY = y;
   };
+
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // 断点切换时收拢抽屉，避免残留状态
+  // ===== Breakpoint changes: ensure desktop shows header and closes drawer =====
   window.addEventListener("resize", () => {
-    if (window.innerWidth >= 992 && document.body.classList.contains("drawer-is-open")) {
-      setDrawerOpen(false);
+    const isDesktop = window.innerWidth >= MOBILE_BP;
+    if (isDesktop) {
+      if (hidden) {
+        header.classList.remove("is-hidden");
+        hidden = false;
+      }
+      if (document.body.classList.contains("drawer-is-open")) {
+        setDrawerOpen(false);
+      }
     }
+    // 避免断点切换后首次滚动即触发错误的方向判断
+    lastY = window.scrollY;
   });
 })();
+
 </script>
