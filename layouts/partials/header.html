@@ -1,10 +1,10 @@
 {{/*
 ================================================================================
-  增强版粘性导航 (v2.1)
-  变更要点：
-    - 统一子菜单 & 语言切换面板的主题（panel 变量），在 Header 中自动套用深色毛玻璃
-    - 语言切换：移动端依旧点击开合；桌面端支持悬停打开，移出收起；点击也可开合
-    - 无障碍增强：focus-within 也能打开语言菜单
+  增强版粘性导航 (v2.1-A, Mobile Z-Index Fix)
+  变更要点（方案A）：
+    - 把抽屉滚动从 .main-nav__list 挪到 .main-nav，避免语言菜单被滚动层遮挡
+    - .main-nav .lang-switch 设为 sticky 贴底，菜单向上弹出；补充安全区内边距
+    - 提升 .lang-switch__menu 的 z-index，确保盖住列表项
 ================================================================================
 */}}
 {{- $ctx := . -}}
@@ -14,7 +14,7 @@
 <header class="site-header" id="site-header" data-header>
   <div class="container site-header__inner">
 
-    {{/* LOGO: 优先图片，否则文本（避免 with 改变作用域） */}}
+    {{/* LOGO: 优先图片，否则文本 */}}
     {{- $logoPath := .Site.Params.logo_asset | default "" -}}
     {{- $logoRes  := cond (ne $logoPath "") (or ($ctx.Resources.GetMatch $logoPath) (resources.Get $logoPath)) nil -}}
     <a class="site-header__logo" href="{{ "/" | relLangURL }}" aria-label="{{ .Site.Params.company_name | default .Site.Title }}">
@@ -27,7 +27,7 @@
       {{- end -}}
     </a>
 
-    {{/* 主导航 & 移动端抽屉（语言块置于抽屉底部） */}}
+    {{/* 主导航 & 移动端抽屉 */}}
     <nav class="main-nav" id="main-nav" aria-label="主导航" aria-hidden="true">
       <ul class="main-nav__list">
         {{- $current := . -}}
@@ -57,7 +57,7 @@
         {{- end -}}
       </ul>
 
-      {{/* 语言切换器：移动端抽屉底部（桌面隐藏，通过CSS控制） */}}
+      {{/* 语言切换器：移动端抽屉底部（桌面隐藏） */}}
       {{- if .IsTranslated -}}
       <div class="lang-switch" data-lang-switch>
         <button class="lang-switch__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="切换语言">
@@ -99,7 +99,7 @@
       </div>
       {{- end -}}
 
-      {{/* 移动端主菜单开关 (汉堡按钮) */}}
+      {{/* 移动端主菜单开关 */}}
       <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="打开主导航">
         <span class="nav-toggle__icon" aria-hidden="true">
           <span class="nav-toggle__line"></span>
@@ -112,7 +112,6 @@
   </div>
 </header>
 
-{{/* 抽屉遮罩层 */}}
 <div class="drawer-overlay" data-drawer-overlay></div>
 
 <script>
