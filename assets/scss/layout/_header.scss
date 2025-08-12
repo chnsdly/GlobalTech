@@ -110,33 +110,40 @@ body.drawer-is-open .nav-toggle__line:nth-child(3){ top:50%; transform:translate
   .nav-toggle{ display:flex; align-items:center; justify-content:center; }
 
   .main-nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: var(--drawer-width);
-    max-width: 85vw;
-    
-    /* 修复 #1: 使用 dvh 替代 vh，确保高度适应动态工具栏 */
-    height: 100vh; /* 为旧浏览器提供后备 */
-    height: 100dvh; /* 动态视口高度，能正确适应Safari工具栏的显隐 */
-    
-    /* 修复 #2: 添加 z-index，确保抽屉在关闭按钮之下 */
-    z-index: 1205;  /* 该值需小于关闭按钮(1210)，但高于页面内容和遮罩层(1199) */
-    
-    padding: calc(var(--header-height) + 1rem) 1rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background: var(--header-bg);
-    color: var(--header-fg);
-    -webkit-backdrop-filter: blur(var(--header-blur));
-    backdrop-filter: blur(var(--header-blur));
-    box-shadow: -5px 0 25px rgba(0,0,0,.2);
-    border-left: 1px solid rgba(255,255,255,.1);
-    transform: translateX(100%);
-    visibility: hidden;
-    transition: transform var(--transition-speed) cubic-bezier(.22,1,.36,1), visibility 0s var(--transition-speed);
+  position: fixed;
+  
+  /* 核心变更 #1: 让抽屉的顶部从 header 的底部开始 */
+  top: var(--header-height);
+  right: 0;
+
+  /* 核心变更 #2: 高度是视口高度减去 header 高度 */
+  height: calc(100% - var(--header-height)); /* 兼容性后备 */
+  height: calc(100dvh - var(--header-height)); /* 动态计算剩余空间 */
+
+  /* 核心变更 #3: 既然容器已下移，就不再需要复杂的顶部内边距 */
+  padding: 1.5rem 1rem;
+  
+  /* 额外优化: 为底部语言栏增加安全区域，避免被iPhone小横条遮挡 */
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+
+  /* --- 以下为原有样式，保持不变 --- */
+  width: var(--drawer-width);
+  max-width: 85vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--header-bg);
+  color: var(--header-fg);
+  -webkit-backdrop-filter: blur(var(--header-blur));
+  backdrop-filter: blur(var(--header-blur));
+  box-shadow: -5px 0 25px rgba(0,0,0,.2);
+  border-left: 1px solid rgba(255,255,255,.1);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform var(--transition-speed) cubic-bezier(.22,1,.36,1), visibility 0s var(--transition-speed);
+  overflow-y: auto; /* 确保内容多时可以滚动 */
   }
+
   body.drawer-is-open .main-nav{ transform: translateX(0); visibility:visible; transition-delay:0s; }
 
   .drawer-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.4); opacity:0; visibility:hidden; z-index:1199; transition: opacity var(--transition-speed), visibility 0s var(--transition-speed); }
