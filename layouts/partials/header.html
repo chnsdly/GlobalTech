@@ -1,10 +1,10 @@
 {{/*
 ================================================================================
-  增强版粘性导航 (v2.2 - Mobile Z-Index & iOS Viewport Fix)
-  - 统一下拉面板皮肤(panel)：主导航子菜单 & 语言切换同肤
-  - 方案A：抽屉容器(.main-nav)负责滚动，列表(.main-nav__list)不滚动，避免裁剪
-  - iOS Safari：使用 svh/dvh + safe-area，避免底部工具栏遮挡；明确 z-index
-  - 抽屉内新增关闭按钮（移动端兜底），右上角汉堡/X 永远在最上层
+  增强版粘性导航 (v2.1)
+  变更要点：
+    - 统一子菜单 & 语言切换面板的主题（panel 变量），在 Header 中自动套用深色毛玻璃
+    - 语言切换：移动端依旧点击开合；桌面端支持悬停打开，移出收起；点击也可开合
+    - 无障碍增强：focus-within 也能打开语言菜单
 ================================================================================
 */}}
 {{- $ctx := . -}}
@@ -14,7 +14,7 @@
 <header class="site-header" id="site-header" data-header>
   <div class="container site-header__inner">
 
-    {{/* LOGO：优先图片，否则文本 */}}
+    {{/* LOGO: 优先图片，否则文本（避免 with 改变作用域） */}}
     {{- $logoPath := .Site.Params.logo_asset | default "" -}}
     {{- $logoRes  := cond (ne $logoPath "") (or ($ctx.Resources.GetMatch $logoPath) (resources.Get $logoPath)) nil -}}
     <a class="site-header__logo" href="{{ "/" | relLangURL }}" aria-label="{{ .Site.Params.company_name | default .Site.Title }}">
@@ -27,15 +27,8 @@
       {{- end -}}
     </a>
 
-    {{/* 主导航 & 移动端抽屉 */}}
+    {{/* 主导航 & 移动端抽屉（语言块置于抽屉底部） */}}
     <nav class="main-nav" id="main-nav" aria-label="主导航" aria-hidden="true">
-      <!-- 抽屉内关闭按钮（移动端可见，兜底） -->
-      <button class="drawer-close" type="button" aria-label="关闭菜单">
-        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24">
-          <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-
       <ul class="main-nav__list">
         {{- $current := . -}}
         {{- range .Site.Menus.main -}}
@@ -64,7 +57,7 @@
         {{- end -}}
       </ul>
 
-      {{/* 语言切换器：移动端抽屉底部（桌面隐藏，通过 CSS 控制） */}}
+      {{/* 语言切换器：移动端抽屉底部（桌面隐藏，通过CSS控制） */}}
       {{- if .IsTranslated -}}
       <div class="lang-switch" data-lang-switch>
         <button class="lang-switch__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="切换语言">
@@ -233,12 +226,6 @@
       }
     });
   });
-
-  // 抽屉内关闭按钮（移动端兜底）
-  const drawerClose = nav.querySelector('.drawer-close');
-  if (drawerClose){
-    drawerClose.addEventListener('click', () => setDrawerOpen(false));
-  }
 
   // 滚动阴影
   const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 10);
