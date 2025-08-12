@@ -109,14 +109,32 @@ body.drawer-is-open .nav-toggle__line:nth-child(3){ top:50%; transform:translate
 @media (max-width: 991px){
   .nav-toggle{ display:flex; align-items:center; justify-content:center; }
 
-  .main-nav{
-    position:fixed; top:0; right:0; width:var(--drawer-width); max-width:85vw; height:100vh;
+  .main-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: var(--drawer-width);
+    max-width: 85vw;
+    
+    /* 修复 #1: 使用 dvh 替代 vh，确保高度适应动态工具栏 */
+    height: 100vh; /* 为旧浏览器提供后备 */
+    height: 100dvh; /* 动态视口高度，能正确适应Safari工具栏的显隐 */
+    
+    /* 修复 #2: 添加 z-index，确保抽屉在关闭按钮之下 */
+    z-index: 1205;  /* 该值需小于关闭按钮(1210)，但高于页面内容和遮罩层(1199) */
+    
     padding: calc(var(--header-height) + 1rem) 1rem 1.5rem;
-    display:flex; flex-direction:column; justify-content:space-between;
-    background:var(--header-bg); color:var(--header-fg);
-    -webkit-backdrop-filter: blur(var(--header-blur)); backdrop-filter: blur(var(--header-blur));
-    box-shadow:-5px 0 25px rgba(0,0,0,.2); border-left:1px solid rgba(255,255,255,.1);
-    transform: translateX(100%); visibility:hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--header-bg);
+    color: var(--header-fg);
+    -webkit-backdrop-filter: blur(var(--header-blur));
+    backdrop-filter: blur(var(--header-blur));
+    box-shadow: -5px 0 25px rgba(0,0,0,.2);
+    border-left: 1px solid rgba(255,255,255,.1);
+    transform: translateX(100%);
+    visibility: hidden;
     transition: transform var(--transition-speed) cubic-bezier(.22,1,.36,1), visibility 0s var(--transition-speed);
   }
   body.drawer-is-open .main-nav{ transform: translateX(0); visibility:visible; transition-delay:0s; }
