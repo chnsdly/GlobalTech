@@ -1,0 +1,39 @@
+/* Home: CTA（升级版） */
+.home-cta{ background:#111827; color:#fff; }
+.home-cta .container{
+  display:flex; gap:16px; align-items:center; justify-content:space-between; padding: 20px 16px;
+}
+.home-cta h2{ margin:0; font-size: clamp(18px, 3vw, 24px); }
+
+/* 升级版带背景/渐变/徽章/主次按钮 */
+.home-cta.upgraded{
+  --overlay: linear-gradient( to right, rgba(17,24,39,.92), rgba(17,24,39,.88) );
+  color:#fff;
+  background:#111827;
+  background-image: var(--overlay), var(--cta-bg);
+  background-size: cover; background-position: center;
+}
+.home-cta.upgraded .container{ padding: 24px 16px; }
+.home-cta.upgraded.is-split .cta-grid{ display:grid; gap:16px; align-items:center; }
+@media (min-width: 900px){
+  .home-cta.upgraded .container{ padding: 28px 16px; }
+  .home-cta.upgraded.is-split .cta-grid{ grid-template-columns: 1.2fr .8fr; }
+}
+.home-cta.upgraded .cta-copy h2{ margin:.25rem 0 .35rem; font-size: clamp(18px, 3vw, 24px); }
+.home-cta.upgraded .cta-copy .muted{ color:#d1d5db; margin:0 0 .75rem; }
+.home-cta.upgraded .cta-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+.home-cta.upgraded .btn{ border-color:#fff; color:#fff; }
+.home-cta.upgraded .btn:hover{ background: rgba(255,255,255,.08); }
+.home-cta.upgraded .btn.btn-secondary{ background:#fff; color:#111827; border-color:#fff; }
+.home-cta.upgraded .btn.btn-secondary:hover{ filter: brightness(.96); }
+
+/* 徽章 */
+.cta-badges{ display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-start; padding:0; margin:0; }
+.cta-badges .badge{
+  display:inline-flex; align-items:center; gap:8px;
+  background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+  padding:6px 10px; border-radius: 999px;
+}
+.cta-badges img{ width:20px; height:20px; display:block; }
+.cta-badges .emoji{ font-size:18px; line-height:1; }
+.cta-badges .txt{ color:#e5e7eb; font-size:.95rem; white-space:nowrap; }

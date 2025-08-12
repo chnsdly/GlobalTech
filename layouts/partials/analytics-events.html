@@ -1,0 +1,22 @@
+{{ with .Site.Params.ga4 }}
+<script>
+(function(){
+  function send(evt, data){
+    if (!window.gtag) return;
+    window.gtag('event', evt, data);
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[data-gtag]');
+    if(!a) return;
+    var type = a.getAttribute('data-gtag');
+    var product = a.getAttribute('data-product') || '';
+    var href = a.getAttribute('href') || '';
+    if(type === 'download_datasheet'){
+      send('download', {item_name: product, link_url: href});
+    }else if(type === 'click_quote'){
+      send('generate_lead', {item_name: product, link_url: href});
+    }
+  });
+})();
+</script>
+{{ end }}

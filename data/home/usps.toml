@@ -1,0 +1,41 @@
+########## 英文 ##########
+[[en]]
+title = "ISO 9001 Factory"
+desc  = "Certified production and rigorous QA."
+icon  = "images/icons/iso.jpg"
+
+[[en]]
+title = "Fast Lead Time"
+desc  = "Stocked parts, 2–4 weeks delivery."
+icon  = "images/icons/iso.jpg"
+
+[[en]]
+title = "Global Support"
+desc  = "Service centers across key regions."
+icon  = "images/icons/iso.jpg"
+
+[[en]]
+title = "Customizable"
+desc  = "OEM/ODM and tailored specifications."
+icon  = "images/icons/iso.jpg"
+
+########## 中文 ##########
+[[zh]]
+title = "通过 ISO 9001 认证"
+desc  = "严格质量体系，批批可追溯。"
+icon  = "images/icons/iso.jpg"
+
+[[zh]]
+title = "交期快速"
+desc  = "常备物料，2–4 周可交付。"
+icon  = "images/icons/iso.jpg"
+
+[[zh]]
+title = "全球服务网络"
+desc  = "重点区域设有服务中心。"
+icon  = "images/icons/iso.jpg"
+
+[[zh]]
+title = "高度可定制"
+desc  = "支持 OEM/ODM 及参数定制。"
+icon  = "images/icons/iso.jpg"

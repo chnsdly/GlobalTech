@@ -1,0 +1,100 @@
+{{/* 强化 CTA：背景图/渐变、主次按钮、徽章、两种布局 */}}
+{{- $page  := . -}}
+{{- $lang  := .Site.Language.Lang -}}
+{{- $style := .Params.home_cta_layout | default "band" -}}
+
+{{/* 背景图（可选） */}}
+{{- $bg := "" -}}
+{{- with .Params.cta_bg_asset -}}
+  {{- with resources.Get . -}}{{- $bg = (.Resize "1600x jpg").RelPermalink -}}{{- end -}}
+{{- end -}}
+
+{{/* 文案与链接（可覆盖） */}}
+{{- $txtPrimary := cond (eq $lang "zh") "获取报价" "Request a Quote" -}}
+{{- $lnkPrimary := "contact-us" | relLangURL -}}
+{{- with .Params.cta_primary_text }}{{ $txtPrimary = . }}{{ end -}}
+{{- with .Params.cta_primary_link }}{{ $lnkPrimary = ( . | relLangURL ) }}{{ end -}}
+
+{{- $txtSecondary := cond (eq $lang "zh") "下载产品目录" "Download Catalog" -}}
+{{- $lnkSecondary := "" -}}
+{{- with .Params.cta_secondary_text }}{{ $txtSecondary = . }}{{ end -}}
+{{- with .Params.cta_secondary_link }}{{ $lnkSecondary = . }}{{ end -}}
+{{- if and (eq $lnkSecondary "") (isset .Site.Params "catalog_pdf") -}}
+  {{- $lnkSecondary = .Site.Params.catalog_pdf -}}
+{{- end -}}
+
+{{/* 徽章数据（可选）：data/home/cta.toml -> [en]/[zh] 数组 */}}
+{{- $badges := (index site.Data.home.cta $lang) | default (slice) -}}
+
+<section class="home-cta upgraded {{ if eq $style "split" }}is-split{{ end }}"
+  {{ if $bg }}style='--cta-bg:url("{{ $bg }}")'{{ end }}>
+  <div class="container cta-grid">
+    <div class="cta-copy">
+      <h2>{{ if eq $lang "zh"}}准备好提升产能了吗？{{else}}Ready to boost your throughput?{{end}}</h2>
+      <p class="muted">
+        {{ if eq $lang "zh" }}
+          让工程团队给出 48 小时内的评估与报价，支持 OEM/ODM 定制与样机测试。
+        {{ else }}
+          Get an engineering review and quote within 48 hours. OEM/ODM supported with sample runs.
+        {{ end }}
+      </p>
+
+      <div class="cta-actions">
+        <a class="btn btn-secondary"
+           href="{{ $lnkPrimary }}"
+           data-cta="primary"
+           data-cta-label="{{ $txtPrimary }}">
+           {{ $txtPrimary }}
+        </a>
+
+        {{ if $lnkSecondary }}
+        <a class="btn"
+           href="{{ $lnkSecondary }}"
+           target="{{ if hasPrefix $lnkSecondary "http" }}_blank{{ else }}_self{{ end }}"
+           rel="noopener"
+           data-cta="secondary"
+           data-cta-label="{{ $txtSecondary }}">
+           {{ $txtSecondary }}
+        </a>
+        {{ end }}
+      </div>
+    </div>
+
+    {{ if gt (len $badges) 0 }}
+    <ul class="cta-badges" role="list">
+      {{ range $b := $badges }}
+        <li class="badge">
+          {{/* 支持 assets 图片或 emoji 文本 */}}
+          {{- $icon := index $b "icon" | default "" -}}
+          {{- if and $icon (hasPrefix $icon "images/") -}}
+            {{ with resources.Get $icon }}
+              <img src="{{ (.Resize "48x png").RelPermalink }}" alt="" aria-hidden="true">
+            {{ end }}
+          {{- else if $icon -}}
+            <span class="emoji" aria-hidden="true">{{ $icon }}</span>
+          {{- end -}}
+          <span class="txt">{{ index $b "text" }}</span>
+        </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+  </div>
+</section>
+
+{{/* 轻量 GA4 事件（可选）：页面上存在 gtag 时才发送 */}}
+<script>
+(function(){
+  var box = document.currentScript && document.currentScript.previousElementSibling;
+  if(!box) box = document.querySelector('.home-cta.upgraded');
+  if(!box) return;
+  box.addEventListener('click', function(e){
+    var a = e.target.closest('a[data-cta]');
+    if(!a || typeof gtag !== 'function') return;
+    var label = a.getAttribute('data-cta-label') || a.textContent.trim();
+    var type  = a.getAttribute('data-cta') || 'link';
+    try{
+      gtag('event','cta_click',{ cta_type:type, cta_label:label, page_path: location.pathname });
+    }catch(err){}
+  }, true);
+})();
+</script>

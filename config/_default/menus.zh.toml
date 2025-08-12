@@ -1,0 +1,24 @@
+[[main]]
+name = "首页"
+url = "/zh/"
+weight = 10
+
+[[main]]
+name = "产品中心"
+url = "/zh/products/"
+weight = 20
+
+[[main]]
+name = "关于我们"
+url = "/zh/about-us/"
+weight = 30
+
+[[main]]
+name = "博客"
+url = "/blog/"
+weight = 35
+
+[[main]]
+name = "联系我们"
+url = "/zh/contact-us/"
+weight = 40

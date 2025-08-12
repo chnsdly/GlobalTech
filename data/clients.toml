@@ -1,0 +1,14 @@
+[[logos]]
+name = "CE"
+asset = "images/logos/ce.png"   # 放 assets/images/logos/ce.png
+url   = ""
+
+[[logos]]
+name = "ISO"
+asset = "images/logos/iso.png"
+url   = ""
+
+[[logos]]
+name = "UL"
+asset = "images/logos/ul.png"
+url   = ""

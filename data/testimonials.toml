@@ -1,0 +1,37 @@
+# 英文
+[[en]]
+quote  = "The X1 machine cut our cycle time by 32%."
+author = "James L."
+company = "AeroParts Inc."
+role    = "Production Director"
+stars   = 5
+avatar_asset = "images/avatars/james.jpg"   # 放 assets/images/avatars/james.jpg
+
+[[en]]
+text   = "Stable quality and responsive support."
+name   = "Maria R."
+org    = "MedTech Co."
+stars  = 4
+logo_asset = "images/logos/medtech.png"     # 也可用 logo 代替头像
+
+# 中文
+[[zh]]
+quote  = "X1 机型将我们的加工节拍缩短了 32%。"
+author = "王工"
+company = "华腾航空零部件"
+role    = "工艺工程师"
+stars   = 5
+
+[[zh]]
+quote  = "X1 机型将我们的加工节拍缩短了 32%。"
+author = "王工"
+company = "华腾航空零部件"
+role    = "工艺工程师"
+stars   = 5
+
+[[zh]]
+quote  = "X1 机型将我们的加工节拍缩短了 32%。"
+author = "王工"
+company = "华腾航空零部件"
+role    = "工艺工程师"
+stars   = 5

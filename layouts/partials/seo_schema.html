@@ -1,0 +1,82 @@
+{{/* Organization（首页） */}}
+{{ if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"{{ .Site.Params.company_name | default .Site.Title }}",
+  "url":"{{ .Site.BaseURL }}",
+  "logo":"{{ "/favicon.ico" | absURL }}",
+  "contactPoint":[{
+    "@type":"ContactPoint",
+    "contactType":"sales",
+    "email":"{{ .Site.Params.contact_email }}",
+    "telephone":"{{ .Site.Params.contact_phone }}"
+  }]
+}
+</script>
+{{ end }}
+
+{{/* Product（产品详情页） */}}
+{{ if and (eq .Type "products") (not .IsHome) }}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Product",
+  "name":"{{ .Title }}",
+  {{ with .Params.sku }}"sku":"{{ . }}",{{ end }}
+  "brand":{"@type":"Brand","name":"{{ .Site.Params.company_name | default .Site.Title }}"},
+  {{ with .Params.featured_image_asset }}
+  "image":["{{ (resources.Get .).RelPermalink | absURL }}"],
+  {{ else }}
+  {{ with .Params.featured_image }}"image":["{{ . | absURL }}"],{{ end }}
+  {{ end }}
+  "description":"{{ .Summary | default (.Plain | truncate 160) }}"
+  {{/* 可选 offers（有价格时再输出） */}}
+  {{ with .Params.offers }}
+  ,"offers":{
+    "@type":"Offer",
+    "price":"{{ .price }}",
+    "priceCurrency":"{{ .currency | default "USD" }}",
+    "availability":"{{ .availability | default "https://schema.org/InStock" }}",
+    "url":"{{ $.Permalink }}"
+  }
+  {{ end }}
+  {{/* 可选 aggregateRating（有评分时再输出） */}}
+  {{ with .Params.rating }}
+  ,"aggregateRating":{
+    "@type":"AggregateRating",
+    "ratingValue":"{{ .value }}",
+    "reviewCount":"{{ .count }}"
+  }
+  {{ end }}
+}
+</script>
+{{ end }}
+
+{{/* 面包屑（所有非首页页面） */}}
+{{ if not .IsHome }}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {
+      "@type":"ListItem","position":1,
+      "name":"{{ i18n "home" | default "Home" }}",
+      "item":"{{ .Site.Home.Permalink }}"
+    }
+    {{ with .CurrentSection }},{
+      "@type":"ListItem","position":2,
+      "name":"{{ .Title }}",
+      "item":"{{ .Permalink }}"
+    }{{ end }}
+    ,{
+      "@type":"ListItem","position":{{ if .CurrentSection }}3{{ else }}2{{ end }},
+      "name":"{{ .Title }}",
+      "item":"{{ .Permalink }}"
+    }
+  ]
+}
+</script>
+{{ end }}

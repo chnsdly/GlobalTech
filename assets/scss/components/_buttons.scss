@@ -1,0 +1,16 @@
+/* 统一按钮体系 */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:.5rem .75rem; border:1px solid var(--primary); color:var(--primary);
+  border-radius:10px; text-decoration:none; font-weight:600; min-width:120px;
+}
+.btn:hover{ background: rgba(0,0,0,.04); }
+.btn:focus-visible{ outline:2px solid var(--primary); outline-offset:2px; }
+
+.btn.btn-secondary{
+  background: var(--primary); color:#fff; border-color: var(--primary);
+}
+.btn.btn-secondary:hover{ filter: brightness(.96); }
+
+/* 尺寸 */
+.btn.small, .btn-sm{ padding:.35rem .55rem; min-width:auto; font-weight:600; border-radius:10px; }

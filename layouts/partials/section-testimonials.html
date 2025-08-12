@@ -1,0 +1,146 @@
+{{/* section-testimonials.html（增强版） */}}
+{{- $page := . -}}
+{{- $lang := .Site.Language.Lang -}}
+{{- $style := (or .Params.home_testimonials_style .Site.Params.home_testimonials_style) | default "grid" -}}
+
+{{/* 读取数据，兼容两种结构：直接数组 或 包在 items 里 */}}
+{{- $raw := index site.Data.testimonials $lang | default slice -}}
+{{- $items := $raw -}}
+{{- if and (not (isset $raw 0)) (isset $raw "items") -}}
+  {{- $items = index $raw "items" -}}
+{{- end -}}
+
+{{- if gt (len $items) 0 -}}
+<section class="home-testimonials {{ if eq $style "slider" }}is-slider{{ end }}">
+  <div class="container testi-grid">
+    <h2>{{ if eq $lang "zh"}}客户评价{{else}}What Clients Say{{end}}</h2>
+
+    {{ if eq $style "slider" }}
+      {{/* --- Slider 模式 --- */}}
+      {{- $sliderId := (printf "testi-%s" $lang) -}}
+      <div class="testi-slider-wrap">
+        <button class="testi-nav prev" aria-label="{{ if eq $lang "zh"}}上一条{{else}}Previous{{end}}" aria-controls="{{ $sliderId }}">‹</button>
+        <div class="testi-slider" id="{{ $sliderId }}" tabindex="0">
+          {{ range $it := $items }}
+            {{/* 兼容不同键名 */}}
+            {{- $q := or (index $it "quote") (index $it "text") (index $it "content") "" -}}
+            {{- $a := or (index $it "author") (index $it "name") "" -}}
+            {{- $c := or (index $it "company") (index $it "org") "" -}}
+            {{- $r := or (index $it "role") "" -}}
+            {{- $stars := or (index $it "stars") 0 -}}
+            {{- $avatar := "" -}}
+            {{- with (index $it "avatar_asset") -}}
+              {{- with resources.Get . -}}{{- $avatar = (.Resize "96x jpg").RelPermalink -}}{{- end -}}
+            {{- else -}}
+              {{- with (index $it "logo_asset") -}}
+                {{- with resources.Get . -}}{{- $avatar = (.Resize "96x png").RelPermalink -}}{{- end -}}
+              {{- end -}}
+            {{- end -}}
+            {{- $initial := "" -}}
+            {{- with $a -}}{{- $initial = slicestr . 0 1 -}}{{- end -}}
+
+            {{ if $q }}
+            <figure class="testi-card">
+              <div class="who">
+                {{ if $avatar }}
+                  <img class="avatar" src="{{ $avatar }}" alt="" aria-hidden="true">
+                {{ else }}
+                  <div class="avatar ph" aria-hidden="true">{{ $initial }}</div>
+                {{ end }}
+                <figcaption>
+                  <strong>{{ $a }}</strong>
+                  <span class="meta">
+                    {{- if $r -}}{{ $r }}{{ end -}}
+                    {{- if and $r $c -}}, {{ end -}}
+                    {{- if $c -}}{{ $c }}{{ end -}}
+                  </span>
+                </figcaption>
+              </div>
+
+              {{ if gt $stars 0 }}
+                <div class="stars" aria-label="{{ printf "%d/5" $stars }}">
+                  {{ range seq 1 5 }}
+                    {{ if le . $stars }}★{{ else }}☆{{ end }}
+                  {{ end }}
+                </div>
+              {{ end }}
+
+              <blockquote>“{{ $q }}”</blockquote>
+            </figure>
+            {{ end }}
+          {{ end }}
+        </div>
+        <button class="testi-nav next" aria-label="{{ if eq $lang "zh"}}下一条{{else}}Next{{end}}" aria-controls="{{ $sliderId }}">›</button>
+      </div>
+
+      <script>
+      (function(){
+        var wrap = document.querySelector('.home-testimonials.is-slider .testi-slider-wrap');
+        if(!wrap) return;
+        var track = wrap.querySelector('.testi-slider');
+        var prev = wrap.querySelector('.testi-nav.prev');
+        var next = wrap.querySelector('.testi-nav.next');
+        function step(dir){
+          var w = track.clientWidth;
+          track.scrollBy({left: dir * (w * 0.9), behavior: 'smooth'});
+        }
+        prev && prev.addEventListener('click', function(){ step(-1); });
+        next && next.addEventListener('click', function(){ step(1);  });
+      })();
+      </script>
+
+    {{ else }}
+      {{/* --- 网格模式 --- */}}
+      <div class="grid">
+        {{ range $it := $items }}
+          {{- $q := or (index $it "quote") (index $it "text") (index $it "content") "" -}}
+          {{- $a := or (index $it "author") (index $it "name") "" -}}
+          {{- $c := or (index $it "company") (index $it "org") "" -}}
+          {{- $r := or (index $it "role") "" -}}
+          {{- $stars := or (index $it "stars") 0 -}}
+          {{- $avatar := "" -}}
+          {{- with (index $it "avatar_asset") -}}
+            {{- with resources.Get . -}}{{- $avatar = (.Resize "96x jpg").RelPermalink -}}{{- end -}}
+          {{- else -}}
+            {{- with (index $it "logo_asset") -}}
+              {{- with resources.Get . -}}{{- $avatar = (.Resize "96x png").RelPermalink -}}{{- end -}}
+            {{- end -}}
+          {{- end -}}
+          {{- $initial := "" -}}
+          {{- with $a -}}{{- $initial = slicestr . 0 1 -}}{{- end -}}
+
+          {{ if $q }}
+          <figure class="testi-card">
+            <div class="who">
+              {{ if $avatar }}
+                <img class="avatar" src="{{ $avatar }}" alt="" aria-hidden="true">
+              {{ else }}
+                <div class="avatar ph" aria-hidden="true">{{ $initial }}</div>
+              {{ end }}
+              <figcaption>
+                <strong>{{ $a }}</strong>
+                <span class="meta">
+                  {{- if $r -}}{{ $r }}{{ end -}}
+                  {{- if and $r $c -}}, {{ end -}}
+                  {{- if $c -}}{{ $c }}{{ end -}}
+                </span>
+              </figcaption>
+            </div>
+
+            {{ if gt $stars 0 }}
+              <div class="stars" aria-label="{{ printf "%d/5" $stars }}">
+                {{ range seq 1 5 }}
+                  {{ if le . $stars }}★{{ else }}☆{{ end }}
+                {{ end }}
+              </div>
+            {{ end }}
+
+            <blockquote>“{{ $q }}”</blockquote>
+          </figure>
+          {{ end }}
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+</section>
+{{- end -}}

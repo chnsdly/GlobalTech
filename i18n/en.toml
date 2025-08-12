@@ -1,0 +1,42 @@
+[home]
+other = "Home"
+
+[pagination_label]
+other = "Pagination"
+
+[prev]
+other = "Prev"
+
+[next]
+other = "Next"
+
+[current_page]
+other = "Current page"
+
+[go_to_page]
+other = "Go to page {{ .n }}"
+
+[view_details]
+other = "View details"
+[request_quote]
+other = "Request quote"
+
+[latest_articles]
+other = "Latest Articles"
+[all_posts]
+other = "All posts →"
+[read_more]
+other = "Read more"
+[min_read]
+other = "{{ .n }} min read"
+
+[table_of_contents]
+other = "Table of contents"
+[on_this_page]
+other = "On this page"
+[related_articles]
+other = "Related articles"
+
+[contact_us]
+other = "Contact Us"
+

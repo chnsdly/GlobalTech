@@ -1,0 +1,5 @@
+/* Home: Clients/Certifications logo row */
+.home-clients .logos-row{
+  display:flex; flex-wrap:wrap; gap:16px; justify-content:center; align-items:center; padding: 12px 0;
+}
+.logo-item img{ display:block; height:36px; width:auto; filter: grayscale(1); opacity:.9; }

@@ -1,0 +1,11 @@
+[[offices]]
+country = "USA"
+city = "Chicago"
+email = "na@globaltech.com"
+phone = "+1-312-555-0199"
+
+[[offices]]
+country = "Germany"
+city = "Stuttgart"
+email = "eu@globaltech.com"
+phone = "+49-711-555-0199"

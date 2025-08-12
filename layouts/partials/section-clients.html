@@ -1,0 +1,14 @@
+{{ $logos := site.Data.clients.logos | default (slice) }}
+{{ if gt (len $logos) 0 }}
+<section class="home-clients">
+  <div class="container logos-row">
+    {{ range $logos }}
+      {{ $src := "" }}
+      {{ with resources.Get .asset }}{{ $src = (.Resize "200x png").RelPermalink }}{{ end }}
+      <a href="{{ .url | default "#" }}" target="_blank" rel="noopener" class="logo-item" aria-label="{{ .name }}">
+        {{ if $src }}<img src="{{ $src }}" alt="{{ .name }}">{{ else }}<span>{{ .name }}</span>{{ end }}
+      </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,16 @@
+# 英文键名 → 中文/英文显示名
+[en]
+"Spindle Speed" = "Spindle Speed"
+"Travel (X/Y/Z)" = "Travel (X/Y/Z)"
+"Controller" = "Controller"
+"Positioning Accuracy" = "Positioning Accuracy"
+"Laser Power" = "Laser Power"
+"Bed Size" = "Bed Size"
+
+[zh]
+"Spindle Speed" = "主轴转速"
+"Travel (X/Y/Z)" = "行程（X/Y/Z）"
+"Controller" = "控制系统"
+"Positioning Accuracy" = "定位精度"
+"Laser Power" = "激光功率"
+"Bed Size" = "工作台尺寸"

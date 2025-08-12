@@ -1,0 +1,7 @@
+{{ define "main" }}
+  <div class="container" style="text-align:center; padding:3rem 0">
+    <h1>404</h1>
+    <p>{{ if eq .Site.Language.Lang "zh"}}页面不存在{{else}}Page not found{{end}}</p>
+    <p><a class="cta-button" href="{{ "/" | relLangURL }}">{{ if eq .Site.Language.Lang "zh"}}返回首页{{else}}Back to Home{{end}}</a></p>
+  </div>
+{{ end }}

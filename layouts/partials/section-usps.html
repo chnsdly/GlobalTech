@@ -1,0 +1,25 @@
+{{ $lang := .Site.Language.Lang }}
+{{ $list := (index site.Data.home.usps $lang) | default (slice) }}
+
+<section class="home-usps">
+  <div class="container usp-grid">
+    {{ range $list }}
+      <div class="usp-card">
+        <div class="usp-icon">
+          {{ $icon := .icon | default "" }}
+          {{ if and $icon (hasPrefix $icon "images/") }}
+            {{ with resources.Get $icon }}
+              <img src="{{ (.Resize "64x png").RelPermalink }}" alt="" aria-hidden="true">
+            {{ end }}
+          {{ else if $icon }}
+            <span class="emoji" aria-hidden="true">{{ $icon }}</span>
+          {{ end }}
+        </div>
+        <div class="usp-body">
+          <h3>{{ .title }}</h3>
+          <p>{{ .desc }}</p>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+</section>

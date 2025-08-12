@@ -1,0 +1,37 @@
+{{ $css := resources.Get "scss/main.scss" | toCSS }}
+{{ if hugo.IsProduction }}
+  {{ $css = $css | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{ else }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+{{ end }}
+
+{{ $desc := .Description | default .Site.Params.description }}
+<meta name="description" content="{{ $desc }}">
+{{ with .Params.robots }}<meta name="robots" content="{{ . }}">{{ end }}
+<meta property="og:title" content="{{ .Title | default .Site.Title }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+{{/* Canonical */}}
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{/* Open Graph / Twitter */}}
+<meta property="og:site_name" content="{{ .Site.Params.company_name | default .Site.Title }}">
+<meta property="og:locale" content="{{ .Site.Params.og_locale | default (cond (eq .Site.Language.Lang "zh") "zh_CN" "en_US") }}">
+{{ with .Params.images }}<meta property="og:image" content="{{ (index . 0) | relURL }}">{{ end }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="{{ .Site.Params.social.twitter }}">
+
+{{ partial "hreflang.html" . }}
+{{ partial "seo_schema.html" . }}
+
+{{ with .Site.Params.ga4 }}
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date()); gtag('config', '{{ . }}');
+</script>
+{{ end }}

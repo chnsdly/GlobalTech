@@ -1,0 +1,12 @@
+/* A11y 分页（合并去重） */
+.pager{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+.pager a, .pager span{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:44px; min-height:44px;  /* 手机触达面积 */
+  padding:.35rem .6rem; border:1px solid #e5e7eb; border-radius:.5rem; background:#fff;
+  text-decoration:none;
+}
+.pager .pager-list{ display:flex; gap:.35rem; list-style:none; margin:0 .5rem; padding:0; }
+.pager .pager-num.current{ background:#111827; color:#fff; border-color:#111827; }
+.pager a:focus-visible{ outline:2px solid var(--primary); outline-offset:2px; }
+.pager .disabled{ opacity:.5; pointer-events:none; }

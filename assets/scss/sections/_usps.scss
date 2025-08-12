@@ -1,0 +1,15 @@
+/* Home: USPs */
+.usp-grid{
+  display:grid; gap:16px; padding: 24px 0;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.usp-card{
+  background:#f9fafb; border:1px solid #e5e7eb; border-radius:12px; padding:16px;
+}
+.usp-card h3{ margin:.25rem 0 .25rem; font-size:1.05rem; }
+
+/* 带图标的 USP */
+.usp-card{ display:flex; gap:12px; align-items:flex-start; }
+.usp-icon img{ width:40px; height:40px; }
+.usp-icon .emoji{ font-size:32px; line-height:1; display:inline-block; }
+.usp-body h3{ margin:.1rem 0 .25rem; font-size:1.05rem; }

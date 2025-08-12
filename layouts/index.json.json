@@ -1,0 +1,24 @@
+{{- $items := slice -}}
+{{- range site.RegularPages -}}
+  {{- $img := "" -}}
+  {{- with .Params.featured_image_asset -}}
+    {{- with resources.Get . -}}
+      {{- $img = ((.Resize "600x jpg").RelPermalink) -}}
+    {{- end -}}
+  {{- else -}}
+    {{- with .Params.featured_image -}}
+      {{- $img = . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $items = $items | append (dict
+    "title" .Title
+    "permalink" .Permalink
+    "section" .Section
+    "lang" .Lang
+    "summary" (.Summary | plainify)
+    "sku" .Params.sku
+    "certifications" .Params.certifications
+    "image" $img
+  ) -}}
+{{- end -}}
+{{- jsonify $items -}}

@@ -1,0 +1,49 @@
+[[main]]
+name = "Home"
+url = "/"
+weight = 10
+
+[[main]]
+name = "Products"
+url = "/products/"
+identifier = "products"
+weight = 20
+
+  [[main]]
+  name = "CNC Machines"
+  url  = "/products/cnc/"
+  parent = "products"     # ★ 指向父级的 identifier
+  weight = 21
+
+  [[main]]
+  name = "Robots"
+  url  = "/products/robots/"
+  parent = "products"
+  weight = 22
+
+  [[main]]
+  name = "CNC Machines2"
+  url  = "/products/cnc/"
+  parent = "products"     # ★ 指向父级的 identifier
+  weight = 23
+
+  [[main]]
+  name = "Robots2"
+  url  = "/products/robots/"
+  parent = "products"
+  weight = 24
+
+[[main]]
+name = "About"
+url = "/about-us/"
+weight = 30
+
+[[main]]
+name = "Blog"
+url = "/blog/"
+weight = 35
+
+[[main]]
+name = "Contact"
+url = "/contact-us/"
+weight = 40

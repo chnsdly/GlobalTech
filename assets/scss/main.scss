@@ -1,0 +1,30 @@
+/* assets/scss/main.scss */
+@import "vars";
+
+/* 1) 基础与工具 */
+@import "base/root";
+@import "base/utilities";
+
+/* 2) 布局 */
+@import "layout/container";
+@import "layout/header";
+@import "layout/footer";
+
+/* 3) 组件 */
+@import "components/buttons";
+@import "components/forms";
+@import "components/pager";
+
+/* 4) 首页区块 */
+@import "sections/hero";
+@import "sections/usps";
+@import "sections/featured";
+@import "sections/testimonials";
+@import "sections/clients";
+@import "sections/cta";
+@import "sections/blog-latest";
+
+/* 5) 页面级 */
+@import "sections/products";   /* 产品卡片 + 详情布局等 */
+@import "pages/blog-list";
+@import "pages/blog-single";

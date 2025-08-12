@@ -1,0 +1,8 @@
+<section class="section">
+  <h2>{{ if eq .Site.Language.Lang "zh" }}全球办公室{{ else }}Global Offices{{ end }}</h2>
+  <ul>
+    {{ range site.Data.global_offices.offices }}
+      <li><strong>{{ .city }}, {{ .country }}</strong> · {{ .email }} · {{ .phone }}</li>
+    {{ end }}
+  </ul>
+</section>

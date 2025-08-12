@@ -1,0 +1,57 @@
+{{/* 入参：当前产品页面 ctx 即 "." */}}
+{{- $p := . -}}
+{{- $key := $p.File.BaseFileName -}}
+{{- $d := index site.Data.products $key -}}
+
+{{/* 取映射字典（键名本地化） */}}
+{{- $map := (index site.Data.spec_keys site.Language.Lang) | default dict -}}
+
+{{/* 规范化规格为 map（优先中文 data，其次英文 data，再次 front matter 拼接） */}}
+{{- $specsMap := dict -}}
+{{- if $d -}}
+  {{- if and (eq site.Language.Lang "zh") $d.specs_zh -}}
+    {{- $specsMap = $d.specs_zh -}}
+  {{- else if $d.specs -}}
+    {{- $specsMap = $d.specs -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $specsMap -}}
+  {{- $m := dict -}}
+  {{- with $p.Params.sku }}         {{- $m = merge $m (dict "SKU" .) -}}            {{- end -}}
+  {{- with $p.Params.weight }}      {{- $m = merge $m (dict (i18n "weight" | default "Weight") .) -}}      {{- end -}}
+  {{- with $p.Params.dimensions }}  {{- $m = merge $m (dict (i18n "dimensions" | default "Dimensions") .) -}} {{- end -}}
+  {{- with $p.Params.certifications }}{{- $m = merge $m (dict (i18n "certifications" | default "Certifications") (delimit . ", ")) -}} {{- end -}}
+  {{- $specsMap = $m -}}
+{{- end -}}
+
+<section class="card">
+  <h2>{{ if eq site.Language.Lang "zh" }}技术参数{{ else }}Specifications{{ end }}</h2>
+
+  {{- if $specsMap -}}
+    <ul class="spec-list">
+      {{- range $k, $v := $specsMap -}}
+        {{- $label := $k -}}
+        {{- with (index $map $k) -}}{{- $label = . -}}{{- end -}}
+        <li><strong>{{ $label }}:</strong> {{ $v }}</li>
+      {{- end -}}
+    </ul>
+  {{- else -}}
+    <p class="muted">{{ if eq site.Language.Lang "zh"}}暂无参数{{ else }}No specs available{{ end }}</p>
+  {{- end -}}
+
+  {{/* Datasheet（data 优先，front matter 次之） */}}
+  {{- $sheet := "" -}}
+  {{- if $d }}{{ $sheet = $d.datasheet | default "" }}{{ end -}}
+  {{- if and (not $sheet) $p.Params.datasheet }}{{ $sheet = $p.Params.datasheet }}{{ end -}}
+  {{- if $sheet }}
+    <p style="margin-top:.75rem">
+      <a class="cta-button" href="{{ $sheet | relURL }}" download
+         rel="noopener"
+         data-gtag="download_datasheet"
+         data-product="{{ $p.Title }}">
+        {{ if eq site.Language.Lang "zh" }}下载产品数据表（PDF）{{ else }}Download Datasheet (PDF){{ end }}
+      </a>
+    </p>
+  {{- end }}
+</section>

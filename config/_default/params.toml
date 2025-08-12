@@ -1,0 +1,15 @@
+company_name = "GlobalTech Industries"
+brand_name   = "GlobalTech"
+logo         = "/images/logo.png"     # 放 static/images/logo.png
+contact_email = "sales@example.com"
+contact_phone = "+1-800-555-0199"
+logo_asset = "images/logo.jpg"
+# 出站主页（Organization.sameAs）
+[social]
+  linkedin = "https://www.linkedin.com/company/xxx"
+  twitter  = "https://twitter.com/xxx"
+  youtube  = "https://www.youtube.com/@xxx"
+
+
+[params]
+  ga4 = "G-XXXXXXXXXX"

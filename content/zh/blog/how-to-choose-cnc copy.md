@@ -1,0 +1,9 @@
+---
+title: "5 轴 CNC 选型关键指标"
+date: 2025-07-19
+draft: false
+description: "在为航空零部件选择 5 轴 CNC 时需要重点关注的参数与测试方法。"
+cover_asset: "images/blog/cnc-5axis.jpg"
+---
+
+这里是文章摘要段落……

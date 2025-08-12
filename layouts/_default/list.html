@@ -1,0 +1,15 @@
+{{ define "main" }}
+{{/* 仅列表页并且有分页时，输出 prev/next */}}
+{{ if and .IsNode .Paginator }}
+  {{ with .Paginator.Prev }}<link rel="prev" href="{{ .URL | absURL }}">{{ end }}
+  {{ with .Paginator.Next }}<link rel="next" href="{{ .URL | absURL }}">{{ end }}
+{{ end }}
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  <ul>
+    {{ range .Pages }}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
+  </ul>
+
+{{ end }}

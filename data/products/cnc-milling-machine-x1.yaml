@@ -1,0 +1,15 @@
+specs:
+  Spindle Speed: "24,000 RPM"
+  Travel (X/Y/Z): "800 / 600 / 500 mm"
+  Controller: "Fanuc 31i-B5"
+  Positioning Accuracy: "±0.005 mm"
+
+# （可选）中文规格，若提供将优先在中文站显示
+specs_zh:
+  主轴转速: "24,000 RPM"
+  行程（X/Y/Z）: "800 / 600 / 500 mm"
+  控制系统: "Fanuc 31i-B5"
+  定位精度: "±0.005 mm"
+
+# PDF 数据表（放 static/ 下）
+datasheet: "/downloads/datasheets/cnc-milling-machine-x1.pdf"

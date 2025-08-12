@@ -1,0 +1,31 @@
+/* 首页：最新博客头部 */
+.home-blog .head{
+  display:flex; justify-content:space-between; align-items:flex-end; gap:12px; margin-bottom:8px;
+}
+/* —— 首页细节微调 —— */
+.home-blog .post-list{ gap:12px; }           /* 首页卡片间距更紧凑 */
+.home-blog .blog-card.h .card-body{ padding:10px 12px; }
+.home-blog .blog-card.h h3{ font-size: clamp(17px, 2.2vw, 19px); }
+
+/* —— 首页最新博客紧凑版（与列表保持一致） —— */
+.home-blog .post-list{ gap:12px; }
+
+.home-blog .blog-card.h{
+  grid-template-columns: 280px 1fr;   /* 同步压缩左图 */
+  gap:12px;
+}
+.home-blog .blog-card.h .card-body{
+  padding:10px 12px;
+  gap:.25rem;
+}
+.home-blog .blog-card.h h3{
+  margin:.05rem 0 .05rem;
+  font-size:clamp(17px, 2vw, 19px);
+  line-height:1.28;
+}
+.home-blog .blog-card.h .meta{ font-size:.88rem; margin:0; }
+.home-blog .blog-card.h .muted.clamp3{ -webkit-line-clamp:2; }
+
+@media (max-width:900px){
+  .home-blog .blog-card.h .media{ aspect-ratio: 16 / 9; }
+}

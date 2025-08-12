@@ -1,0 +1,6 @@
+/* CSS 自定义属性（设计令牌经历 @import "vars" 后可用） */
+:root{
+  --primary: #{$primary};
+  --bg: #{$bg};
+  --text: #{$text};
+}

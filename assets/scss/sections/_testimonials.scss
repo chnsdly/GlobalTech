@@ -1,0 +1,42 @@
+/* Home: Testimonials（含网格与 Slider） */
+.home-testimonials{ background:#f6f7f9; }
+.home-testimonials h2{ margin-bottom: 8px; }
+
+/* 网格 */
+.home-testimonials .grid{
+  display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.testi-card{
+  background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px;
+  display:flex; flex-direction:column; gap:10px;
+}
+.testi-card .who{ display:flex; gap:12px; align-items:center; }
+.testi-card .who .avatar{
+  width:48px; height:48px; border-radius:50%; object-fit:cover; display:block;
+  border: 1px solid #e5e7eb; background:#fff;
+}
+.testi-card .who .avatar.ph{
+  display:flex; align-items:center; justify-content:center; font-weight:700; color:#111827;
+  background:#e5e7eb;
+}
+.testi-card .who figcaption{ display:flex; flex-direction:column; }
+.testi-card .who .meta{ color:#6b7280; font-size:.92rem; }
+.testi-card .stars{ color:#f59e0b; letter-spacing: .1rem; font-size: 1.05rem; }
+.testi-card blockquote{ margin:0; color:#111827; }
+
+/* Slider */
+.home-testimonials.is-slider .testi-slider-wrap{ position:relative; padding: 0 40px; }
+.home-testimonials.is-slider .testi-slider{
+  display:grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 1fr);
+  gap:16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; scrollbar-width: none;
+}
+.home-testimonials.is-slider .testi-slider::-webkit-scrollbar{ display:none; }
+.home-testimonials.is-slider .testi-card{ scroll-snap-align: start; }
+.home-testimonials.is-slider .testi-nav{
+  position:absolute; top:50%; transform: translateY(-50%);
+  width:32px; height:32px; border-radius:50%; border:1px solid #e5e7eb; background:#fff;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.home-testimonials.is-slider .testi-nav.prev{ left:4px; }
+.home-testimonials.is-slider .testi-nav.next{ right:4px; }
+.home-testimonials.is-slider .testi-nav:focus-visible{ outline:2px solid var(--primary); outline-offset:2px; }

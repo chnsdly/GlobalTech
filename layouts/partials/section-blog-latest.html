@@ -1,0 +1,61 @@
+{{- $site := .Site -}}
+{{- $lang := $site.Language.Lang -}}
+
+{{- $all := where site.RegularPages "Section" "blog" -}}
+{{- $langPosts := where $all "Lang" $lang -}}
+{{- $latest := first 3 (sort $langPosts "Date" "desc") -}}
+
+{{- if gt (len $latest) 0 -}}
+<section class="home-blog">
+  <div class="container">
+    <div class="head">
+      <h2>{{ if eq $lang "zh"}}最新博客{{ else }}Latest Articles{{ end }}</h2>
+      <a class="more-link" href='{{ "blog/" | relLangURL }}'>
+        {{ if eq $lang "zh"}}全部文章 →{{ else }}All posts →{{ end }}
+      </a>
+    </div>
+
+    {{/* 和列表页一致：单列列表 + 水平卡片（左图右文） */}}
+    <div class="post-list">
+      {{- range $p := $latest -}}
+      <article class="blog-card h">
+        <a class="media" href="{{ $p.RelPermalink }}" aria-label="{{ $p.Title }}">
+          {{- with $p.Params.cover_asset -}}
+            {{- partial "responsive-image.html" (dict
+              "ctx"   $p
+              "src"   .
+              "alt"   $p.Title
+              "w"     (slice 320 480 640 800) 
+              "sizes" "(max-width: 900px) 100vw, 320px"
+              "class" ""
+              "fetch" ""
+            ) -}}
+          {{- else -}}
+            {{- with $p.Params.cover_image -}}
+              <img src="{{ . | relURL }}" alt="{{ $p.Title }}">
+            {{- else -}}
+              <div class="ph-media" aria-hidden="true"></div>
+            {{- end -}}
+          {{- end -}}
+        </a>
+
+        <div class="card-body">
+          <h3 class="clamp2"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h3>
+          <p class="meta">
+            {{- if eq $lang "zh" -}}
+              {{ $p.Date.Format "2006-01-02" }} · 约 {{ $p.ReadingTime }} 分钟
+            {{- else -}}
+              {{ $p.Date.Format "Jan 2, 2006" }} · {{ $p.ReadingTime }} min
+            {{- end -}}
+          </p>
+          <p class="muted clamp3">{{ with $p.Params.description }}{{ . }}{{ else }}{{ $p.Summary | plainify }}{{ end }}</p>
+          <div class="actions">
+            <a class="readmore" href="{{ $p.RelPermalink }}">{{ if eq $lang "zh"}}阅读全文 →{{ else }}Read more →{{ end }}</a>
+          </div>
+        </div>
+      </article>
+      {{- end -}}
+    </div>
+  </div>
+</section>
+{{- end -}}

@@ -1,0 +1,28 @@
+baseURL = "https://example.com/"
+title = "GlobalTech Industries"
+defaultContentLanguage = "en"
+enableRobotsTXT = true
+theme = []
+
+[pagination]
+  pagerSize = 12
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]   # 让首页也输出 JSON
+
+[outputFormats.JSON]
+  mediaType = "application/json"
+  rel = "alternate"
+
+[sitemap]
+  changefreq = "weekly"
+  priority   = 0.7
+  filename   = "sitemap.xml"
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"

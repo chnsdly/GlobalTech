@@ -1,0 +1,11 @@
+specs:
+  Laser Power: "6 kW fiber laser"
+  Bed Size: "3000 × 1500 mm"
+  Positioning Accuracy: "±0.02 mm"
+
+specs_zh:
+  激光功率: "6 kW 光纤激光"
+  工作台尺寸: "3000 × 1500 mm"
+  定位精度: "±0.02 mm"
+
+datasheet: "/downloads/datasheets/laser-cutting-system-z2.pdf"

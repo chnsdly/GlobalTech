@@ -1,0 +1,15 @@
+[en]
+languageName = "English"
+weight = 1
+contentDir = "content/en"
+[en.params]
+  description = "High-quality industrial machinery & solutions."
+  og_locale   = "en_US"
+
+[zh]
+languageName = "中文"
+weight = 2
+contentDir = "content/zh"
+[zh.params]
+  description = "高品质工业设备与解决方案。"
+  og_locale   = "zh_CN"

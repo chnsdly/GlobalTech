@@ -1,0 +1,86 @@
+/* Home: Featured products */
+.home-featured .head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+  margin-bottom:8px;
+}
+.home-featured .more-link{
+  color:var(--primary);
+  text-decoration:none;
+}
+
+/* Featured 产品网格：桌面三列、平板两列、手机一列 */
+.home-featured .product-grid{
+  display:grid;
+  gap:clamp(12px,2vw,20px);
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;
+}
+@media (max-width:1024px){
+  .home-featured .product-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:640px){
+  .home-featured .product-grid{ grid-template-columns:1fr; }
+}
+
+/* 等高产品卡（无按钮版） */
+.product-card.eq{
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  overflow:hidden;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.product-card.eq:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+
+/* 封面图：按比例显示，不再压扁 */
+.product-card.eq .media{
+  display:block;
+  aspect-ratio: 3 / 2;        /* ← 3:2 更挺拔；想更高可用 4/3 */
+  overflow:hidden;
+}
+.product-card.eq .media picture,
+.product-card.eq .media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;           /* 填满裁剪，避免变形/压扁 */
+  display:block;
+}
+
+/* 文本区：把标题与图片的间距拉近 */
+.product-card.eq .card-body{
+  flex:1;
+  padding:10px 12px 12px;     /* ← 上内边距降低（原 12px） */
+}
+.product-card.eq .card-body h3{
+  margin:.15rem 0 .2rem;      /* ← 标题顶部更紧凑（原 .1/.25） */
+  font-size:1.05rem;
+  line-height:1.35;
+}
+.product-card.eq .card-body h3 a{
+  text-decoration:none;
+  color:inherit;
+}
+.product-card.eq .card-body .sku{
+  margin:.05rem 0 .2rem;
+  font-size:.9rem;
+  color:#6b7280;
+}
+.product-card.eq .card-body .muted{
+  color:#6b7280;
+}
+
+/* 两行截断工具类（如你已有可忽略） */
+.clamp2{
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}

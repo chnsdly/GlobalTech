@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# 不需要被索引的路径（你可按需增减）
+Disallow: /search/
+Disallow: /404.html
+
+# 主 sitemap（根）
+Sitemap: {{ "sitemap.xml" | absURL }}
+
+# 多语言 sitemap（语言子路径）
+{{- range .Sites -}}
+Sitemap: {{ (printf "%ssitemap.xml" .Home.RelPermalink) | absURL }}
+{{- end -}}

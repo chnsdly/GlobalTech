@@ -1,0 +1,41 @@
+[home]
+other = "首页"
+
+[pagination_label]
+other = "分页导航"
+
+[prev]
+other = "上一页"
+
+[next]
+other = "下一页"
+
+[current_page]
+other = "当前页"
+
+[go_to_page]
+other = "跳到第 {{ .n }} 页"
+
+[view_details]
+other = "查看详情"
+[request_quote]
+other = "获取报价"
+
+[latest_articles]
+other = "最新博客"
+[all_posts]
+other = "全部文章 →"
+[read_more]
+other = "阅读全文"
+[min_read]
+other = "约 {{ .n }} 分钟读完"
+
+[table_of_contents]
+other = "目录"
+[on_this_page]
+other = "本页目录"
+[related_articles]
+other = "相关文章"
+
+[contact_us]
+other = "联系我们"

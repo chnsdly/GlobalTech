@@ -1,0 +1,14 @@
+{{/* canonical */}}
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{/* 所有翻译版本互链 */}}
+{{ range .AllTranslations }}
+  <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
+{{ end }}
+
+{{/* 当前语言也输出一条 */}}
+<link rel="alternate" hreflang="{{ .Site.Language.Lang }}" href="{{ .Permalink }}">
+
+{{/* x-default 指向默认语言首页 */}}
+{{ $default := site.Home }}
+<link rel="alternate" hreflang="x-default" href="{{ $default.Permalink }}">
