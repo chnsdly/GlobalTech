@@ -110,9 +110,7 @@
   </div>
 </header>
 
-<div class="drawer-overlay" data-drawer-overlay></div>
-
-<link rel="stylesheet" href="{{ "css/nav.css" | relURL }}">
+<div class="drawer-overlay" data-drawer-overlay aria-hidden="true"></div>
 
 <script>
 // nav.js — Ultimate Sticky Nav (mobile-only autohide)
@@ -127,7 +125,7 @@
 
   // ===== Constants / State =====
   const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-  const MOBILE_BP = 992; // 与 CSS 断点保持一致
+  const MOBILE_BP = 1024; // 与 CSS 断点保持一致
   const AUTOHIDE_ENABLED = (header.getAttribute("data-autohide") || "false") === "true";
 
   const SHADOW_T = 10; // 阴影阈值

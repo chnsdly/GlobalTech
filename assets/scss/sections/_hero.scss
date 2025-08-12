@@ -1,24 +1,78 @@
-/* ===== 居中版 Hero（无 split） ===== */
+/* ===== 居中版 Hero（令牌化 + 可覆写） ===== */
 .home-hero{
-  display: grid;
+  /* 组件级默认：可在页面或区块上覆写这些变量 */
+  --hero-bg:       var(--surface-alt);                 /* 无背景图时的底色 */
+  --hero-fg:       var(--text);                        /* 主文案颜色 */
+  --hero-overlay:  rgba(255, 255, 255, 0.5);                    /* 遮罩默认关闭 */
+  --hero-h-sm:     56vh;                               /* < md */
+  --hero-h-md:     62vh;                               /* md–lg */
+  --hero-h-lg:     68vh;                               /* ≥ lg */
+
   position: relative;
-  isolation: isolate;
-  color: #fff;
-  background: #0b1220;                          /* 无背景图时的底色 */
-  min-height: var(--hero-h-lg, 68vh); 
-}
-.home-hero .container{
-  padding-block: clamp(56px, 8vw, 120px);
+  display: grid;
+  isolation: isolate;                                  /* 让遮罩/背景不影响外部 */
+  color: var(--hero-fg);
+  background: var(--hero-bg);
+  min-height: var(--hero-h-sm);
 }
 
 /* 让内层 .container 在 Hero 中垂直居中，并继承高度 */
 .home-hero > .container{
-  min-height: inherit;                             /* 吃到整块高度 */
+  min-height: inherit;                                  /* 吃到整块高度 */
   display: grid;
-  place-items: center;                             /* 上下 + 水平 居中 .hero-center */
-  padding-block: clamp(40px, 6vw, 96px);           /* 对称留白，别让 padding 拉偏中心 */
-  /* 若你的全局 .container 有 1rem 顶部内边距，这里会被覆盖成对称值 */
+  place-items: center;                                  /* 上下 + 水平 居中 .hero-center */
+  padding-block: clamp(var(--sp-10), 6vw, var(--sp-24));/* 对称留白，用刻度 + 流式 */
 }
+
+/* 内容：居中款 */
+.home-hero.is-center .container{ text-align: center; }
+.home-hero.is-center .hero-center{
+  max-width: 1000px;
+  margin-inline: auto;
+  padding-inline: var(--sp-4);
+}
+.home-hero.is-center h1{
+  /* 比全局 --fs-4xl 更大的标题尺寸，使用组件自定义流式值 */
+  --fs-hero: clamp(28px, 4vw, 48px);
+  font-size: var(--fs-hero);
+  margin: 0 0 var(--sp-3);
+  letter-spacing: .02em;
+}
+.home-hero.is-center .sub{
+  margin: 0 auto var(--sp-5);
+  max-width: 760px;
+  /* 次文案用主色混合降一点对比度，适配深/浅背景 */
+  color: color-mix(in srgb, var(--hero-fg) 78%, transparent);
+}
+
+/* CTA 区域与按钮（完全吃令牌） */
+.home-hero .hero-ctas{
+  display:flex; gap: var(--sp-3); justify-content:center; margin-top: var(--sp-4);
+}
+.home-hero .cta-button{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: calc(var(--sp-2) + 2px) calc(var(--sp-4) + 2px);
+  border-radius: var(--radius-lg);
+  background: var(--brand);
+  color: var(--brand-contrast);
+  text-decoration: none;
+  font-weight: 700;
+  transition:
+    transform var(--t-fast) var(--ease-standard),
+    box-shadow var(--t-fast) var(--ease-standard),
+    filter var(--t-fast) var(--ease-standard);
+  box-shadow: var(--shadow-sm);
+}
+.home-hero .cta-button:hover{
+  filter: brightness(.98);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.home-hero .cta-button:active{
+  transform: translateY(0);
+  box-shadow: var(--shadow-xs);
+}
+.home-hero .cta-button:focus-visible{ @include focus-ring; }
 
 /* 背景图（由 responsive-image 输出的 <picture><img>） */
 .home-hero .hero-bg{ position:absolute; inset:0; z-index:-2; }
@@ -27,39 +81,12 @@
   width:100%; height:100%; object-fit:cover; display:block;
 }
 
-/* 半透明遮罩（可配色/透明度，可关闭） */
+/* 半透明遮罩（按需在页面上覆写 --hero-overlay） */
 .home-hero .hero-ov{
   position:absolute; inset:0; z-index:-1;
-  background: var(--hero-overlay, rgba(0,0,0,.45));
+  background: var(--hero-overlay);
   pointer-events: none;
 }
-
-/* 居中内容 */
-.home-hero.is-center .container{ text-align:center; }
-.home-hero.is-center .hero-center{
-  max-width: 1000px;
-  margin-inline: auto;
-  padding-inline: 16px;
-}
-.home-hero.is-center h1{
-  font-size: clamp(28px, 4vw, 48px);
-  margin: 0 0 .75rem;
-  letter-spacing: .02em;
-}
-.home-hero.is-center .sub{
-  margin: 0 auto 1.25rem;
-  max-width: 760px;
-  color:#d1d5db;
-}
-.home-hero .cta-button{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:.55rem 1.1rem;
-  border-radius:12px;
-  background: var(--primary, #2563eb);
-  color:#fff; text-decoration:none; font-weight:700;
-}
-.home-hero .cta-button:hover{ filter: brightness(.96); }
-.home-hero .cta-button:focus-visible{ outline:2px solid #fff; outline-offset:2px; }
 
 /* 贴边（Full-bleed） */
 .home-hero.is-bleed{
@@ -68,13 +95,11 @@
   width: 100vw;
 }
 
-/* 响应式高度（可用 --hero-h-sm/md/lg 覆盖） */
-@media (max-width: 640px){
-  .home-hero{ min-height: var(--hero-h-sm, 56vh); }
-}
-@media (min-width: 641px) and (max-width: 1024px){
-  .home-hero{ min-height: var(--hero-h-md, 62vh); }
-}
-@media (min-width: 1025px){
-  .home-hero{ min-height: var(--hero-h-lg, 68vh); }
+/* —— 响应式高度（用断点令牌） —— */
+@include mq-up(md){ .home-hero{ min-height: var(--hero-h-md); } } /* ≥ 768px */
+@include mq-up(lg){ .home-hero{ min-height: var(--hero-h-lg); } } /* ≥ 1024px */
+
+/* 动效降级：继承全局设置，无需重复，但这里再保险一下 */
+@media (prefers-reduced-motion: reduce){
+  .home-hero .cta-button{ transition: none !important; }
 }

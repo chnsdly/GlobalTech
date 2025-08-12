@@ -1,7 +1,426 @@
-// assets/scss/_vars.scss
-$primary: #005A9C;
-$bg: #f6f7f9;
-$text: #2a2a2a;
-$muted: #6b7280;
-$radius: 10px;
-$container: 1200px;
+/* =============================================================================
+   Global Design Tokens (SCSS + CSS Variables)
+   目标：
+   1) 用“语义令牌”统一全站风格（brand/surface/text 等），组件只吃语义，不碰硬编码。
+   2) 主题就位：Light / Dark 双主题；同时支持手动 data-theme 与系统 prefers-color-scheme。
+   3) 完整的“刻度表”：断点、容器、字号、间距、圆角、边框、阴影、动效、层级、组件尺寸。
+   4) 可访问性：统一焦点环；动效降级；便于键盘/读屏器。
+   5) 向后兼容：继续暴露 $primary/$bg/$text/$muted 等老变量，平滑迁移。
+   ---------------------------------------------------------------------------
+   使用建议：
+   - 新代码全部用 var(--*) 语义变量；老代码能跑就先别动，逐步迁。
+   - 若要局部换主题/品牌色，在作用域容器上覆写 :root 里的 CSS 变量即可。
+   - JS 如需断点数值，建议从 :root 导出的 --bp-* 读（避免 JS/SCSS 不一致）。
+============================================================================= */
+
+/* ========== 1) 原始刻度（Primitives / Scales）==============================
+   这些是“原料表”。组件不会直接用原色值，而是通过语义令牌间接引用。
+   好处：换主题/品牌/密度时，只改一处。
+--------------------------------------------------------------------------- */
+
+/* 1.1 断点
+   - 参照 Tailwind 心智模型（xs/sm/md/lg/xl/2xl）
+   - 注意：键 "2xl" 以字符串存储，后续取值请用 bp("2xl")
+*/
+$breakpoints: (
+  xs: 480px,
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  "2xl": 1536px
+) !default;
+
+/* 1.2 容器最大宽
+   - 与断点分档无强绑定，可按设计需要独立调整。
+   - 页面主容器用 @include container(xl) 自动设置 max-width 与左右 padding。
+*/
+$containers: (
+  sm: 600px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  "2xl": 1320px
+) !default;
+
+/* 1.3 字体族
+   - 优先系统 UI 字体，退化到常见 Web 安全字体。
+   - UI 场景：$font-sans；代码片段：$font-mono；长阅读：$font-serif（可选）。
+*/
+$font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji" !default;
+$font-serif: ui-serif, Georgia, "Times New Roman", Times, serif !default;
+$font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+
+/* 1.4 字号刻度（流式排版）
+   - clamp(最小, 理想, 最大) 让字号随视口宽度平滑过渡，避免硬跳变。
+   - 理想值使用 vw，确保在手机到桌面之间平滑缩放。
+   - 取值示例：fs("2xl") → clamp(20px, 1.6vw, 24px)
+*/
+$font-sizes: (
+  xs: clamp(11px, 0.74vw, 12px),
+  sm: clamp(12px, 0.82vw, 14px),
+  base: clamp(14px, 1vw, 16px),
+  lg: clamp(16px, 1.15vw, 18px),
+  xl: clamp(18px, 1.35vw, 20px),
+  "2xl": clamp(20px, 1.6vw, 24px),
+  "3xl": clamp(24px, 2vw, 30px),
+  "4xl": clamp(28px, 2.6vw, 36px)
+) !default;
+
+/* 1.5 间距刻度（4px 基线）
+   - 统一空间节奏。组件用 var(--sp-*)，不要临时 13px/22px 这类杂数。
+*/
+$space: (
+  0: 0,
+  0.5: 2px,
+  1: 4px,
+  1.5: 6px,
+  2: 8px,
+  3: 12px,
+  4: 16px,
+  5: 20px,
+  6: 24px,
+  8: 32px,
+  10: 40px,
+  12: 48px,
+  16: 64px,
+  20: 80px,
+  24: 96px
+) !default;
+
+/* 1.6 圆角刻度
+   - 统一圆角语言：xs/sm/md/lg/xl/2xl/pill
+*/
+$radii: (
+  none: 0,
+  xs: 4px,
+  sm: 6px,
+  md: 10px,
+  lg: 14px,
+  xl: 20px,
+  "2xl": 24px,
+  pill: 999px
+) !default;
+
+/* 1.7 边框宽度
+   - hairline 在高 DPI 屏上对齐 0.5px（移动端表现更细腻）
+*/
+$borders: (
+  hairline: 0.5px,
+  thin: 1px,
+  thick: 2px,
+  heavy: 3px
+) !default;
+
+/* 1.7 阴影（多重阴影用列表包起来）
+   - 典型材质：xs/sm/md/lg/xl 对应“海拔”层级。
+   - ⚠️ Sass map 值里如果含逗号（多重阴影），必须用括号包成列表，否则会被当成下一个键值。
+*/
+$shadows: (
+  xs: 0 1px 2px rgba(0,0,0,.06),
+  sm: (0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06)),
+  md: (0 4px 6px rgba(0,0,0,.1), 0 2px 4px rgba(0,0,0,.06)),
+  lg: (0 10px 15px rgba(0,0,0,.12), 0 4px 6px rgba(0,0,0,.08)),
+  xl: (0 20px 25px rgba(0,0,0,.14), 0 10px 10px rgba(0,0,0,.08))
+) !default;
+
+/* 1.8 动效：时长与缓动
+   - standard：通用；emphasized：更强调的“冲出-回弹”感；in/out：入场/退场。
+*/
+$durations: (
+  fast: .16s,
+  normal: .28s,
+  slow: .44s
+) !default;
+
+$easings: (
+  standard: cubic-bezier(.2, .0, 0, 1),
+  emphasized: cubic-bezier(.22, 1, .36, 1),
+  in: cubic-bezier(.42, 0, 1, 1),
+  out: cubic-bezier(0, 0, .58, 1)
+) !default;
+
+/* 1.9 z-index 分层
+   - 统一管理，避免“魔法数字大战”。新增层级时先在这里登记。
+*/
+$z-stack: (
+  base: 0,
+  header: 1200,
+  overlay: 1199,
+  dropdown: 1300,
+  modal: 1400,
+  toast: 1500
+) !default;
+
+/* 1.10 组件基线尺寸
+   - 将“看得见摸得着”的组件尺寸抽象出来：header 高度、抽屉宽度、容器内边距等。
+*/
+$components: (
+  header-height: 64px,
+  drawer-width: 320px,
+  container-padding-x: 16px
+) !default;
+
+/* ========== 2) 主题令牌（Semantic Tokens）==================================
+   - 组件只引用这些“语义色”，不直接碰十六进制原色。
+   - brand-contrast = 在 brand 背景上的前景色（“on-brand”）。
+--------------------------------------------------------------------------- */
+
+/* 2.1 Light 主题颜色盘 */
+$theme-light: (
+  brand: #0842A0,
+  brand-contrast: #ffffff,
+  text: #262626,
+  text-muted: #6b7280,
+  surface: #ffffff,
+  surface-alt: #f6f7f9,
+  border: #e5e7eb,
+  success: #16a34a,
+  warning: #f59e0b,
+  danger:  #dc2626,
+  info:    #2563eb,
+  focus:   #1d4ed8
+) !default;
+
+/* 2.2 Dark 主题颜色盘
+   - 注意：dark 的 brand-contrast 选深色，方便在亮 brand 上有暗前景（个性化风格）。
+*/
+$theme-dark: (
+  brand: #3b82f6,
+  brand-contrast: #0b1220,
+  text: #e5e7eb,
+  text-muted: #9ca3af,
+  surface: #0b1220,
+  surface-alt: #111827,
+  border: #1f2937,
+  success: #22c55e,
+  warning: #fbbf24,
+  danger:  #ef4444,
+  info:    #60a5fa,
+  focus:   #93c5fd
+) !default;
+
+/* ========== 3) 导出为 CSS Variables（:root / 主题覆盖）====================
+   - 这一步把 SCSS map 转成浏览器可读的 CSS 变量，JS/CSS 都能读。
+   - 任何组件/页面，只要改这些 --* 变量，就能全局变更风格。
+--------------------------------------------------------------------------- */
+
+/* 小工具函数（map-get 封装） */
+@function bp($key)            { @return map-get($breakpoints, $key); }
+@function container-max($key) { @return map-get($containers, $key); }
+@function fs($key)            { @return map-get($font-sizes, $key); }
+@function sp($key)            { @return map-get($space, $key); }
+@function radius($key)        { @return map-get($radii, $key); }
+@function border($key)        { @return map-get($borders, $key); }
+@function shadow($key)        { @return map-get($shadows, $key); }
+@function dur($key)           { @return map-get($durations, $key); }
+@function ease($key)          { @return map-get($easings, $key); }
+@function z($layer)           { @return map-get($z-stack, $layer); }
+@function comp($key)          { @return map-get($components, $key); }
+
+/* 媒体查询 Mixin
+   - 用法：@include mq-up(lg){ ... } → @media (min-width: 1024px)
+   - 注意："2xl" 这种以数字开头的键，取值必须写成 mq-up("2xl")
+*/
+@mixin mq-up($bp) { @media (min-width: bp($bp)) { @content; } }
+
+/* 容器 Mixin
+   - 统一容器最大宽与左右 padding；自动居中。
+   - 用法：.container { @include container(xl); }
+*/
+@mixin container($size: xl) {
+  width: 100%;
+  max-width: calc(container-max($size) + #{comp(container-padding-x)} * 2);
+  margin-inline: auto;
+  padding-inline: comp(container-padding-x);
+}
+
+/* 焦点环（可访问性）
+   - 统一 outline 风格；避免各组件自己瞎画。
+*/
+@mixin focus-ring {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* 动效降级
+   - 用户偏好“减少动画”时，强制缩短/取消动画，避免眩晕。
+*/
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 3.1 :root → 导出“可被页面/组件覆写”的 CSS 变量（默认 Light 主题） */
+:root {
+  /* —— 语义色 —— */
+  --brand: #{map-get($theme-light, brand)};
+  --brand-contrast: #{map-get($theme-light, brand-contrast)};
+  --text: #{map-get($theme-light, text)};
+  --text-muted: #{map-get($theme-light, text-muted)};
+  --surface: #{map-get($theme-light, surface)};
+  --surface-alt: #{map-get($theme-light, surface-alt)};
+  --border: #{map-get($theme-light, border)};
+  --success: #{map-get($theme-light, success)};
+  --warning: #{map-get($theme-light, warning)};
+  --danger:  #{map-get($theme-light, danger)};
+  --info:    #{map-get($theme-light, info)};
+  --focus:   #{map-get($theme-light, focus)};
+
+  /* —— 字体族 —— */
+  --font-sans: #{$font-sans};
+  --font-serif: #{$font-serif};
+  --font-mono: #{$font-mono};
+
+  /* —— 字号（流式）——
+     注意：带数字开头的键，取值要写 fs("2xl") 而不是 fs(2xl) 更保险。
+  */
+  --fs-xs: #{fs(xs)};   --fs-sm: #{fs(sm)};   --fs-base: #{fs(base)}; --fs-lg: #{fs(lg)};
+  --fs-xl: #{fs(xl)};   --fs-2xl: #{fs("2xl")}; --fs-3xl: #{fs("3xl")}; --fs-4xl: #{fs("4xl")};
+
+  /* —— 间距刻度 —— */
+  --sp-0: #{sp(0)}; --sp-0_5: #{sp(0.5)}; --sp-1: #{sp(1)}; --sp-1_5: #{sp(1.5)};
+  --sp-2: #{sp(2)}; --sp-3: #{sp(3)}; --sp-4: #{sp(4)}; --sp-5: #{sp(5)};
+  --sp-6: #{sp(6)}; --sp-8: #{sp(8)}; --sp-10: #{sp(10)}; --sp-12: #{sp(12)};
+  --sp-16: #{sp(16)}; --sp-20: #{sp(20)}; --sp-24: #{sp(24)};
+
+  /* —— 形状/边界/阴影 —— */
+  --radius-xs: #{radius(xs)}; --radius-sm: #{radius(sm)}; --radius-md: #{radius(md)};
+  --radius-lg: #{radius(lg)}; --radius-xl: #{radius(xl)}; --radius-2xl: #{radius("2xl")};
+  --radius-pill: #{radius(pill)};
+  --border-hairline: #{border(hairline)};
+  --border-thin: #{border(thin)};
+  --border-thick: #{border(thick)};
+  --border-heavy: #{border(heavy)};
+  --shadow-xs: #{shadow(xs)};
+  --shadow-sm: #{shadow(sm)};
+  --shadow-md: #{shadow(md)};
+  --shadow-lg: #{shadow(lg)};
+  --shadow-xl: #{shadow(xl)};
+
+  /* —— 动效 —— */
+  --t-fast: #{dur(fast)};
+  --t-normal: #{dur(normal)};
+  --t-slow: #{dur(slow)};
+  --ease: #{ease(emphasized)};
+  --ease-standard: #{ease(standard)};
+
+  /* —— 层级 —— */
+  --z-base: #{z(base)};
+  --z-header: #{z(header)};
+  --z-overlay: #{z(overlay)};
+  --z-dropdown: #{z(dropdown)};
+  --z-modal: #{z(modal)};
+  --z-toast: #{z(toast)};
+
+  /* —— 组件尺寸 —— */
+  --header-height: #{comp(header-height)};
+  --drawer-width: #{comp(drawer-width)};
+
+  /* —— Header 语义别名（毛玻璃、前景）——
+     color-mix：用品牌色 + 透明混合做半透明背景；老浏览器将按品牌色 fallback。
+  */
+  --header-bg: color-mix(in srgb, var(--brand) 86%, transparent);
+  --header-fg: #fff;
+  --header-blur: 10px;
+
+  /* —— 导出断点/容器给 JS 读取（避免 JS/SCSS 数值不一致）——
+     JS 可用：getComputedStyle(document.documentElement).getPropertyValue('--bp-lg')
+  */
+  --bp-xs: #{bp(xs)}; --bp-sm: #{bp(sm)}; --bp-md: #{bp(md)};
+  --bp-lg: #{bp(lg)}; --bp-xl: #{bp(xl)}; --bp-2xl: #{bp("2xl")};
+
+  --container-sm: #{container-max(sm)};
+  --container-md: #{container-max(md)};
+  --container-lg: #{container-max(lg)};
+  --container-xl: #{container-max(xl)};
+  --container-2xl: #{container-max("2xl")};
+}
+
+/* 3.2 Dark 主题覆盖（用 mixin，避免跨媒体 @extend 报错） */
+@mixin theme-variables($theme-map){
+  --brand: #{map-get($theme-map, brand)};
+  --brand-contrast: #{map-get($theme-map, brand-contrast)};
+  --text: #{map-get($theme-map, text)};
+  --text-muted: #{map-get($theme-map, text-muted)};
+  --surface: #{map-get($theme-map, surface)};
+  --surface-alt: #{map-get($theme-map, surface-alt)};
+  --border: #{map-get($theme-map, border)};
+  --success: #{map-get($theme-map, success)};
+  --warning: #{map-get($theme-map, warning)};
+  --danger:  #{map-get($theme-map, danger)};
+  --info:    #{map-get($theme-map, info)};
+  --focus:   #{map-get($theme-map, focus)};
+}
+
+/* 手动深色：<html data-theme="dark"> 优先生效 */
+[data-theme="dark"] { @include theme-variables($theme-dark); }
+
+/* 系统深色偏好：除非明确 data-theme="light" */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { @include theme-variables($theme-dark); }
+}
+
+/* ========== 4) 便捷工具类（可选，少量示例） ==============================
+   - 这些是“开箱即用”的基础类，减少重复 CSS。
+--------------------------------------------------------------------------- */
+
+/* 容器工具类 */
+.container { @include container(xl); }
+
+/* 焦点环统一风格（键盘无障碍） */
+:where(a, button, input, textarea, select, [tabindex]) {
+  &:focus-visible { @include focus-ring; }
+}
+
+/* ========== 5) 向后兼容别名（不破坏你现有代码） ==========================
+   - 老代码继续用 $primary/$bg/$text/$muted 等，不会报错。
+   - 新代码逐步迁移到 var(--brand)/var(--surface)/var(--text) 等。
+--------------------------------------------------------------------------- */
+$primary:   #{map-get($theme-light, brand)} !default;
+$bg:        #{map-get($theme-light, surface-alt)} !default;
+$text:      #{map-get($theme-light, text)} !default;
+$muted:     #{map-get($theme-light, text-muted)} !default;
+
+$radius:    #{radius(md)} !default;
+$container: #{container-max(xl)} !default;
+
+$ease:      #{ease(emphasized)} !default;
+$t-fast:    #{dur(fast)} !default;
+$t-normal:  #{dur(normal)} !default;
+
+$z-header:  #{z(header)} !default;
+$z-overlay: #{z(overlay)} !default;
+
+/* ========================= 6) 学习用：示例（只读注释） ======================
+   1) 组件怎么吃令牌？
+      .card{
+        background: var(--surface);
+        color: var(--text);
+        border: var(--border-thin) solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+        padding: var(--sp-6);
+      }
+
+   2) 媒体查询怎么写？
+      .nav{ display:none; }
+      @include mq-up(lg){ .nav{ display:flex; } }  // ≥ 1024px 生效
+
+   3) 局部调品牌色（比如节日版 Header）：
+      .site-header--festive{
+        --brand: #C71585;  // 一处改色，全站“用 brand 的组件”都会跟着变
+      }
+
+   4) JS 如何读取断点与容器宽（避免数值不一致）：
+      const root = getComputedStyle(document.documentElement);
+      const bpLg = root.getPropertyValue('--bp-lg').trim(); // "1024px"
+
+   5) color-mix 回退策略：
+      - 老浏览器不支持时，background 将退回到不透明色（由浏览器解析行为决定）。
+      - 若需强制兼容，可提供 background-color 实色作为兜底，写在 color-mix 前一行。
+============================================================================= */

@@ -1,37 +1,33 @@
-{{/* section-hero.html — 居中版 Hero（无 split），统一使用 responsive-image.html 作为背景 */}}
+
 {{- $page := . -}}
 
-{{/* 配置项（写在页面 Front Matter 即可） */}}
-{{- $fullBleed := $page.Params.hero_fullbleed | default false -}}
-{{- $hSm       := $page.Params.hero_h_sm      | default "" -}}   {{/* 例 "60vh" */}}
-{{- $hMd       := $page.Params.hero_h_md      | default "" -}}
-{{- $hLg       := $page.Params.hero_h_lg      | default "" -}}
-{{- $overlay   := $page.Params.hero_overlay   | default true -}}
-{{- $ovColor   := $page.Params.hero_ov_color  | default "0,0,0" -}}   {{/* r,g,b */}}
-{{- $ovAlpha   := $page.Params.hero_ov_alpha  | default "0.45" -}}    {{/* 0~1 */}}
-{{- $fetch     := $page.Params.hero_fetch     | default "high" -}}    {{/* "high" | "" */}}
-{{- $bgLqip    := $page.Params.hero_bg_lqip   | default false -}}     {{/* 背景是否开启 LQIP */}}
+{{/* 文案 */}}
+{{- $title :=  $page.Title  -}}
+{{- $sub   :=  $page.Description -}}
 
-{{- $title := $page.Params.hero_title | default $page.Site.Title -}}
-{{- $sub   := $page.Params.hero_sub   | default "" -}}
-{{- $ctaTx := $page.Params.hero_cta_text | default (i18n "contact_us") -}}
-{{- $ctaHref := ($page.Params.hero_cta_link | default "contact-us") | relLangURL -}}
+{{/* 背景资源：页面优先，站点 assets 兜底 */}}
+{{- $bg := or ($page.Resources.GetMatch "*hero*") ($page.Resources.GetMatch "hero-bg*") -}}
+{{- if not $bg -}}
+  {{- $bg = resources.GetMatch "images/hero-bg.*" -}}
+{{- end -}}
 
-{{/* 行内变量（高度、遮罩） */}}
-{{- $page.Scratch.Set "style" "" -}} {{/* 初始化一个空的 "style" 草稿 */}}
-{{- if $hSm -}} {{- $page.Scratch.Add "style" (printf "--hero-h-sm:%s;" $hSm) -}} {{- end -}}
-{{- if $hMd -}} {{- $page.Scratch.Add "style" (printf "--hero-h-md:%s;" $hMd) -}} {{- end -}}
-{{- if $hLg -}} {{- $page.Scratch.Add "style" (printf "--hero-h-lg:%s;" $hLg) -}} {{- end -}}
-{{- if $overlay -}} {{- $page.Scratch.Add "style" (printf "--hero-overlay:rgba(%s,%s);" $ovColor $ovAlpha) -}} {{- end -}}
-{{- $style := $page.Scratch.Get "style" -}} {{/* 从草稿本中取回最终构建好的字符串 */}}
+{{/* CTA：i18n；链接默认 /contact-us */}}
+{{- $ctaTx  := i18n "contact_us" | default "Contact us" -}}
+{{- $ctaURL := "contact-us" | relLangURL -}}
 
-<section class="home-hero is-center {{ if $fullBleed }}is-bleed{{ end }}"
-  {{ if ne $style "" }}style='{{ $style | safeCSS }}'{{ end }}>
+{{/* 无障碍：稳定 id（优先用文件 UniqueID） */}}
+{{- $titleID := "" -}}
+{{- with $page.File -}}
+  {{- $titleID = printf "hero-title-%s" .UniqueID -}}
+{{- else -}}
+  {{- $titleID = printf "hero-title-%d" now.Unix -}}
+{{- end -}}
 
+<section class="home-hero is-center is-bleed" aria-labelledby="{{ $titleID }}">
 
-  {{/* 背景图（走统一图片管线；作为 LCP 图片） */}}
-  {{ with $page.Params.hero_bg_asset }}
-    <div class="hero-bg">
+  {{/* 背景图（作为 LCP 图片）；若无资源则不输出 */}}
+  {{- with $bg -}}
+    <div class="hero-bg" aria-hidden="true">
       {{ partial "responsive-image.html" (dict
         "ctx"   $page
         "src"   .
@@ -39,19 +35,22 @@
         "w"     (slice 960 1440 1920 2560)
         "sizes" "100vw"
         "class" "hero-bg-img"
-        "fetch" $fetch
-        "lqip"  $bgLqip
+        "fetch" "high"
+        "lqip"  true
       ) }}
     </div>
-  {{ end }}
+  {{- end }}
 
-  {{ if $overlay }}<div class="hero-ov" aria-hidden="true"></div>{{ end }}
+  {{/* 遮罩：是否可见交给 --hero-overlay（默认透明） */}}
+  <div class="hero-ov" aria-hidden="true"></div>
 
   <div class="container">
     <div class="hero-center">
-      <h1>{{ $title }}</h1>
-      {{ with $sub }}<p class="sub">{{ . }}</p>{{ end }}
-      <a class="cta-button" href='{{ $ctaHref }}'>{{ $ctaTx }}</a>
+      <h1 id="{{ $titleID }}">{{ $title }}</h1>
+      {{ with $sub }}<p class="sub">{{ . | $.Page.RenderString (dict "display" "inline") }}</p>{{ end }}
+      <div class="hero-ctas">
+        <a class="cta-button" href="{{ $ctaURL }}">{{ $ctaTx }}</a>
+      </div>
     </div>
   </div>
 </section>
