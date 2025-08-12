@@ -1,20 +1,18 @@
-{{/*
-================================================================================
-  增强版粘性导航 (v2.1)
-  变更要点：
-    - 统一子菜单 & 语言切换面板的主题（panel 变量），在 Header 中自动套用深色毛玻璃
-    - 语言切换：移动端依旧点击开合；桌面端支持悬停打开，移出收起；点击也可开合
-    - 无障碍增强：focus-within 也能打开语言菜单
-================================================================================
-*/}}
+{{/* ============================================================================
+  Ultimate Sticky Nav (HTML+JS 一体版)
+  - 子菜单：桌面仅显示链接伪元素箭头；移动端仅显示按钮 SVG 箭头（无双三角）
+  - 语言切换：桌面支持悬停/点击/键盘；移动端点击
+  - iOS 安全区与抽屉焦点陷阱；可选“下滑隐藏/上滑出现”
+  - 想启用自动隐藏：把 header 的 data-autohide 改成 "true"
+============================================================================ */}}
 {{- $ctx := . -}}
 
 <a class="skip-link" href="#main-content">跳到主要内容</a>
 
-<header class="site-header" id="site-header" data-header>
+<header class="site-header" id="site-header" data-header data-autohide="false">
   <div class="container site-header__inner">
 
-    {{/* LOGO: 优先图片，否则文本（避免 with 改变作用域） */}}
+    {{/* LOGO：图片优先 */}}
     {{- $logoPath := .Site.Params.logo_asset | default "" -}}
     {{- $logoRes  := cond (ne $logoPath "") (or ($ctx.Resources.GetMatch $logoPath) (resources.Get $logoPath)) nil -}}
     <a class="site-header__logo" href="{{ "/" | relLangURL }}" aria-label="{{ .Site.Params.company_name | default .Site.Title }}">
@@ -27,7 +25,7 @@
       {{- end -}}
     </a>
 
-    {{/* 主导航 & 移动端抽屉（语言块置于抽屉底部） */}}
+    {{/* 主导航（移动端抽屉） */}}
     <nav class="main-nav" id="main-nav" aria-label="主导航" aria-hidden="true">
       <ul class="main-nav__list">
         {{- $current := . -}}
@@ -57,7 +55,7 @@
         {{- end -}}
       </ul>
 
-      {{/* 语言切换器：移动端抽屉底部（桌面隐藏，通过CSS控制） */}}
+      {{/* 语言切换（抽屉底部；桌面隐藏） */}}
       {{- if .IsTranslated -}}
       <div class="lang-switch" data-lang-switch>
         <button class="lang-switch__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="切换语言">
@@ -79,7 +77,7 @@
     </nav>
 
     <div class="site-header__actions">
-      {{/* 桌面端语言切换器（右上角） */}}
+      {{/* 桌面右上语言切换 */}}
       {{- if .IsTranslated -}}
       <div class="lang-switch lang-switch--desktop" data-lang-switch>
         <button class="lang-switch__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="切换语言">
@@ -99,7 +97,7 @@
       </div>
       {{- end -}}
 
-      {{/* 移动端主菜单开关 (汉堡按钮) */}}
+      {{/* 移动端汉堡 */}}
       <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="打开主导航">
         <span class="nav-toggle__icon" aria-hidden="true">
           <span class="nav-toggle__line"></span>
@@ -112,21 +110,34 @@
   </div>
 </header>
 
-{{/* 抽屉遮罩层 */}}
 <div class="drawer-overlay" data-drawer-overlay></div>
+
+<link rel="stylesheet" href="{{ "css/nav.css" | relURL }}">
 
 <script>
 (() => {
   "use strict";
 
-  const header = document.getElementById("site-header");
-  const nav = document.getElementById("main-nav");
-  const navToggle = document.querySelector(".nav-toggle");
+  const header        = document.getElementById("site-header");
+  const nav           = document.getElementById("main-nav");
+  const navToggle     = document.querySelector(".nav-toggle");
   const drawerOverlay = document.querySelector(".drawer-overlay");
   if (!header || !nav || !navToggle) return;
 
-  const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
   let lastActive = null;
+
+  // 给每个子菜单绑定 aria-controls（提升可访问性）
+  nav.querySelectorAll(".main-nav__item--has-submenu").forEach((li, idx) => {
+    const submenu = li.querySelector(".main-nav__submenu");
+    const toggle  = li.querySelector(".main-nav__submenu-toggle");
+    const link    = li.querySelector(".main-nav__link");
+    if (!submenu || !toggle || !link) return;
+    const id = submenu.id || `submenu-${idx}`;
+    submenu.id = id;
+    toggle.setAttribute("aria-controls", id);
+    link.setAttribute("aria-controls", id);
+  });
 
   function setDrawerOpen(isOpen){
     if (isOpen){
@@ -134,12 +145,21 @@
       document.body.classList.add("drawer-is-open");
       navToggle.setAttribute("aria-expanded", "true");
       nav.setAttribute("aria-hidden", "false");
-      setTimeout(() => { (nav.querySelector(FOCUSABLE) || navToggle).focus(); }, 300);
+      setTimeout(() => { (nav.querySelector(FOCUSABLE) || navToggle).focus(); }, 10);
     }else{
       document.body.classList.remove("drawer-is-open");
       navToggle.setAttribute("aria-expanded", "false");
       nav.setAttribute("aria-hidden", "true");
       if (lastActive && document.body.contains(lastActive)) lastActive.focus();
+
+      // 收拢展开的移动端子菜单与语言菜单
+      nav.querySelectorAll(".main-nav__item--has-submenu.is-open").forEach(li => {
+        li.classList.remove("is-open");
+        const link = li.querySelector(".main-nav__link");
+        if (link) link.setAttribute("aria-expanded", "false");
+      });
+      document.querySelectorAll(".lang-switch__menu.is-open").forEach(m => m.classList.remove("is-open"));
+      document.querySelectorAll(".lang-switch__toggle[aria-expanded='true']").forEach(t => t.setAttribute("aria-expanded", "false"));
     }
   }
 
@@ -159,20 +179,16 @@
     const open = navToggle.getAttribute("aria-expanded") === "true";
     setDrawerOpen(!open);
   });
-
-  if (drawerOverlay){
-    drawerOverlay.addEventListener("click", () => setDrawerOpen(false));
-  }
-
+  drawerOverlay?.addEventListener("click", () => setDrawerOpen(false));
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && document.body.classList.contains("drawer-is-open")) setDrawerOpen(false);
     trapFocus(e);
   });
 
-  // 移动端子菜单开合
+  // 移动端子菜单：用按钮开合，不拦截父链接跳转
   nav.querySelectorAll(".main-nav__item--has-submenu").forEach(li => {
     const toggle = li.querySelector(".main-nav__submenu-toggle");
-    const link = li.querySelector(".main-nav__link");
+    const link   = li.querySelector(".main-nav__link");
     if (!toggle || !link) return;
     toggle.addEventListener("click", (e) => {
       e.preventDefault();
@@ -181,21 +197,20 @@
     });
   });
 
-  // 语言切换器（桌面右上 与 抽屉内）
+  // 语言切换（桌面 & 抽屉）
   document.querySelectorAll("[data-lang-switch]").forEach(container => {
     const toggle = container.querySelector(".lang-switch__toggle");
-    const menu = container.querySelector(".lang-switch__menu");
+    const menu   = container.querySelector(".lang-switch__menu");
     if (!toggle || !menu) return;
 
-    // 点击开合（移动端 & 桌面通用）
     toggle.addEventListener("click", (e) => {
       e.stopPropagation();
       const isOpen = menu.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", String(isOpen));
     });
 
-    // 桌面：支持悬停打开，移出关闭
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (canHover) {
       let hoverTimer = null;
       container.addEventListener('mouseenter', () => {
         clearTimeout(hoverTimer);
@@ -210,15 +225,12 @@
       });
     }
 
-    // 点页面空白处关闭
     document.addEventListener("click", (e) => {
       if (menu.classList.contains("is-open") && !container.contains(e.target)) {
         menu.classList.remove("is-open");
         toggle.setAttribute("aria-expanded", "false");
       }
     });
-
-    // Esc 关闭
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && menu.classList.contains("is-open")) {
         menu.classList.remove("is-open");
@@ -227,9 +239,30 @@
     });
   });
 
-  // 滚动阴影
-  const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 10);
+  // 滚动阴影 & 可选自动隐藏
+  const enableAutohide = (header.getAttribute("data-autohide") || "false") === "true";
+  let lastY = window.scrollY, hidden = false;
+  const SHADOW_T = 10, HIDE_T = 18;
+  const onScroll = () => {
+    const y = window.scrollY;
+    header.classList.toggle("is-scrolled", y > SHADOW_T);
+    if (!enableAutohide || document.body.classList.contains("drawer-is-open")) { lastY = y; return; }
+    const goingDown = y > lastY;
+    if (goingDown && y - lastY > HIDE_T && !hidden) {
+      header.classList.add("is-hidden"); hidden = true;
+    } else if (!goingDown && lastY - y > 4 && hidden) {
+      header.classList.remove("is-hidden"); hidden = false;
+    }
+    lastY = y;
+  };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  // 断点切换时收拢抽屉，避免残留状态
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 992 && document.body.classList.contains("drawer-is-open")) {
+      setDrawerOpen(false);
+    }
+  });
 })();
 </script>
