@@ -1,0 +1,157 @@
+[[main]]
+name = "首页"
+url = "/"
+weight = 1
+
+[[main]]
+name = "产品"
+url = "/products/"
+identifier = "products"
+weight = 10
+
+  [[main]]
+  name = "按样式"
+  url = ""
+  identifier = "products-style"
+  parent = "products"
+  weight = 11
+
+    [[main]]
+    name = "九脚系列"
+    url = "/products/style/nine-runners/"
+    parent = "products-style"
+    weight = 111
+
+    [[main]]
+    name = "田字系列"
+    url = "/products/style/cross-runners/"
+    parent = "products-style"
+    weight = 112
+
+    [[main]]
+    name = "川字系列"
+    url = "/products/style/skid-runners/"
+    parent = "products-style"
+    weight = 113
+
+  [[main]]
+  name = "按承载"
+  url = ""
+  identifier = "products-load"
+  parent = "products"
+  weight = 12
+
+    [[main]]
+    name = "轻型（载重<1T）"
+    url = "/products/load/light-duty/"
+    parent = "products-load"
+    weight = 121
+
+    [[main]]
+    name = "中型（载重1T-2T）"
+    url = "/products/load/medium-duty/"
+    parent = "products-load"
+    weight = 122
+
+    [[main]]
+    name = "重型（载重>2T）"
+    url = "/products/load/heavy-duty/"
+    parent = "products-load"
+    weight = 123
+
+  [[main]]
+  name = "按尺寸"
+  url = ""
+  identifier = "products-dimension"
+  parent = "products"
+  weight = 13
+
+    [[main]]
+    name = "1200x1000mm (欧标)"
+    url = "/products/dimension/1200x1000/"
+    parent = "products-dimension"
+    weight = 131
+
+    [[main]]
+    name = "1100x1100mm (日韩标)"
+    url = "/products/dimension/1100x1100/"
+    parent = "products-dimension"
+    weight = 132
+
+    [[main]]
+    name = "1200x800mm (欧标)"
+    url = "/products/dimension/1200x800/"
+    parent = "products-dimension"
+    weight = 133
+
+[[main]]
+name = "行业案例"
+url = "/industries/"
+identifier = "industries"
+weight = 20
+
+  [[main]]
+  name = "冷链物流解决方案"
+  url = "/industries/cold-chain/"
+  parent = "industries"
+  weight = 21
+
+  [[main]]
+  name = "高位货架仓储方案"
+  url = "/industries/warehousing/"
+  parent = "industries"
+  weight = 22
+
+  [[main]]
+  name = "出口一次性托盘"
+  url = "/industries/export/"
+  parent = "industries"
+  weight = 23
+
+  [[main]]
+  name = "食品级托盘应用"
+  url = "/industries/food-grade/"
+  parent = "industries"
+  weight = 24
+
+  [[main]]
+  name = "化工与危险品存储"
+  url = "/industries/chemical/"
+  parent = "industries"
+  weight = 25
+
+[[main]]
+name = "资源中心"
+url = "/resources/"
+identifier = "resources"
+weight = 30
+
+  [[main]]
+  name = "博客/新闻"
+  url = "/resources/articles/"
+  parent = "resources"
+  weight = 31
+
+  [[main]]
+  name = "下载中心"
+  url = "/resources/downloads/"
+  parent = "resources"
+  weight = 32
+
+  [[main]]
+  name = "常见问题 (FAQ)"
+  url = "/resources/faq/"
+  parent = "resources"
+  weight = 33
+
+[[main]]
+name = "关于我们"
+url = "/about/"
+identifier = "about"
+weight = 40
+
+[[main]]
+name = "联系我们"
+url = "/contact/"
+identifier = "contact"
+weight = 50

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>行业洞察3 on GlobalTech</title>
+    <link>http://localhost:1313/categories/%E8%A1%8C%E4%B8%9A%E6%B4%9E%E5%AF%9F3/</link>
+    <description>Recent content in 行业洞察3 on GlobalTech</description>
+    <generator>Hugo</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 18 Jul 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/%E8%A1%8C%E4%B8%9A%E6%B4%9E%E5%AF%9F3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Choose a 5-Axis CNC</title>
+      <link>http://localhost:1313/insights/articles/how-to-choose-cnc-copy-5/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/insights/articles/how-to-choose-cnc-copy-5/</guid>
+      <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How to Choose a 5-Axis CNC</title>
+      <link>http://localhost:1313/insights/articles/how-to-choose-cnc-copy-6/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/insights/articles/how-to-choose-cnc-copy-6/</guid>
+      <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

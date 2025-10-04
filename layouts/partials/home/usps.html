@@ -1,0 +1,20 @@
+{{ $lang := .Site.Language.Lang }}
+{{ $list := (index site.Data.usps $lang) | default (slice) }}
+
+<section class="home-usps">
+  <div class="container usp-grid">
+    {{ range $list }}
+      <div class="usp-card">
+        <div class="usp-icon">
+          {{ with .icon }}
+          <img src="{{ . | relURL }}" alt="" aria-hidden="true">
+          {{ end }}
+        </div>
+        <div class="usp-body">
+          <h3>{{ .title }}</h3>
+          <p>{{ .desc }}</p>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+</section>

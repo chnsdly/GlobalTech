@@ -1,0 +1,159 @@
+main:
+  # ====================================================================================
+  # 产品
+  # ====================================================================================
+  - name: "首页"
+    url: "/"
+    weight: 1
+
+  - name: "产品"
+    url: "/products/"
+    identifier: "products"
+    weight: 10
+
+  # --- 产品子菜单 ---
+
+    # --- 按样式 ---
+  - name: "按样式"
+    url: ""
+    identifier: "products-style"
+    parent: "products"
+    weight: 11
+    
+    # --- (具体分类) ---
+  - name: "九脚系列"
+    url: "/products/style/nine-runners/"
+    parent: "products-style"
+    weight: 111
+  - name: "田字系列"
+    url: "/products/style/cross-runners/"
+    parent: "products-style"
+    weight: 112
+  - name: "川字系列"
+    url: "/products/style/skid-runners/"
+    parent: "products-style"
+    weight: 113
+
+    # --- 按承载 ---
+  - name: "按承载"
+    url: ""
+    identifier: "products-load"
+    parent: "products"
+    weight: 12
+
+  - name: "轻型（载重<1T）"
+    url: "/products/load/light-duty/"
+    parent: "products-load"
+    weight: 121
+  - name: "中型（载重1T-2T）"
+    url: "/products/load/medium-duty/"
+    parent: "products-load"
+    weight: 122
+  - name: "重型（载重>2T）"
+    url: "/products/load/heavy-duty/"
+    parent: "products-load"
+    weight: 123
+
+    # --- 按尺寸 ---
+  - name: "按尺寸"
+    url: ""
+    identifier: "products-dimension"
+    parent: "products"
+    weight: 13
+
+  - name: "1200x1000mm (欧标)"
+    url: "/products/dimension/1200x1000/"
+    parent: "products-dimension"
+    weight: 131
+  - name: "1100x1100mm (日韩标)"
+    url: "/products/dimension/1100x1100/"
+    parent: "products-dimension"
+    weight: 132
+  - name: "1200x800mm (欧标)"
+    url: "/products/dimension/1200x800/"
+    parent: "products-dimension"
+    weight: 133
+
+  # ====================================================================================
+  # 2. 行业应用 (Level 1)
+  # ====================================================================================
+  - name: "行业案例"
+    url: "/industries/"
+    identifier: "industries"
+    weight: 20
+
+  - name: "冷链物流解决方案"
+    url: "/industries/cold-chain/"
+    parent: "industries"
+    weight: 21
+  - name: "高位货架仓储方案"
+    url: "/industries/warehousing/"
+    parent: "industries"
+    weight: 22
+  - name: "出口一次性托盘"
+    url: "/industries/export/"
+    parent: "industries"
+    weight: 23
+  - name: "食品级托盘应用"
+    url: "/industries/food-grade/"
+    parent: "industries"
+    weight: 24
+  - name: "化工与危险品存储"
+    url: "/industries/chemical/"
+    parent: "industries"
+    weight: 25
+
+  # ====================================================================================
+  # 3. 资源中心 (Level 1)
+  # ====================================================================================
+  - name: "资源中心"
+    url: "/resources/"
+    identifier: "resources"
+    weight: 30
+
+  - name: "行业洞察 (博客/新闻)"
+    url: "/resources/blog-news/"
+    parent: "resources"
+    weight: 31
+  - name: "下载中心 (规格书/认证)"
+    url: "/resources/downloads/"
+    parent: "resources"
+    weight: 32
+  - name: "常见问题 (FAQ)"
+    url: "/resources/faq/"
+    parent: "resources"
+    weight: 33
+
+  # ====================================================================================
+  # 4. 关于我们 (Level 1)
+  # ====================================================================================
+  - name: "关于我们"
+    url: "/about/"
+    identifier: "about"
+    weight: 40
+
+    # --- Level 2 ---
+  - name: "公司简介与文化"
+    url: "/about/company/"
+    parent: "about"
+    weight: 41
+  - name: "工厂与生产能力"
+    url: "/about/factory/"
+    parent: "about"
+    weight: 42
+  - name: "资质认证与荣誉"
+    url: "/about/certifications/"
+    parent: "about"
+    weight: 43
+  - name: "合作与服务流程"
+    url: "/about/process/"
+    parent: "about"
+    weight: 44
+
+  # ====================================================================================
+  # 5. 联系我们 (Level 1 - CTA)
+  # ====================================================================================
+  - name: "联系我们"
+    url: "/contact/"
+    identifier: "contact"
+    weight: 50

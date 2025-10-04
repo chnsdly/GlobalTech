@@ -1,0 +1,72 @@
+# 英文
+[[en]]
+text  = "The X1 machine cut our cycle time by 32%."
+name = "James L."
+position    = "Production Director"
+avatar = "images/avatars/james.jpg"
+
+[[en]]
+text   = "Stable quality and responsive support."
+name   = "Maria R."
+position    = "MedTech Co."
+avatar = "images/avatars/medtech.png"  
+
+[[en]]
+text  = "The X1 machine cut our cycle time by 32%."
+name = "James L."
+position    = "Production Director"
+avatar = "images/avatars/james.jpg"
+
+[[en]]
+text   = "Stable quality and responsive support."
+name   = "Maria R."
+position    = "MedTech Co."
+avatar = "images/avatars/medtech.png"  
+[[en]]
+text  = "The X1 machine cut our cycle time by 32%."
+name = "James L."
+position    = "Production Director"
+avatar = "images/avatars/james.jpg"
+
+[[en]]
+text   = "Stable quality and responsive support."
+name   = "Maria R."
+position    = "MedTech Co."
+avatar = "images/avatars/medtech.png"  
+
+# 中文
+[[zh]]
+text     = "X1 设备将我们的生产周期缩短了 32%。"
+name     = "James L."
+position = "生产总监"
+avatar   = "images/avatars/james.jpg"
+
+[[zh]]
+text     = "质量稳定，支持响应及时。"
+name     = "Maria R."
+position = "MedTech Co."
+avatar   = "images/avatars/medtech.png"
+
+[[zh]]
+text     = "X1 设备将我们的生产周期缩短了 32%。"
+name     = "James L."
+position = "生产总监"
+avatar   = "images/avatars/james.jpg"
+
+[[zh]]
+text     = "质量稳定，支持响应及时。"
+name     = "Maria R."
+position = "MedTech Co."
+avatar   = "images/avatars/medtech.png"
+
+[[zh]]
+text     = "X1 设备将我们的生产周期缩短了 32%。"
+name     = "James L."
+position = "生产总监"
+avatar   = "images/avatars/james.jpg"
+
+[[zh]]
+text     = "质量稳定，支持响应及时。"
+name     = "Maria R."
+position = "MedTech Co."
+avatar   = "images/avatars/medtech.png"

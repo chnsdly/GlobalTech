@@ -1,0 +1,10 @@
+{{/* Hugo Pipes: 处理 SCSS, 压缩并添加指纹 */}}
+{{ $style := resources.Get "scss/main.scss" | toCSS }}
+{{ if hugo.IsProduction }}
+  {{ $style = $style | minify | fingerprint }}
+{{ end }}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+
+{{/* 更多 SEO 标签可以放在这里 */}}

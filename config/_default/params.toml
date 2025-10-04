@@ -1,0 +1,15 @@
+# 全局参数
+company_name = "GlobalTech"
+contact_email = "sales@globaltech-industries.com"
+contact_phone = "+1-800-555-0199"
+logo = "images/logo.jpg"
+
+# 社交媒体链接
+[social]
+  linkedin = "https://linkedin.com/company/globaltech"
+  twitter = "https://twitter.com/globaltech"
+  facebook = "https://facebook.com/globaltech"
+
+# 热门文章数量
+[blog.popular]
+  limit = 3  

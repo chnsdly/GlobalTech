@@ -1,0 +1,193 @@
+{{ define "main" }}
+<section class="blog-classic">
+  <div class="container">
+    <div class="layout">
+
+      <!-- 主列：文章纵向列表 -->
+      <div class="col-main">
+        {{ $pgr := .Paginate (.RegularPagesRecursive.ByDate.Reverse) }}
+        {{ range $p := $pgr.Pages }}
+        <article class="post-card">
+          <a class="post-media" href="{{ $p.RelPermalink }}" aria-label="{{ $p.Title }}">
+            {{ with $p.Params.cover_asset }}
+              {{ partial "picture.html" (dict
+                "ctx"   $p
+                "src"   .
+                "alt"   $p.Title
+                "w"     (slice 640 960 1280)
+                "sizes" "(max-width: 1024px) 100vw, 832px"
+              ) }}
+            {{ else }}
+              {{ with $p.Params.cover_image }}
+                <img src="{{ . | relURL }}" alt="{{ $p.Title }}">
+              {{ else }}
+                {{ with $p.Params.cover.image }}
+                  <img src="{{ . | relURL }}" alt="{{ $p.Title }}">
+                {{ else }}
+                  <div class="ph-media" aria-hidden="true"></div>
+                {{ end }}
+              {{ end }}
+            {{ end }}
+          </a>
+
+          <h2 class="post-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
+
+          <ul class="post-meta" role="list">
+            <li class="meta-item meta-date">
+              {{ if eq $.Site.Language.Lang "zh" }}{{ $p.Date.Format "2006-01-02" }}{{ else }}{{ $p.Date.Format "Jan 2, 2006" }}{{ end }}
+            </li>
+            {{ with $p.Params.author }}<li class="meta-item meta-author">{{ . }}</li>{{ end }}
+            {{ with $p.Params.categories }}
+              {{ if gt (len .) 0 }}
+              <li class="meta-item meta-cat">
+                <a href='{{ (printf "categories/%s/" (urlize (index . 0))) | relLangURL }}'>{{ index . 0 }}</a>
+              </li>
+              {{ end }}
+            {{ end }}
+          </ul>
+
+          <div class="post-excerpt">
+            {{ with $p.Params.description }}
+              <p>{{ . }}</p>
+            {{ else }}
+              {{ if $p.Summary }}{{ $p.Summary }}{{ else }}<p>{{ $p.Plain | truncate 220 }}</p>{{ end }}
+            {{ end }}
+          </div>
+
+          <p class="post-cta">
+            <a class="btn readmore" href="{{ $p.RelPermalink }}">
+              {{ if eq $.Site.Language.Lang "zh"}}继续阅读{{else}}Continue Reading{{end}}
+            </a>
+          </p>
+
+          <hr class="sep">
+        </article>
+        {{ end }}
+
+        <!-- 分页 -->
+        <nav class="pager" aria-label='{{ i18n "pagination_label" | default "Pagination" }}'>
+          {{ with $pgr.Prev }}
+            <a href="{{ .URL }}" rel="prev" class="pager-prev">{{ i18n "prev" | default "Prev" }}</a>
+          {{ else }}
+            <span class="pager-prev disabled" aria-disabled="true">{{ i18n "prev" | default "Prev" }}</span>
+          {{ end }}
+
+          <ul class="pager-list" role="list">
+            {{ range $p := $pgr.Pagers }}
+              {{ $isCur := eq $p.PageNumber $pgr.PageNumber }}
+              <li>
+                {{ if $isCur }}
+                  <span class="pager-num current" aria-current="page">{{ $p.PageNumber }}</span>
+                {{ else }}
+                  <a class="pager-num" href="{{ $p.URL }}">{{ $p.PageNumber }}</a>
+                {{ end }}
+              </li>
+            {{ end }}
+          </ul>
+
+          {{ with $pgr.Next }}
+            <a href="{{ .URL }}" rel="next" class="pager-next">{{ i18n "next" | default "Next" }}</a>
+          {{ else }}
+            <span class="pager-next disabled" aria-disabled="true">{{ i18n "next" | default "Next" }}</span>
+          {{ end }}
+        </nav>
+      </div>
+
+      <!-- 侧栏：扁平，仅标题下横线 -->
+      <aside class="col-side is-flat" aria-label="Sidebar">
+
+        <!-- 热门文章：缩略图使用 picture.html 生成 -->
+        <section class="widget widget-popular">
+          <p class="widget-title">{{ if eq .Site.Language.Lang "zh"}}热门文章{{else}}Popular Posts{{end}}</p>
+
+          {{ $limit := .Site.Params.blog.popular.limit | default 4 }}
+          {{ $all := .CurrentSection.RegularPagesRecursive }}
+          {{ $popular := where $all "Params.popular" true }}
+          {{ $items := cond (gt (len $popular) 0) (sort $popular "Date" "desc") (sort $all "Date" "desc") }}
+
+
+          <ul class="popular-list">
+            {{ range first $limit $items }}
+              {{/* 统一取图：cover_asset -> cover_image -> cover.image */}}
+              {{ $s := newScratch }}
+              {{ with .Params.cover_asset }}{{ $s.Set "src" . }}{{ end }}
+              {{ if not ($s.Get "src") }}{{ with .Params.cover_image }}{{ $s.Set "src" . }}{{ end }}{{ end }}
+              {{ if not ($s.Get "src") }}{{ with .Params.cover.image }}{{ $s.Set "src" . }}{{ end }}{{ end }}
+              {{ $src := $s.Get "src" }}
+
+              <li class="popular-item">
+                <a class="popular-link" href="{{ .RelPermalink }}">
+                  <span class="thumb">
+                    {{ if $src }}
+                      {{/* 缩略图宽度 84px，给 1x/2x/3x 三档以适配高分屏 */}}
+                      {{ partial "picture.html" (dict
+                        "ctx"   .
+                        "src"   $src
+                        "alt"   .Title
+                        "w"     (slice 84 168 252)
+                        "sizes" "(max-width: 1024px) 84px, 84px"
+                        "class" "thumb-picture"
+                      ) }}
+                    {{ else }}
+                      <span class="ph" aria-hidden="true"></span>
+                    {{ end }}
+                  </span>
+                  <span class="txt">
+                    <span class="t clamp2">{{ .Title }}</span>
+                    <span class="s clamp1">
+                      {{ with .Params.description }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            {{ end }}
+          </ul>
+        </section>
+
+        <!-- 分类 -->
+        {{/* 取当前语言的顶层 insights section */}}
+        {{ $root := $.Site.GetPage "section" .Section }} {{/* .Section 在洞察页就是 "insights" */}}
+        {{ if and $root (gt (len $root.Sections) 0) }}
+        <section class="widget widget-cats">
+          <p class="widget-title">{{ if eq $.Site.Language.Lang "zh"}}栏目{{else}}Sections{{end}}</p>
+          <ul class="cat-list">
+            {{/* “全部”指向洞察聚合页 */}}
+            <li>
+              <a class="cat-link {{ if eq $.CurrentSection.RelPermalink $root.RelPermalink }}active{{ end }}"
+                href="{{ $root.RelPermalink }}">
+                {{ if eq $.Site.Language.Lang "zh"}}全部{{else}}All{{end}}
+              </a>
+            </li>
+        
+            {{ range sort $root.Sections "Title" "asc" }}
+            {{ $isActive := or (eq .RelPermalink $.CurrentSection.RelPermalink) (.IsAncestor $.CurrentSection) }}
+            <li>
+              <a class="cat-link {{ if $isActive }}active{{ end }}" href="{{ .RelPermalink }}">{{ .Title }}</a>
+              <span class="cnt">{{ len .RegularPagesRecursive }}</span>
+            </li>
+            {{ end }}
+          </ul>
+        </section>
+        {{ end }}
+
+
+
+        <!-- 标签 -->
+        {{ with site.Taxonomies.tags }}
+        {{ if gt (len .) 0 }}
+        <section class="widget widget-tags">
+          <p class="widget-title">Tags</p>
+          <div class="tag-cloud">
+            {{ range first 20 (sort . "Count" "desc") }}
+              <a class="chip" href="{{ .Page.RelPermalink }}">#{{ .Page.Title }}</a>
+            {{ end }}
+          </div>
+        </section>
+        {{ end }}
+        {{ end }}
+      </aside>
+
+    </div>
+  </div>
+</section>
+{{ end }}

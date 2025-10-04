@@ -1,0 +1,33 @@
+<header class="hero hero--home hero--center hero--bleed" aria-labelledby="hero-h">
+  <!-- 背景层 -->
+  <div class="hero__bg" aria-hidden="true">
+    {{ partial "picture.html" (dict
+      "ctx"   $
+      "src"   .Params.hero_bg_asset
+      "alt"   ""
+      "class" "hero__img"
+      "fetch" "high"
+      "sizes" "100vw"
+      "w"     (slice 768 1200 1600 2000)
+      "lqip"  true
+    ) }}
+  </div>
+
+  <!-- 遮罩层（与 bg 同级，避免被包进去） -->
+  <div class="hero__overlay" aria-hidden="true"></div>
+
+  <!-- 内容层 -->
+  <div class="hero__inner container">
+    <div class="hero__content">
+      <h1 id="hero-h">{{ with .Params.hero_title }}{{ . }}{{ else }}{{ .Title }}{{ end }}</h1>
+      {{ with or .Params.hero_description (or .Description .Params.description) }}
+        <p class="hero__desc">{{ . }}</p>
+      {{ end }}
+      <div class="hero__actions">
+        <a class="button button--primary" href="{{ "products" | relLangURL }}">
+          {{ i18n "view_products" | default "View products" }}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

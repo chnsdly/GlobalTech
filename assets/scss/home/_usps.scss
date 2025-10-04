@@ -1,0 +1,38 @@
+/* Home: USPs（令牌版） */
+.usp-grid {
+  display: grid;
+  gap: space(2); 
+  padding-block: space(3); 
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.usp-card {
+  display: flex;
+  align-items: flex-start;
+  gap: space(1.5); 
+
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: space(2); 
+  box-shadow: var(--shadow);
+
+  transition:
+    transform var(--t-fast) var(--ease),
+    box-shadow var(--t-normal) var(--ease);
+}
+
+.usp-card h3,
+.usp-body h3 {
+  margin: 0.1rem 0 0.25rem;
+  font-size: var(--fs-1); 
+}
+
+.usp-icon img {
+  inline-size: 40px;
+  block-size: 40px;
+}
+.usp-icon .emoji {
+  font-size: var(--fs-4); 
+  line-height: 1;
+  display: inline-block;
+}

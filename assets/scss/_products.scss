@@ -1,0 +1,167 @@
+/* Products 列表网格与卡片（令牌版 · 精简） */
+.product-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: space(2);
+  margin-block-start: space(2);
+}
+
+.product-card{
+  /* 建议：背景用 surface，而非 on-brand */
+  background: var(--card);             /* 原为 var(--on-brand) */
+  color: var(--on-surface);
+  border: var(--border-w) solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform var(--t-normal) var(--ease),
+              box-shadow var(--t-normal) var(--ease);
+}
+
+.product-card a{
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  padding-block-end: space(1.5);
+}
+
+/* 统一图片/图像容器样式，去重 */
+.product-card :is(picture, img){
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;      /* 需要铺满裁切就用 cover；不裁切可改 contain */
+  border-block-end: var(--border-w) solid var(--border);
+}
+
+/* 统一左右间距，只在各自块内控制上下间距 */
+.product-card :is(h3, .muted, .sku){
+  margin-inline: space(2);
+}
+
+.product-card h3{
+  margin-block: space(1.2) space(.5);     /* .6rem .25rem */
+  color: var(--brand);
+  font-size: var(--fs-1);
+}
+
+.product-card .muted{
+  margin-block: 0 space(.5);
+  color: var(--muted);
+  font-size: .95rem;                      /* 如需可换成令牌 */
+}
+
+.product-card .sku{
+  margin-block: 0;
+  color: var(--on-surface);
+  font-size: .9rem;                       /* 如需可换成令牌 */
+}
+
+/* 交互覆盖键盘与鼠标 */
+.product-card:hover,
+.product-card:focus-within{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+
+
+
+/* ------------------------A11y 分页（tokenized）--------------------- */
+.pager{
+  display:flex;
+  align-items:center;
+  gap: space(1);
+  flex-wrap:wrap;
+}
+
+.pager a,
+.pager span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-inline-size:44px;          /* 触达面积 */
+  min-block-size:44px;
+  padding: space(.7) space(1.2);
+  border: var(--border-w) solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--on-surface);
+  text-decoration:none;
+  transition:
+    background-color var(--t-normal) var(--ease),
+    color var(--t-normal) var(--ease),
+    border-color var(--t-normal) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+
+.pager a:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.pager a:focus-visible{ @include focus-ring(); }
+
+.pager .pager-list{
+  display:flex;
+  gap: space(.7);
+  list-style:none;
+  margin: 0 space(1);
+  padding: 0;
+}
+
+.pager .pager-num.current{
+  background: var(--brand);
+  color: var(--on-brand);
+  border-color: transparent;
+}
+
+.pager .disabled,
+.pager [aria-disabled="true"]{
+  opacity:.5;
+  pointer-events:none;
+}
+
+
+
+
+/* --------------------------------------产品详情布局---------------------------------- */
+.product-detail .product-hero .lead{
+  color: var(--muted);
+}
+.product-layout{
+  display: grid;
+  grid-template-columns: 1.4fr .9fr;
+  gap: space(2.5);                        /* 1.25rem */
+  margin: space(2) 0 space(3);            /* 1rem 0 1.5rem */
+}
+/* 原断点保留为 max-width：用 rem 表达以配合根字号令牌 */
+@media (max-width: 56.25rem){             /* 900px */
+  .product-layout{ grid-template-columns: 1fr; }
+}
+
+.product-gallery img{
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  border: var(--border-w) solid var(--border);
+}
+
+.card{
+  background: var(--on-brand);
+  border: var(--border-w) solid var(--border);
+  border-radius: var(--radius);
+  padding: space(2);                      /* 1rem */
+}
+
+.spec-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.spec-list li{
+  padding: space(.7) 0;                   /* .35rem 0 */
+  border-bottom: var(--border-w) dashed var(--border);
+}
+.spec-list li:last-child{
+  border-bottom: 0;
+}

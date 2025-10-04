@@ -1,0 +1,65 @@
+{{ define "main" }}
+  <section>
+    <div class="container flow">
+      <h1>{{ .Title }}</h1>
+      {{ with .Content }}<div class="lead">{{ . }}</div>{{ end }}
+
+      {{ $pgr := .Paginate (.Pages.ByTitle) 12 }}
+      <div class="product-grid">
+        {{ range $pgr.Pages }}
+          <article class="product-card">
+            <a href="{{ .RelPermalink }}">
+              {{ if .Params.featured_image_asset }}
+                {{ partial "picture.html" (dict
+                  "ctx" .
+                  "src" .Params.featured_image_asset
+                  "alt" .Title
+                  "w" (slice 640 960 1440)
+                  "sizes" ""
+                  "class" "rounded-xl"
+                  "fetch" ""
+                ) }}
+              {{ else }}
+                <img src='{{ .Params.featured_image | default "/images/placeholder.jpg" | relURL }}' alt='{{ .Title }}'>
+              {{ end }}
+              <h3>{{ .Title }}</h3>
+              {{ with .Params.summary }}<p class="muted">{{ . }}</p>{{ end }}
+              {{ with .Params.sku }}<p class="sku"><strong>SKU:</strong> {{ . }}</p>{{ end }}
+            </a>
+          </article>
+        {{ end }}
+      </div>
+      {{ if gt $pgr.TotalPages 1 }}
+      <nav class="pager" aria-label='{{ i18n "pagination_label" | default "Pagination" }}'>
+        {{ with $pgr.Prev }}
+          <a href="{{ .URL }}" rel="prev" class="pager-prev">{{ i18n "prev" | default "Prev" }}</a>
+        {{ else }}
+          <span class="pager-prev disabled" aria-disabled="true">{{ i18n "prev" | default "Prev" }}</span>
+        {{ end }}
+
+        <ul class="pager-list" role="list">
+          {{ range $p := $pgr.Pagers }}
+            {{ $isCurrent := eq $p.PageNumber $pgr.PageNumber }}
+            <li>
+              {{ if $isCurrent }}
+                <span class="pager-num current" aria-current="page" aria-label='{{ i18n "current_page" | default "Current page" }}'>{{ $p.PageNumber }}</span>
+              {{ else }}
+                <a class="pager-num" href="{{ $p.URL }}"
+                   aria-label='{{ i18n "go_to_page" (dict "n" $p.PageNumber) | default (printf "Go to page %d" $p.PageNumber) }}'>
+                  {{ $p.PageNumber }}
+                </a>
+              {{ end }}
+            </li>
+          {{ end }}
+        </ul>
+
+        {{ with $pgr.Next }}
+          <a href="{{ .URL }}" rel="next" class="pager-next">{{ i18n "next" | default "Next" }}</a>
+        {{ else }}
+          <span class="pager-next disabled" aria-disabled="true">{{ i18n "next" | default "Next" }}</span>
+        {{ end }}
+      </nav>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

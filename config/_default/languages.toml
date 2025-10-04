@@ -1,0 +1,13 @@
+################# English language ################
+[en]
+languageName = "English"
+languageCode = "en-US"
+contentDir = "content/english"
+weight = 1
+
+################ Chinese language ##################
+[zh]
+languageName = "简体中文"
+languageCode = "zh-cn"
+contentDir = "content/chinese"
+weight = 6

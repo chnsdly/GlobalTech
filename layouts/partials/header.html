@@ -1,0 +1,209 @@
+<header class="site-header" id="site-header">
+  <nav class="navbar">
+
+    <div class="navbar__logo">
+      <a href="{{ " /" | relLangURL }}">
+        <img src='{{ (.Site.Params.logo | default "images/logo.jpg") | relURL }}' width="72" height="72"
+          alt='{{ .Site.Params.company_name | default .Site.Title }}'>
+      </a>
+    </div>
+
+    <nav class="navbar__menu" aria-label="Main navigation">
+      {{ $current := . }}
+      <ul>
+        {{ range .Site.Menus.main }}
+        {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+        <li class="{{ if .HasChildren }}has-dropdown{{ end }}">
+          <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">
+            <span>{{ .Name }}</span>
+            {{ if .HasChildren }}
+            <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd" />
+            </svg>
+            {{ end }}
+          </a>
+
+          {{ if .HasChildren }}
+          <ul class="dropdown-menu">
+            {{ range .Children }}
+            {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+            <li>
+              <a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a>
+            </li>
+            {{ end }}
+          </ul>
+          {{ end }}
+        </li>
+        {{ end }}
+      </ul>
+    </nav>
+
+    <div class="navbar__actions">
+      {{ if hugo.IsMultilingual }}
+      <div class="lang-switcher">
+        <button class="lang-switcher__button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5"
+            stroke="currentColor" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M2 12h20"></path>
+            <path d="M12 2a15.75 15.75 0 0 1 0 20"></path>
+            <path d="M12 2a15.75 15.75 0 0 0 0 20"></path>
+          </svg>
+          <span>{{ .Site.Language.LanguageName }}</span>
+        </button>
+        <div class="lang-switcher__dropdown">
+          {{ range .Site.Home.AllTranslations }}
+          {{ if ne .Language.Lang $.Site.Language.Lang }}
+          <a href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+          {{ end }}
+          {{ end }}
+        </div>
+      </div>
+      {{ end }}
+
+      <button class="navbar__toggler" id="drawer-toggler" aria-label="Open menu">
+        <span class="toggler-bar"></span>
+        <span class="toggler-bar"></span>
+        <span class="toggler-bar"></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer__header">
+    <span class="sr-only">Menu</span>
+  </div>
+
+  <nav class="drawer__menu" aria-label="Mobile navigation">
+    {{ $current := . }}
+    <ul>
+      {{ range .Site.Menus.main }}
+      {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+      <li>
+        <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
+        {{ if .HasChildren }}
+        <ul class="submenu">
+          {{ range .Children }}
+          {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+          <li><a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a></li>
+          {{ end }}
+        </ul>
+        {{ end }}
+      </li>
+      {{ end }}
+    </ul>
+  </nav>
+
+  {{ if hugo.IsMultilingual }}
+  <div class="drawer__footer">
+    <div class="lang-switcher">
+      {{ range .Site.Home.AllTranslations }}
+      <a class="lang-switcher__button" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+</aside>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const header = document.getElementById('site-header');
+    const body = document.body;
+
+    // --- 1. 智能导航栏 (Smart Header) 逻辑 ---
+    if (header) {
+      let lastScrollY = window.scrollY;     // 上一次滚动位置
+      const scrollThreshold = 72;         // 超过导航栏高度后才开始隐藏/显示
+      const scrollDelta = 5;             // 滚动变化小于 5px 时不处理，防止抖动
+
+      function handleSmartHeader() {
+        const currentScrollY = window.scrollY;
+
+        // 1. 处理 'is-scrolled' 样式 (背景/阴影变化)
+        if (currentScrollY > 10) header.classList.add('is-scrolled');
+        else header.classList.remove('is-scrolled');
+
+        // 2. 处理 'is-hidden' 样式 (隐藏/显示)
+        // 在页面顶部时，始终显示导航栏
+        if (currentScrollY <= scrollThreshold) {
+          header.classList.remove('is-hidden');
+          lastScrollY = currentScrollY;
+          return;
+        }
+
+        // 滚动变化不大时忽略
+        if (Math.abs(lastScrollY - currentScrollY) < scrollDelta) {
+          return;
+        }
+
+        // 向上滚动 (显示)
+        if (currentScrollY < lastScrollY) {
+          header.classList.remove('is-hidden');
+        }
+        // 向下滚动 (隐藏)
+        else if (currentScrollY > lastScrollY) {
+          header.classList.add('is-hidden');
+        }
+
+        // 更新上一次滚动位置
+        lastScrollY = currentScrollY;
+      }
+
+      // 使用 requestAnimationFrame 优化滚动性能
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            handleSmartHeader();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+
+      // 页面加载时执行一次
+      handleSmartHeader();
+    }
+
+    // --- 2. 抽屉 (Drawer) 逻辑 (保持不变) ---
+    const drawerToggler = document.getElementById('drawer-toggler');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+
+    const openDrawer = () => {
+      body.setAttribute('data-drawer-open', 'true');
+      if (drawerToggler) drawerToggler.classList.add('open');
+    };
+    const closeDrawer = () => {
+      body.setAttribute('data-drawer-open', 'false');
+      if (drawerToggler) drawerToggler.classList.remove('open');
+    };
+
+    if (drawerToggler) {
+      drawerToggler.addEventListener('click', () => {
+        const isOpen = body.getAttribute('data-drawer-open') === 'true';
+        if (isOpen) {
+          // 关闭抽屉
+          closeDrawer();
+        } else {
+          // 打开抽屉
+          openDrawer();
+        }
+      });
+    }
+
+    if (drawerOverlay) {
+      drawerOverlay.addEventListener('click', closeDrawer);
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && body.getAttribute('data-drawer-open') === 'true') {
+        closeDrawer();
+      }
+    });
+  });
+</script>

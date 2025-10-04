@@ -1,0 +1,132 @@
+{{ define "title" }}{{ .Title }} | {{ .Site.Title }}{{ end }}
+
+{{ define "main" }}
+{{ $lang := .Site.Language.Lang }}
+{{ $p := . }}
+
+<article class="post container">
+
+  <!-- 头部：标题 + 元信息 -->
+  <header class="post-head">
+    <h1>{{ .Title }}</h1>
+    <p class="meta">
+      {{ if eq $lang "zh" }}
+        发布于 {{ .Date.Format "2006-01-02" }} · 约 {{ .ReadingTime }} 分钟
+        {{ with .Lastmod }}{{ if gt .Unix $p.Date.Unix }} · 更新 {{ .Format "2006-01-02" }}{{ end }}{{ end }}
+      {{ else }}
+        Published {{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read
+        {{ with .Lastmod }}{{ if gt .Unix $p.Date.Unix }} · Updated {{ .Format "Jan 2, 2006" }}{{ end }}{{ end }}
+      {{ end }}
+      {{ with .Params.author }} · {{ . }}{{ end }}
+    </p>
+  </header>
+
+  <!-- 封面：优先 assets/Page Bundle 的 cover_asset 或 featured_image_asset，其次 static 的 featured_image -->
+  {{ $src := or .Params.featured_image_asset .Params.cover_asset }}
+  {{ if $src }}
+    {{ partial "picture.html" (dict
+      "ctx"   .
+      "src"   $src
+      "alt"   .Title
+      "w"     (slice 640 960 1440)
+      "sizes" "(max-width: 900px) 100vw, 720px"
+      "class" "rounded-xl"
+      "fetch" ""
+    ) }}
+  {{ else }}
+    <img class="post-cover" src='{{ .Params.featured_image | default "/images/placeholder.jpg" | relURL }}' alt='{{ .Title }}'>
+  {{ end }}
+
+  <!-- 主体正文（不再包含目录） -->
+  <div class="post-body">
+    {{ .Content }}
+  </div>
+
+  <!-- 标签 -->
+  {{ with .Params.tags }}
+    <p class="post-tags">
+      <span>{{ if eq $lang "zh"}}标签：{{else}}Tags:{{end}}</span>
+      {{ range . }}
+        <a class="tag" href='{{ (printf "tags/%s/" (urlize .)) | relLangURL }}'>#{{ . }}</a>
+      {{ end }}
+    </p>
+  {{ end }}
+
+  <!-- 分享 -->
+  {{ $u := .Permalink | urlquery }}
+  {{ $t := .Title | urlquery }}
+  <div class="post-share">
+    <span>{{ if eq $lang "zh"}}分享：{{else}}Share:{{end}}</span>
+    <a class="btn btn-sm" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url={{ $u }}">LinkedIn</a>
+    <a class="btn btn-sm" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url={{ $u }}&text={{ $t }}">X/Twitter</a>
+    <a class="btn btn-sm" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u={{ $u }}">Facebook</a>
+  </div>
+
+  <!-- 上一/下一篇 -->
+  <nav class="post-pager" aria-label="{{ if eq $lang "zh"}}文章导航{{else}}Post navigation{{end}}">
+    {{ with .PrevInSection }}
+      <a class="prev" href="{{ .RelPermalink }}" rel="prev">← {{ if eq $lang "zh"}}上一篇{{else}}Previous{{end}}</a>
+    {{ else }}
+      <span class="prev disabled" aria-disabled="true">← {{ if eq $lang "zh"}}上一篇{{else}}Previous{{end}}</span>
+    {{ end }}
+    {{ with .NextInSection }}
+      <a class="next" href="{{ .RelPermalink }}" rel="next">{{ if eq $lang "zh"}}下一篇{{else}}Next{{end}} →</a>
+    {{ else }}
+      <span class="next disabled" aria-disabled="true">{{ if eq $lang "zh"}}下一篇{{else}}Next{{end}} →</span>
+    {{ end }}
+  </nav>
+
+  <!-- 相关文章 -->
+  {{ $all := where site.RegularPages "Section" "blog" }}
+  {{ $rel := slice }}
+  {{ if .Params.tags }}
+    {{ range $p := $all }}
+      {{ if and (ne $p.RelPermalink .RelPermalink) (gt (len (intersect $p.Params.tags $.Params.tags)) 0) }}
+        {{ $rel = $rel | append $p }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ if eq (len $rel) 0 }}
+    {{ range $p := (where $all "RelPermalink" "ne" .RelPermalink) }}
+      {{ $rel = $rel | append $p }}
+    {{ end }}
+  {{ end }}
+  {{ $rel = first 3 (sort $rel "Date" "desc") }}
+  {{ if gt (len $rel) 0 }}
+    <section class="post-related">
+      <h2>{{ if eq $lang "zh"}}相关文章{{else}}Related articles{{end}}</h2>
+      <div class="blog-grid">
+        {{ range $p := $rel }}
+          <article class="blog-card eq">
+            <a class="media" href="{{ $p.RelPermalink }}">
+              {{ with $p.Params.cover_asset }}
+                {{ partial "picture.html" (dict "ctx" $p "src" . "alt" $p.Title "w" (slice 480 768 1200) "sizes" "(max-width: 900px) 100vw, 360px") }}
+              {{ else }}
+                {{ with $p.Params.cover_image }}
+                  <img src="{{ . | relURL }}" alt="{{ $p.Title }}">
+                {{ else }}
+                  <div class="ph-media" aria-hidden="true"></div>
+                {{ end }}
+              {{ end }}
+            </a>
+            <div class="card-body">
+              <h3 class="clamp2"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h3>
+              <p class="meta">
+                {{ if eq $lang "zh" }}
+                  {{ $p.Date.Format "2006-01-02" }} · 约 {{ $p.ReadingTime }} 分钟
+                {{ else }}
+                  {{ $p.Date.Format "Jan 2, 2006" }} · {{ $p.ReadingTime }} min
+                {{ end }}
+              </p>
+            </div>
+            <div class="card-actions">
+              <a class="btn btn-secondary" href="{{ $p.RelPermalink }}">{{ if eq $lang "zh"}}阅读全文{{else}}Read more{{end}}</a>
+            </div>
+          </article>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+
+</article>
+{{ end }}

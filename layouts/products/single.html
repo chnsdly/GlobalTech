@@ -1,0 +1,40 @@
+{{ define "title" }}{{ .Title }} | {{ .Site.Title }}{{ end }}
+
+{{ define "main" }}
+<div class="container">
+<article class="product-detail">
+  <header class="product-hero">
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
+  </header>
+
+  <div class="product-layout">
+    <div class="product-gallery">
+      {{ if .Params.featured_image_asset }}
+      {{ partial "picture.html" (dict
+      "ctx" .
+      "src" .Params.featured_image_asset
+      "alt" .Title
+      "w" (slice 640 960 1440)
+      "sizes" "(max-width: 900px) 100vw, 720px"
+      "class" "rounded-xl"
+      "fetch" ""
+      ) }}
+      {{ else }}
+      <img src='{{ .Params.featured_image | default "/images/placeholder.jpg" | relURL }}' alt='{{ .Title }}'>
+      {{ end }}
+
+    </div>
+
+    <aside class="product-specs card">
+      {{ partial "product-specs.html" . }}
+    </aside>
+
+  </div>
+
+  <section class="product-content">
+    {{ .Content }}
+  </section>
+</article>
+</div>
+{{ end }}

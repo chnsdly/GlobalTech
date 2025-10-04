@@ -1,0 +1,17 @@
+baseURL = "https://example.com/"
+defaultContentLanguage = "en"
+title = "GlobalTech"
+enableRobotsTXT = true
+theme = []
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true # 允许在 Markdown 中使用原始 HTML，便于嵌入复杂组件
+
+[languages.en.taxonomies]
+  category = "categories"
+  tag      = "tags"
+
+[languages.zh.taxonomies]
+  category = "分类"
+  tag      = "标签"

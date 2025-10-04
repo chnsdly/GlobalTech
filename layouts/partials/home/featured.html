@@ -1,0 +1,39 @@
+{{ $prods := where site.RegularPages "Section" "products" }}
+{{ $featured := where $prods ".Params.featured" true | first 3 }}
+
+<section class="home-featured">
+  <div class="container">
+    <div class="head">
+      <h2>{{ if eq .Site.Language.Lang "zh"}}核心产品{{else}}Featured Products{{end}}</h2>
+      <a class="more-link" href='{{ "products/" | relLangURL }}'>{{ if eq .Site.Language.Lang "zh"}}全部产品 →{{else}}View all →{{end}}</a>
+    </div>
+
+    <div class="product-grid">
+      {{ range $p := $featured }}
+      <article class="product-card eq">
+        <a class="media" href="{{ $p.RelPermalink }}">
+          {{ if $p.Params.featured_image_asset }}
+            {{ partial "picture.html" (dict
+              "ctx"   $p
+              "src"   $p.Params.featured_image_asset
+              "alt"   $p.Title
+              "w"     (slice 480 768 1200)
+              "sizes" "(max-width: 900px) 100vw, 320px"
+              "class" ""
+              "fetch" ""
+            ) }}
+          {{ else }}
+            <img src="{{ $p.Params.featured_image | default "/images/placeholder.jpg" | relURL }}" alt="{{ $p.Title }}">
+          {{ end }}
+        </a>
+
+        <div class="card-body">
+          <h3 class="clamp2"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h3>
+          {{ with $p.Params.sku }}<p class="sku">SKU: {{ . }}</p>{{ end }}
+          {{ with $p.Params.summary }}<p class="muted clamp2">{{ . }}</p>{{ end }}
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </div>
+</section>

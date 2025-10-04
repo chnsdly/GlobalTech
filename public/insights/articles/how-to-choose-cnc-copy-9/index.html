@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Choose a 5-Axis CNC | GlobalTech</title>
+  
+
+
+<link rel="stylesheet" href="/scss/main.css" integrity="">
+
+<meta name="description" content="Key specs and checks when selecting a 5-axis CNC for aerospace parts.">
+
+
+</head>
+<body>
+  <header class="site-header" id="site-header">
+  <div class="container">
+    <nav class="navbar">
+
+      
+      <div class="navbar__logo">
+        <a href="/">
+          <img src='/images/logo.jpg' width="60" height="60"
+            alt='GlobalTech'>
+        </a>
+      </div>
+
+      
+      <nav class="navbar__menu" aria-label="Main navigation">
+        
+        <ul>
+          
+            
+            <li class="has-dropdown">
+              <a href="/products/" class="">
+                <span>Products</span>
+                
+                  <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                
+              </a>
+
+              
+                <ul class="dropdown-menu">
+                  
+                    
+                    <li>
+                      <a href="/products/cnc/" class="">CNC Machines</a>
+                    </li>
+                  
+                    
+                    <li>
+                      <a href="/products/robots/" class="">Robots</a>
+                    </li>
+                  
+                    
+                    <li>
+                      <a href="/products/cnc/" class="">CNC Machines2</a>
+                    </li>
+                  
+                </ul>
+              
+            </li>
+          
+            
+            <li class="">
+              <a href="/industries/" class="">
+                <span>Industries</span>
+                
+              </a>
+
+              
+            </li>
+          
+            
+            <li class="">
+              <a href="/insights/" class="">
+                <span>Insights</span>
+                
+              </a>
+
+              
+            </li>
+          
+            
+            <li class="">
+              <a href="/about/" class="">
+                <span>About</span>
+                
+              </a>
+
+              
+            </li>
+          
+            
+            <li class="">
+              <a href="/contact/" class="">
+                <span>Contact</span>
+                
+              </a>
+
+              
+            </li>
+          
+        </ul>
+      </nav>
+
+      
+      <div class="navbar__actions">
+        
+        <div class="lang-switcher">
+          <button class="lang-switcher__button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor"
+              aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M2.25 12h19.5"></path>
+              <path d="M12 2.25a15.75 15.75 0 0 1 0 19.5"></path>
+              <path d="M12 2.25a15.75 15.75 0 0 0 0 19.5"></path>
+            </svg>
+            <span>English</span>
+          </button>
+          <div class="lang-switcher__dropdown">
+            
+              
+            
+              
+                <a href="/zh/">简体中文</a>
+              
+            
+          </div>
+        </div>
+        
+
+        
+        <button class="navbar__toggler" id="drawer-toggler" aria-label="Open menu">
+          <span class="toggler-bar"></span>
+          <span class="toggler-bar"></span>
+          <span class="toggler-bar"></span>
+        </button>
+        </div>
+    </nav>
+  </div>
+</header>
+
+
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer__header">
+    <span class="sr-only">Menu</span>
+  </div>
+
+  <nav class="drawer__menu" aria-label="Mobile navigation">
+    
+    <ul>
+      
+        
+        <li>
+          <a href="/products/" class="">Products</a>
+          
+            <ul class="submenu">
+              
+                
+                <li><a href="/products/cnc/" class="">CNC Machines</a></li>
+              
+                
+                <li><a href="/products/robots/" class="">Robots</a></li>
+              
+                
+                <li><a href="/products/cnc/" class="">CNC Machines2</a></li>
+              
+            </ul>
+          
+        </li>
+      
+        
+        <li>
+          <a href="/industries/" class="">Industries</a>
+          
+        </li>
+      
+        
+        <li>
+          <a href="/insights/" class="">Insights</a>
+          
+        </li>
+      
+        
+        <li>
+          <a href="/about/" class="">About</a>
+          
+        </li>
+      
+        
+        <li>
+          <a href="/contact/" class="">Contact</a>
+          
+        </li>
+      
+    </ul>
+  </nav>
+
+  
+  <div class="drawer__footer">
+    <div class="lang-switcher">
+      
+        <a class="lang-switcher__button" href="/">English</a>
+      
+        <a class="lang-switcher__button" href="/zh/">简体中文</a>
+      
+    </div>
+  </div>
+  
+</aside>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const header = document.getElementById('site-header');
+    if (header) {
+      const scrollThreshold = 10;
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > scrollThreshold) header.classList.add('is-scrolled');
+        else header.classList.remove('is-scrolled');
+      });
+    }
+
+    const drawerToggler = document.getElementById('drawer-toggler');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const body = document.body;
+
+    const openDrawer = () => {
+      body.setAttribute('data-drawer-open', 'true');
+      if (drawerToggler) drawerToggler.classList.add('open');
+    };
+    const closeDrawer = () => {
+      body.setAttribute('data-drawer-open', 'false');
+      if (drawerToggler) drawerToggler.classList.remove('open');
+    };
+
+    if (drawerToggler) {
+      drawerToggler.addEventListener('click', () => {
+        const isOpen = body.getAttribute('data-drawer-open') === 'true';
+        if (isOpen) {
+          
+          closeDrawer();
+        } else {
+          
+          openDrawer();
+        }
+      });
+    }
+
+    if (drawerOverlay) {
+      drawerOverlay.addEventListener('click', closeDrawer);
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && body.getAttribute('data-drawer-open') === 'true') {
+        closeDrawer();
+      }
+    });
+  });
+</script>
+
+
+
+  <main>
+    
+
+
+
+<article class="post container">
+
+  
+  <header class="post-head">
+    <h1>How to Choose a 5-Axis CNC</h1>
+    <p class="meta">
+      
+        Published Jul 18, 2025 · 1 min read
+        
+      
+       · 你的作者名
+    </p>
+  </header>
+
+  
+  
+  
+    <picture style='display:block;background:#f3f4f6 url("/images/blog/hero_hu_14904dd820ce53b4.webp") center/cover no-repeat;'>
+    <source type="image/avif"
+            srcset='/images/blog/hero_hu_cba1406292cf0661.jpg 640w'
+            sizes="(max-width: 900px) 100vw, 720px">
+    <source type="image/webp"
+            srcset='/images/blog/hero_hu_4c8773a85836311f.webp 640w'
+            sizes="(max-width: 900px) 100vw, 720px">
+    <img
+      src='/images/blog/hero_hu_f80aefa5bb32a7a7.jpg'
+      srcset='/images/blog/hero_hu_f80aefa5bb32a7a7.jpg 640w'
+      sizes='(max-width: 900px) 100vw, 720px'
+      alt='How to Choose a 5-Axis CNC'
+      width='640' height='640'
+      style='aspect-ratio: 640/640;'
+      loading='lazy'
+      decoding='async'class='rounded-xl'
+    >
+    <noscript><img src='/images/blog/hero_hu_f80aefa5bb32a7a7.jpg' alt='How to Choose a 5-Axis CNC' width='640' height='640' class='rounded-xl'></noscript>
+  </picture>
+  
+
+  
+  <div class="post-body">
+    <p>Short preview paragraph here. The full article can be longer&hellip;</p>
+
+  </div>
+
+  
+  
+    <p class="post-tags">
+      <span>Tags:</span>
+      
+        <a class="tag" href='/tags/cnc/'>#cnc</a>
+      
+        <a class="tag" href='/tags/automation/'>#automation</a>
+      
+    </p>
+  
+
+  
+  
+  
+  <div class="post-share">
+    <span>Share:</span>
+    <a class="btn btn-sm" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=http%253A%252F%252Flocalhost%253A1313%252Finsights%252Farticles%252Fhow-to-choose-cnc-copy-9%252F">LinkedIn</a>
+    <a class="btn btn-sm" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url=http%253A%252F%252Flocalhost%253A1313%252Finsights%252Farticles%252Fhow-to-choose-cnc-copy-9%252F&text=How%2bto%2bChoose%2ba%2b5-Axis%2bCNC">X/Twitter</a>
+    <a class="btn btn-sm" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=http%253A%252F%252Flocalhost%253A1313%252Finsights%252Farticles%252Fhow-to-choose-cnc-copy-9%252F">Facebook</a>
+  </div>
+
+  
+  <nav class="post-pager" aria-label="Post navigation">
+    
+      <span class="prev disabled" aria-disabled="true">← Previous</span>
+    
+    
+      <a class="next" href="/insights/articles/how-to-choose-cnc-copy-8/" rel="next">Next →</a>
+    
+  </nav>
+
+  
+  
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+</article>
+
+  </main>
+
+  <footer class="site-footer" style="padding:2rem 0; border-top:1px solid var(--border);">
+  <div class="container" style="opacity:.8;">
+    © 2025 GlobalTech
+  </div>
+</footer>
+</body>
+</html>

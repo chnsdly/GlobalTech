@@ -1,0 +1,124 @@
+/* ===== Testimonials: 4列横滑 / Scroll Snap / 无JS ===== */
+.testimonials{
+  /* 边缘渐隐，视觉上提示可滑动 */
+  --edge-fade: 24px;
+  --gap: var(--space, 16px); /* 若你有 tokens（space），会自动使用 */
+  padding-inline: clamp(12px, 2vw, 24px);
+  mask-image: linear-gradient(to right,
+    transparent, #000 calc(var(--edge-fade)),
+    #000 calc(100% - var(--edge-fade)), transparent);
+}
+
+/* 横向滚动容器 */
+.testimonials__viewport{
+  display: grid;
+  grid-auto-flow: column;
+  /* 4列并排：总宽减去3个gap，再除4，就是每卡宽度 */
+  grid-auto-columns: calc((100% - (var(--gap) * 3)) / 4);
+  gap: var(--gap);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: clamp(12px, 2vw, 24px); /* 和 section padding 协同 */
+  padding-block: clamp(8px, 1.2vw, 16px);
+
+  /* 滚动条美化（可按需删掉） */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border, #d0d5dd) transparent;
+
+  &::-webkit-scrollbar{ height: 8px; }
+  &::-webkit-scrollbar-thumb{
+    background: color-mix(in srgb, var(--border, #d0d5dd) 70%, transparent);
+    border-radius: 999px;
+  }
+}
+
+/* 卡片 */
+.tcard{
+  scroll-snap-align: start;
+  background: var(--card, #fff);
+  color: var(--on-surface, #0b1220);
+  border: var(--border-w, 1px) solid var(--border, #e5e7eb);
+  border-radius: var(--radius, 12px);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,.06));
+  padding: clamp(14px, 2.2vw, 20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px; /* 让高度更整齐 */
+  transition: transform var(--t-normal, .25s) var(--ease, cubic-bezier(.2,.8,.2,1)),
+              box-shadow var(--t-normal, .25s) var(--ease, cubic-bezier(.2,.8,.2,1));
+
+  &:hover{
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md, 0 6px 18px rgba(0,0,0,.08));
+  }
+}
+
+.tcard__text{
+  margin: 0 0 14px 0;
+  font-size: clamp(14px, 1.4vw, 16px);
+  line-height: 1.6;
+  /* 多行省略，保证高度统一 */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tcard__meta{
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.tcard__avatar{
+  width: 56px; height: 56px; border-radius: 50%;
+  object-fit: cover; display: block;
+  border: 1px solid var(--border, #e5e7eb);
+  background: var(--surface, #fafafa);
+}
+
+.tcard__who{
+  min-width: 0;
+}
+
+.tcard__name{
+  font-size: clamp(14px, 1.3vw, 16px);
+  line-height: 1.3;
+  display: block;
+}
+
+.tcard__position{
+  display: block;
+  color: var(--muted, #667085);
+  font-size: 12px;
+  line-height: 1.2;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* —— 响应式：保持一行但让卡片更易滑动 —— */
+/* ≥1200px：严格 4 卡可见（由 grid-auto-columns 计算式已保证） */
+/* 768–1199px：约 3.2 卡可见，仍为一行可滑动 */
+@media (max-width: 1199.98px){
+  .testimonials__viewport{
+    grid-auto-columns: calc((100% - (var(--gap) * 2)) / 3);
+  }
+}
+/* 480–767px：约 2.2 卡可见 */
+@media (max-width: 767.98px){
+  .testimonials__viewport{
+    grid-auto-columns: calc((100% - (var(--gap) * 1)) / 2);
+  }
+}
+/* <480px：约 1.2 卡可见，提示用户可滑动 */
+@media (max-width: 479.98px){
+  .testimonials__viewport{
+    grid-auto-columns: 80%;
+  }
+}

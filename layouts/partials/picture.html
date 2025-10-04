@@ -1,0 +1,80 @@
+{{- /* smart-picture.html — 方案A（最简实用版，含无 min 兜底） */ -}}
+{{- /* ---- 输入参数 ----
+  ctx:   页面上下文（一般传 .）
+  src:   源图路径（相对 assets/）
+  alt:   ALT 文本（默认页标题）
+  w:     目标宽度切片，默认 (480,768,1200,1600)
+  sizes: HTML sizes，默认 100vw
+  class: 额外类名
+  fetch: "", "high", "low"；high 会自动切 eager
+  lqip:  true/false，是否启用 24px 背景占位
+*/ -}}
+
+{{- $p      := .ctx -}}
+{{- $src    := .src -}}
+{{- $alt    := .alt | default $p.Title -}}
+{{- $sizes  := .sizes | default "100vw" -}}
+{{- $cls    := .class | default "" -}}
+{{- $fetch  := .fetch | default "" -}}                         {{/* "high" | "low" | "" */}}
+{{- $loading:= .loading | default (cond (eq $fetch "high") "eager" "lazy") -}}
+{{- $lqip   := .lqip | default true -}}
+{{- $w      := .w | default (slice 480 768 1200 1600) -}}
+
+{{- $orig := resources.Get $src -}}
+{{- if $orig -}}
+  {{- /* 1) 宽度：去重+升序；过滤超过原图宽度，避免放大 */ -}}
+  {{- $w = sort (uniq $w) -}}
+  {{- $ok := slice -}}
+  {{- range $w -}}
+    {{- if le . $orig.Width -}}
+      {{- $ok = $ok | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if not (gt (len $ok) 0) -}}
+    {{- /* 没有可用宽度时：fallback = min(1200, 原图宽)（用 cond 实现“取小值”） */ -}}
+    {{- $cap := 1200 -}}
+    {{- $fallback := cond (lt $orig.Width $cap) $orig.Width $cap -}}
+    {{- $ok = slice $fallback -}}
+  {{- end -}}
+  {{- $w = $ok -}}
+
+  {{- /* 2) 生成三种格式（质量平衡）：AVIF/WebP/JPEG */ -}}
+  {{- $avif := slice -}}{{- $webp := slice -}}{{- $jpeg := slice -}}
+  {{- range $w -}}
+    {{- $avif = $avif | append ($orig.Resize (printf "%dx q62 avif" .)) -}}
+    {{- $webp = $webp | append ($orig.Resize (printf "%dx q80 webp" .)) -}}
+    {{- $jpeg = $jpeg | append ($orig.Resize (printf "%dx q82 jpg"  .)) -}}
+  {{- end -}}
+  {{- $tiny := cond $lqip ($orig.Resize "24x webp") nil -}}
+
+  {{- /* 3) 用最大 jpg 的尺寸写 width/height + aspect-ratio，防 CLS */ -}}
+  {{- $largest := index $jpeg (sub (len $jpeg) 1) -}}
+  {{- $W := $largest.Width -}}
+  {{- $H := $largest.Height -}}
+
+  <picture{{ if $lqip }} style='display:block;{{ if $tiny }}background:#f3f4f6 url("{{ $tiny.RelPermalink }}") center/cover no-repeat;{{ end }}'{{ end }}>
+    <source type="image/avif"
+            srcset='{{ range $i, $im := $avif }}{{ if $i }}, {{ end }}{{ $im.RelPermalink }} {{ (index $w $i) }}w{{ end }}'
+            sizes="{{ $sizes }}">
+    <source type="image/webp"
+            srcset='{{ range $i, $im := $webp }}{{ if $i }}, {{ end }}{{ $im.RelPermalink }} {{ (index $w $i) }}w{{ end }}'
+            sizes="{{ $sizes }}">
+    <img
+      src='{{ $largest.RelPermalink }}'
+      srcset='{{ range $i, $im := $jpeg }}{{ if $i }}, {{ end }}{{ $im.RelPermalink }} {{ (index $w $i) }}w{{ end }}'
+      sizes='{{ $sizes }}'
+      alt='{{ $alt }}'
+      width='{{ $W }}' height='{{ $H }}'
+      style='aspect-ratio: {{ $W }}/{{ $H }};'
+      loading='{{ $loading }}'
+      decoding='{{ if eq $loading "eager" }}auto{{ else }}async{{ end }}'
+      {{- if or (eq $fetch "high") (eq $fetch "low") -}} fetchpriority="{{ $fetch }}"{{- end -}}
+      class='{{ $cls }}'
+    >
+    <noscript><img src='{{ $largest.RelPermalink }}' alt='{{ $alt }}' width='{{ $W }}' height='{{ $H }}' class='{{ $cls }}'></noscript>
+  </picture>
+{{- else -}}
+  {{- /* 资源没找到：回退 static 图（无尺寸信息不写宽高） */ -}}
+  <img src='{{ $p.Params.featured_image | default "/images/placeholder.jpg" | relURL }}'
+       alt='{{ $alt }}' loading='lazy' decoding='async' class='{{ $cls }}'>
+{{- end -}}

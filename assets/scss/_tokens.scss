@@ -1,0 +1,215 @@
+
+/* ---------------------------- 主题变量：亮色基线 ---------------------------- */
+:root {
+  /* 品牌色 & 基础语义色 */
+  --brand:        #1f63a3;   /* 品牌色 */
+  --on-brand:     #ffffff;   /* 品牌色上的文本/图标 */
+  --surface:      #f4f6f8;   /* 页面默认底色 */
+  --on-surface:   #101114;   /* 正文前景色 */
+  --card:         #f4f6f8;
+  --on-card:      #0b0e10;
+  --muted:        #667085;   /* 次要文本/图标 */
+  --border:       #cacaca;   /* 分隔线/描边 */
+
+  /* 反馈色 */
+  --success:      #16a34a;
+  --warning:      #d97706;
+  --danger:       #dc2626;
+  --info:         #2563eb;
+  --on-success:   #ffffff;
+  --on-warning:   #ffffff;
+  --on-danger:    #ffffff;
+  --on-info:      #ffffff;
+
+  --focus:        #2563eb;   /* 焦点环/选区色（高对比度） */
+
+  --layer-alpha: 0.72;    /* 透明度调节 */
+
+  --container:        72rem; /* 默认：常规页面 */
+  --container-wide:   80rem; /* 宽版：营销/视觉模块 */
+  --container-narrow: 60rem; /* 窄版：以阅读为主 */
+
+  /* 字体与排版 */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-size: 16px;                     /* 基础根字号 */
+  --fs-1: clamp(1rem, 0.96rem + 0.5vw, 1.125rem);  /* 小文本 */
+  --fs-2: clamp(1.125rem, 1.05rem + 1vw, 1.375rem);/* 中等标题 */
+  --fs-3: clamp(1.375rem, 1.25rem + 1.5vw, 1.75rem);/* 较大标题 */
+  --fs-4: clamp(1.75rem, 1.5rem + 2vw, 2.25rem);   /* 更大标题 */
+  --fs-5: clamp(2.25rem, 1.9rem + 3vw, 3rem);      /* 最大标题 */
+  --line: 1.6;  /* 全局行高 */
+
+  /* 间距与圆角 */
+  --space: 0.5rem; /* 基准间距步长 */
+  --radius: 10px;   /* 默认圆角 */
+  --radius-pill: 999px; /* 胶囊形圆角 */
+  --border-w: 1px;  /* 描边宽度 */
+  --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08); /* 常规阴影 */
+
+
+  /* 动效参数 */
+  --ease: cubic-bezier(.2,.6,.2,1);
+  --t-fast: 120ms;
+  --t-normal: 220ms;
+  --t-slow: 300ms;
+
+  /* Z-index 层级 */
+  --z-base: 0;
+  --z-header: 100;
+  --z-overlay: 900;
+  --z-modal: 1000;
+  --z-tooltip: 1100;
+}
+
+/* ---------------------------- 主题变量：暗色覆盖 ---------------------------- */
+[data-theme="dark"] {
+  --surface:    #0b1220;
+  --on-surface: #eef2ff;
+  --muted:      #9aa4b2;
+  --border:     #233044;
+
+  --brand:      #2260ff; /* 暗色环境下略提亮品牌色 */
+  --on-brand:   #ffffff;
+  --focus:      #60a5fa;
+
+  --card: color-mix(in oklch, var(--surface), white 7%);
+
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.5);
+}
+
+/* 系统偏好暗色模式 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --surface:    #0b1220;
+    --on-surface: #eef2ff;
+    --muted:      #9aa4b2;
+    --border:     #233044;
+
+    --brand:      #2260ff;
+    --on-brand:   #ffffff;
+    --focus:      #60a5fa;
+
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.5);
+  }
+}
+
+/* 降低动画（系统偏好） */
+@media (prefers-reduced-motion: reduce) {
+  :root { --t-fast: 1ms; --t-normal: 1ms; }
+}
+
+/* ----------------------------- SCSS 工具类 ----------------------------- */
+/* 响应式断点：参考 Tailwind 的常用断点 */
+$bp: (
+  sm: 40rem,   /* >= 640px */
+  md: 48rem,   /* >= 768px */
+  lg: 64rem,   /* >= 1024px */
+  xl: 80rem    /* >= 1280px */
+);
+
+@function space($n) { 
+  @return calc(var(--space) * #{$n}); 
+}
+
+@mixin mq-up($name) {
+  $v: map-get($bp, $name);
+  @if $v {
+    @media (min-width: $v) { @content; }
+  } @else {
+    @warn "Unknown breakpoint: #{$name}";
+  }
+}
+
+@mixin focus-ring($offset: 2px) {
+  outline: none;
+  box-shadow:
+    0 0 0 $offset rgba(0,0,0,0),
+    0 0 0 calc($offset + 2px) var(--focus);
+}
+
+/* --------------------------- 基础原子样式 -------------------------- */
+/* 1) 全局盒模型 */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* 2) 文档基线（根字号、字体、颜色、背景等） */
+html { font-size: var(--font-size); }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  color: var(--on-surface);
+  background: var(--surface);
+  line-height: var(--line);
+  text-rendering: optimizeLegibility;
+}
+
+/* 3) 媒体自适应 */
+img, svg, video, canvas { display: block; max-width: 100%; height: auto; }
+
+/* 4) 链接样式 */
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* 5) 表单继承 */
+input, button, select, textarea { font: inherit; color: inherit; }
+
+/* 6) 可访问性：视觉隐藏 */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  border: 0; overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+}
+
+/* 7) 布局容器 */
+.container {
+  box-sizing: border-box;
+  max-width: var(--container);
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: space(2);
+}
+/* 定义要在 .container 后面使用，保证能覆盖 */
+.container--wide    { --container: var(--container-wide); }
+.container--narrow  { --container: var(--container-narrow); }
+/* 8) 按钮组件 */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: space(1);
+  padding: space(2) space(3);
+  min-block-size: 44px;                /* 最小触达区域 */
+  border-radius: var(--radius);
+  border: var(--border-w) solid var(--border);
+  background: var(--surface);
+  color: var(--on-surface);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition:
+    transform var(--t-fast) var(--ease),
+    background-color var(--t-normal) var(--ease),
+    color var(--t-normal) var(--ease);
+}
+.button:hover {
+  transform: translateY(-1px);
+}
+.button--primary {
+  background: var(--brand);
+  color: var(--on-brand);
+  border-color: transparent;
+}
+.button:focus-visible { @include focus-ring(); }
+.button[disabled],
+.button[aria-disabled="true"] {
+  opacity: .5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+/* 垂直流式间距：兄弟元素之间留白 */
+.flow > * + * { margin-block-start: var(--flow-gap, space(3)); }

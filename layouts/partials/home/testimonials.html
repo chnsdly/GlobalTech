@@ -1,0 +1,22 @@
+{{- /* testimonials: language-aware, fallback to en */ -}}
+{{- $lang := .Site.Language.Lang | default "en" -}}
+{{- $data := index site.Data.testimonials $lang -}}
+{{- if not $data }}{{- $data = site.Data.testimonials.en -}}{{- end -}}
+{{- if $data }}
+<section class="testimonials" aria-label="{{ i18n `testimonials_aria` | default `Customer testimonials` }}">
+  <div class="container testimonials__viewport">
+    {{- range $i, $t := $data }}
+    <figure class="tcard" id="tcard-{{ add $i 1 }}">
+      <blockquote class="tcard__text">“{{ $t.text | markdownify }}”</blockquote>
+      <figcaption class="tcard__meta">
+        <img class="tcard__avatar" src="{{ $t.avatar | relURL }}" width="56" height="56" alt="{{ $t.name }}">
+        <div class="tcard__who">
+          <strong class="tcard__name">{{ $t.name }}</strong>
+          {{ with $t.position }}<span class="tcard__position">{{ . }}</span>{{ end }}
+        </div>
+      </figcaption>
+    </figure>
+    {{- end }}
+  </div>
+</section>
+{{- end }}
