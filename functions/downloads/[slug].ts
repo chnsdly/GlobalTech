@@ -7,11 +7,13 @@ function getCookie(raw: string, key: string) {
   return map[key];
 }
 
-export const onRequestGet: PagesFunction<{ DB: D1Database, R2: R2Bucket }> =
+export const onRequestGet: PagesFunction<{ DB: D1Database, R2: R2Bucket, DOWNLOADS_PREFIX?: string }> =
 async ({ request, env, params }) => {
   const slug = String(params.slug || "");
   const ticket = getCookie(request.headers.get("Cookie") || "", "dl_ticket");
   const baseHeaders = { "X-Robots-Tag": "noindex, nofollow" };
+
+  const keyPrefix = (env.DOWNLOADS_PREFIX || "downloads").replace(/\/+$/, "");
 
   if (!slug || !ticket) {
     return new Response("Forbidden", { status: 403, headers: baseHeaders });
@@ -25,7 +27,7 @@ async ({ request, env, params }) => {
     return new Response("Expired", { status: 403, headers: baseHeaders });
   }
 
-  const obj = await env.R2.get(`files/${slug}.pdf`);
+  const obj = await env.R2.get(`${keyPrefix}/${slug}.pdf`);
   if (!obj) {
     return new Response("Not Found", { status: 404, headers: baseHeaders });
   }
