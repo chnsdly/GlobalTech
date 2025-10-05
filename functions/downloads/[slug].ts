@@ -25,7 +25,7 @@ async ({ request, env, params }) => {
     return new Response("Expired", { status: 403, headers: baseHeaders });
   }
 
-  const obj = await env.R2.get(`downloads/${slug}.pdf`);
+  const obj = await env.R2.get(`files/${slug}.pdf`);
   if (!obj) {
     return new Response("Not Found", { status: 404, headers: baseHeaders });
   }

@@ -4,6 +4,8 @@ contact_email = "sales@globaltech-industries.com"
 contact_phone = "+1-800-555-0199"
 logo = "images/logo.jpg"
 
+turnstile_site_key = "0x4AAAAAAB43R0lGyzeXeIiK"
+
 # 社交媒体链接
 [social]
   linkedin = "https://linkedin.com/company/globaltech"
@@ -13,6 +15,3 @@ logo = "images/logo.jpg"
 # 热门文章数量
 [blog.popular]
   limit = 3  
-
-[sitekey]
-  turnstile_site_key = "0x4AAAAAAB43R0lGyzeXeIiK"
