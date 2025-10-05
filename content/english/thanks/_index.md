@@ -7,19 +7,16 @@ robots: "noindex, nofollow"
 <a id="dl-btn" href="#" class="button" hidden>立即下载</a>
 
 <script>
+  // 根据 URL 查询参数 ?dl=slug 拼出下载地址
   (function () {
-    const qs = new URLSearchParams(location.search);
-    const slug = qs.get('dl');
-    const btn  = document.getElementById('dl-btn');
-    // 仅当存在 "dl_ticket"（只会在下载表单成功后下发）时才显示下载按钮
-    const hasTicket = document.cookie.split('; ').some(s => s.startsWith('dl_ticket='));
-
-    if (slug && hasTicket) {
-      btn.href = '/downloads/' + encodeURIComponent(slug);
-      btn.hidden = false;
+    var p = new URLSearchParams(location.search);
+    var slug = p.get('dl');                  // 例如 brochure-a4
+    var a = document.getElementById('dl-btn');
+    if (slug) {
+      a.setAttribute('href', '/downloads/' + slug);
     } else {
-      btn.hidden = true;
+      // 没有参数就隐藏按钮或跳回首页
+      a.style.display = 'none';
     }
   })();
 </script>
-
