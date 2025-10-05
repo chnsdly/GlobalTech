@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{ $slug := .Title | urlize }}
+{{ $slug := .Params.download_slug }}
   <article class="container container--narrow prose">
     <h1>{{ .Title }}</h1>
     {{ .Content }}
