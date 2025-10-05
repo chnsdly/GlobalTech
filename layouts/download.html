@@ -1,10 +1,11 @@
 {{ define "main" }}
+{{ $slug := .Title | urlize }}
   <article class="container container--narrow prose">
     <h1>{{ .Title }}</h1>
     {{ .Content }}
     {{ partial "lead-form.html" (dict
         "type" "download"
-        "slug" "Hugo"
+        "slug" $slug
         "page" .
         "sitekey" .Site.Params.turnstile_site_key
     ) }}
