@@ -42,10 +42,15 @@ export const onRequestPost: PagesFunction<{ DB: D1Database, R2: R2Bucket, TURNST
     await env.DB.prepare(`INSERT INTO tickets (id,slug,created_at,expires_at) VALUES (?,?,?,?)`)
       .bind(id, downloadSlug, now, expiresAt).run();
 
-    const h = new Headers();
-    h.append("Set-Cookie", `dl_ticket=${id}; Path=/downloads; HttpOnly; Secure; SameSite=Lax; Max-Age=900`);
-    const url = new URL("/thanks/", request.url); url.searchParams.set("dl", downloadSlug);
-    return Response.redirect(url, 303, { headers: h });
+    const url = new URL("/thanks/", request.url);
+    url.searchParams.set("dl", downloadSlug);
+
+    const resp = Response.redirect(url.toString(), 303);
+    resp.headers.append(
+      "Set-Cookie",
+      `dl_ticket=${id}; Path=/downloads; HttpOnly; Secure; SameSite=Lax; Max-Age=900`
+    );
+    return resp;
   }
 
   return Response.redirect(new URL("/thanks/", request.url), 303);
