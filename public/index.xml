@@ -247,13 +247,6 @@
       <description>5-axis high-precision CNC milling for aerospace &amp;amp; medical parts.</description>
     </item>
     <item>
-      <title>articles--How to Choose a 5-Axis CNC</title>
-      <link>http://localhost:1313/resources/articles/how-to-choose-cnc-copy-5/</link>
-      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/resources/articles/how-to-choose-cnc-copy-5/</guid>
-      <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>cases--How to Choose a 5-Axis CNC</title>
       <link>http://localhost:1313/resources/cases/how-to-choose-cnc-copy-3/</link>
       <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
@@ -282,6 +275,13 @@
       <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
     </item>
     <item>
+      <title>How to Choose CNC</title>
+      <link>http://localhost:1313/resources/articles/how-to-choose-cnc-copy-5/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/resources/articles/how-to-choose-cnc-copy-5/</guid>
+      <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
       <title></title>
       <link>http://localhost:1313/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -290,16 +290,16 @@
     </item>
     <item>
       <title></title>
-      <link>http://localhost:1313/contact/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/contact/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title></title>
       <link>http://localhost:1313/industries/indu-1/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/industries/indu-1/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Contact</title>
+      <link>http://localhost:1313/contact/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/contact/</guid>
       <description></description>
     </item>
   </channel>

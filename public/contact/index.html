@@ -419,11 +419,49 @@
 </script>
   <main>
     
-  <article>
-    <h1></h1>
-    
-    
-  </article>
+  
+
+
+  
+
+<form action="/api/lead" method="POST" class="lead-form" novalidate>
+  <input type="hidden" name="form_type" value="contact">
+  
+  <input type="hidden" name="page_url" value="http://localhost:1313/contact/">
+  <input type="hidden" name="utm_source"   id="utm_source">
+  <input type="hidden" name="utm_medium"   id="utm_medium">
+  <input type="hidden" name="utm_campaign" id="utm_campaign">
+  <input type="hidden" name="utm_term"     id="utm_term">
+  <input type="hidden" name="utm_content"  id="utm_content">
+  <div style="display:none;"><input name="website" autocomplete="off"></div>
+
+  <label>Full Name*<input name="name" required></label>
+  <label>Work Email*<input name="email" type="email" required></label>
+  <label>Company<input name="company"></label>
+  <label>Country<input name="country"></label>
+  <label>Message<textarea name="message" rows="4"></textarea></label>
+
+  <label class="checkbox">
+    <input type="checkbox" name="consent" value="yes" required>
+    I agree to the Privacy Policy and to be contacted regarding this request.
+  </label>
+
+  
+  <div class="cf-turnstile" data-sitekey="0x4AAAAAAB43R0lGyzeXeIiK"></div>
+  <button type="submit">Submit</button>
+</form>
+
+<script defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+<script>
+  (function(){
+    const p = new URLSearchParams(location.search);
+    for (const k of ["utm_source","utm_medium","utm_campaign","utm_term","utm_content"]){
+      const el = document.getElementById(k);
+      if (el && p.get(k)) el.value = p.get(k);
+    }
+  })();
+</script>
+
 
   </main>
 
