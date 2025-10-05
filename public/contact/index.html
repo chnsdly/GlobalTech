@@ -419,7 +419,7 @@
 </script>
   <main>
     
-  
+
 
 
 
@@ -460,7 +460,20 @@
       const el = document.getElementById(k);
       if (el && p.get(k)) el.value = p.get(k);
     }
+    document.addEventListener('submit', function(e){
+      if (!(e.target instanceof HTMLFormElement)) return;
+      if (!e.target.classList.contains('lead-form')) return;
+      try {
+        sessionStorage.setItem('last_form_type', 'contact');
+        if ('contact' === 'download') {
+          sessionStorage.setItem('last_download_slug', '');
+        } else {
+          sessionStorage.removeItem('last_download_slug');
+        }
+      } catch (_) {}
+    }, { capture: true });
   })();
+  
 </script>
 
 

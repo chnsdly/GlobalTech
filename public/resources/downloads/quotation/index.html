@@ -423,8 +423,6 @@
     <h1>Product Quotation (PDF)</h1>
     <p>Please fill the form to receive our latest quotation PDF.</p>
 
-
-    
     
 
 
@@ -468,7 +466,20 @@
       const el = document.getElementById(k);
       if (el && p.get(k)) el.value = p.get(k);
     }
+    document.addEventListener('submit', function(e){
+      if (!(e.target instanceof HTMLFormElement)) return;
+      if (!e.target.classList.contains('lead-form')) return;
+      try {
+        sessionStorage.setItem('last_form_type', 'download');
+        if ('download' === 'download') {
+          sessionStorage.setItem('last_download_slug', 'Baoheng-Quotation');
+        } else {
+          sessionStorage.removeItem('last_download_slug');
+        }
+      } catch (_) {}
+    }, { capture: true });
   })();
+  
 </script>
 
   </article>
