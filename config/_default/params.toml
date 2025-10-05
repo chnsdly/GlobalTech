@@ -15,4 +15,4 @@ logo = "images/logo.jpg"
   limit = 3  
 
 [sitekey]
-  turnstile_site_key = "你的Turnstile Site Key"
+  turnstile_site_key = "0x4AAAAAAB43R0lGyzeXeIiK"
