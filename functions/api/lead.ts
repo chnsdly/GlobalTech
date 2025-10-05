@@ -65,9 +65,8 @@ export const onRequestPost: PagesFunction<{
     `).bind(id, downloadSlug, now, expiresAt).run();
 
     const url = new URL("/thanks/", request.url);
+    url.searchParams.set("m", "download");
     url.searchParams.set("dl", downloadSlug);
-
-    // ✅ 自己构造 303 响应，并一次性设置 Location + Set-Cookie
     return new Response(null, {
       status: 303,
       headers: {

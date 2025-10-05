@@ -8,7 +8,11 @@ robots: "noindex, nofollow"
 
 <script>
   const p = new URLSearchParams(location.search);
+  const mode = p.get('m');             // 新增：模式标记
   const slug = p.get('dl');
   const a = document.getElementById('dl-btn');
-  if (slug) { a.href = '/downloads/' + slug; a.hidden = false; }
+  if (mode === 'download' && slug && /^[A-Za-z0-9._-]+$/.test(slug)) {
+    a.href = '/downloads/' + slug; // 或 + '.pdf'
+    a.hidden = false;
+  }
 </script>
