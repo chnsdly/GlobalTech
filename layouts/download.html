@@ -2,8 +2,6 @@
   <article class="container container--narrow prose">
     <h1>{{ .Title }}</h1>
     {{ .Content }}
-
-    {{/* 下载前置表单：slug 必须与 R2 downloads/ 目录下的文件名去掉 .pdf 后一致 */}}
     {{ partial "lead-form.html" (dict
         "type" "download"
         "slug" "Baoheng-Quotation"
