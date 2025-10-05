@@ -242,6 +242,8 @@
   </url><url>
     <loc>http://localhost:1313/contact/</loc>
   </url><url>
+    <loc>http://localhost:1313/resources/downloads/quotation/</loc>
+  </url><url>
     <loc>http://localhost:1313/thanks/</loc>
   </url>
 </urlset>

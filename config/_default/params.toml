@@ -13,3 +13,6 @@ logo = "images/logo.jpg"
 # 热门文章数量
 [blog.popular]
   limit = 3  
+
+[sitekey]
+  turnstile_site_key = "你的Turnstile Site Key"

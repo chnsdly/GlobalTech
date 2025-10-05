@@ -15,5 +15,12 @@
       <guid>http://localhost:1313/resources/downloads/how-to-choose-cnc-copy-4/</guid>
       <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
     </item>
+    <item>
+      <title>Product Quotation (PDF)</title>
+      <link>http://localhost:1313/resources/downloads/quotation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/resources/downloads/quotation/</guid>
+      <description>&lt;p&gt;Please fill the form to receive our latest quotation PDF.&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>
