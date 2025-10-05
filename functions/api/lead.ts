@@ -1,84 +1,144 @@
-export const onRequestPost: PagesFunction<{
-  DB: D1Database,
-  R2: R2Bucket,
-  TURNSTILE_SECRET: string
-}> = async ({ request, env }) => {
-  const f = await request.formData();
+export type LeadFormType = "contact" | "download";
 
-  // 1) 蜜罐（有值直接吞）
-  if ((f.get("website") as string)?.trim()) {
-    return new Response("ok", { status: 200 });
+export interface LeadFormData {
+  name: string;
+  email: string;
+  company: string;
+  country: string;
+  message: string;
+  formType: LeadFormType;
+  pageUrl: string;
+  downloadSlug: string;
+  consent: "yes" | "no";
+  utm: Record<string, string>;
+}
+
+export interface RequestContext {
+  ip: string;
+  userAgent: string;
+  timestamp: string;
+}
+
+export const UTM_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+] as const;
+
+const REQUIRED_FIELDS: Array<keyof Pick<LeadFormData, "name" | "email" | "formType" | "pageUrl">> = [
+  "name",
+  "email",
+  "formType",
+  "pageUrl",
+];
+
+export class LeadFormError extends Error {
+  status: number;
+  constructor(message: string, status = 400) {
+    super(message);
+    this.name = "LeadFormError";
+    this.status = status;
+  }
+}
+
+export function normalize(value: FormDataEntryValue | null): string {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+export function readLeadForm(form: FormData): LeadFormData {
+  const get = (key: string) => normalize(form.get(key));
+
+  const formType = (get("form_type") || "contact") as LeadFormType;
+
+  const utmEntries: Record<string, string> = {};
+  for (const key of UTM_KEYS) {
+    utmEntries[key] = get(key);
   }
 
-  // 2) Turnstile 服务端校验
-  const token = String(f.get("cf-turnstile-response") || "");
-  const ip = request.headers.get("CF-Connecting-IP") || "";
-  const v = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+  return {
+    name: get("name"),
+    email: get("email"),
+    company: get("company"),
+    country: get("country"),
+    message: get("message"),
+    formType,
+    pageUrl: get("page_url"),
+    downloadSlug: get("download_slug"),
+    consent: (get("consent") === "yes" ? "yes" : "no"),
+    utm: utmEntries,
+  };
+}
+
+export function ensureRequired(data: LeadFormData): void {
+  for (const field of REQUIRED_FIELDS) {
+    if (!data[field]) {
+      throw new LeadFormError(`Missing required field: ${field}`, 422);
+    }
+  }
+
+  if (!data.email.includes("@")) {
+    throw new LeadFormError("Invalid email address", 422);
+  }
+
+  if (data.formType === "download" && !data.downloadSlug) {
+    throw new LeadFormError("Missing download slug", 422);
+  }
+}
+
+export async function verifyTurnstile(token: string, secret: string, ip: string): Promise<void> {
+  const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
     method: "POST",
     body: new URLSearchParams({
-      secret: env.TURNSTILE_SECRET,
+      secret,
       response: token,
-      remoteip: ip
+      remoteip: ip,
     }),
-  }).then(r => r.json());
+  });
 
-  if (!v.success) {
-    return new Response("Bot check failed", { status: 400 });
+  const result = await response.json() as { success?: boolean };
+
+  if (!result.success) {
+    throw new LeadFormError("Bot check failed", 400);
   }
+}
 
-  // 3) 取字段
-  const now = new Date().toISOString();
-  const get = (k: string) => String(f.get(k) || "").trim();
-  const email = get("email");
-  const name = get("name");
-  const company = get("company");
-  const country = get("country");
-  const message = get("message");
-  const formType = get("form_type") || "contact";
-  const pageUrl = get("page_url");               // 也可换成 request.headers.get("Referer") 兜底
-  const downloadSlug = get("download_slug");
-  const consent = get("consent") || "no";
-  const utm = (k: string) => get(k);
-  const ua = request.headers.get("User-Agent") || "";
-
-  // 4) 入库（leads）
-  await env.DB.prepare(`
+export async function storeLead(db: D1Database, data: LeadFormData, ctx: RequestContext): Promise<void> {
+  const { name, email, company, country, message, formType, pageUrl, consent, utm } = data;
+  await db.prepare(`
     INSERT INTO leads
       (created_at, name, email, company, country, message, form_type, page_url,
        utm_source, utm_medium, utm_campaign, utm_term, utm_content, ip, user_agent, consent)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
   `).bind(
-    now, name, email, company, country, message, formType, pageUrl,
-    utm("utm_source"), utm("utm_medium"), utm("utm_campaign"),
-    utm("utm_term"), utm("utm_content"),
-    ip, ua, consent
+    ctx.timestamp,
+    name,
+    email,
+    company,
+    country,
+    message,
+    formType,
+    pageUrl,
+    utm["utm_source"],
+    utm["utm_medium"],
+    utm["utm_campaign"],
+    utm["utm_term"],
+    utm["utm_content"],
+    ctx.ip,
+    ctx.userAgent,
+    consent,
   ).run();
+}
 
-  // 5) 下载型：写票据 + Set-Cookie + 303 跳感谢页（带 ?dl=slug）
-  if (formType === "download" && downloadSlug) {
-    const id = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+export async function issueDownloadTicket(db: D1Database, slug: string, timestamp: string): Promise<{ id: string; expiresAt: string; }> {
+  const id = crypto.randomUUID();
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
-    await env.DB.prepare(`
-      INSERT INTO tickets (id, slug, created_at, expires_at)
-      VALUES (?,?,?,?)
-    `).bind(id, downloadSlug, now, expiresAt).run();
+  await db.prepare(`
+    INSERT INTO tickets (id, slug, created_at, expires_at)
+    VALUES (?,?,?,?)
+  `).bind(id, slug, timestamp, expiresAt).run();
 
-    const url = new URL("/thanks/", request.url);
-    url.searchParams.set("dl", downloadSlug);
-
-    return new Response(null, {
-      status: 303,
-      headers: {
-        "Location": url.toString(),
-        "Set-Cookie": `dl_ticket=${id}; Path=/downloads; HttpOnly; Secure; SameSite=Lax; Max-Age=900`
-      }
-    });
-  }
-
-  // 6) 联系表单：无票据，直接去 /thanks/
-  return new Response(null, {
-    status: 303,
-    headers: { "Location": new URL("/thanks/", request.url).toString() }
-  });
-};
+  return { id, expiresAt };
+}
