@@ -54,31 +54,41 @@ export const onRequestPost: PagesFunction<{
     ip, ua, consent
   ).run();
 
-  // 5) 下载型：写票据 + Set-Cookie + 303 跳感谢页（带 ?dl=slug）
-  if (formType === "download" && downloadSlug) {
-    const id = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+  // ……前面校验 Turnstile、写 leads 省略……
 
-    await env.DB.prepare(`
-      INSERT INTO tickets (id, slug, created_at, expires_at)
-      VALUES (?,?,?,?)
-    `).bind(id, downloadSlug, now, expiresAt).run();
+if (downloadSlug) {                                // ← 仅以是否有 download_slug 来判定下载型
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
-    const url = new URL("/thanks/", request.url);
-    url.searchParams.set("m", "download");
-    url.searchParams.set("dl", downloadSlug);
-    return new Response(null, {
-      status: 303,
-      headers: {
-        "Location": url.toString(),
-        "Set-Cookie": `dl_ticket=${id}; Path=/downloads; HttpOnly; Secure; SameSite=Lax; Max-Age=900`
-      }
-    });
-  }
+  await env.DB.prepare(`
+    INSERT INTO tickets (id, slug, created_at, expires_at)
+    VALUES (?,?,?,?)
+  `).bind(id, downloadSlug, now, expiresAt).run();
 
-  // 6) 联系表单：无票据，直接去 /thanks/
-  return new Response(null, {
-    status: 303,
-    headers: { "Location": new URL("/thanks/", request.url).toString() }
-  });
+  const url = new URL("/thanks/", request.url);
+
+  // 构造 303 + 两个 Set-Cookie：
+  // 1) dl_ticket：真正的受控下载票据（HttpOnly，仅 /downloads 可见）
+  // 2) dl_slug：仅用于感谢页显示按钮（JS 可读，Path=/thanks；马上会被前端清除）
+  const headers = new Headers();
+  headers.set("Location", url.toString());
+  headers.append(
+    "Set-Cookie",
+    `dl_ticket=${id}; Path=/downloads; HttpOnly; Secure; SameSite=Lax; Max-Age=900`
+  );
+  headers.append(
+    "Set-Cookie",
+    `dl_slug=${encodeURIComponent(downloadSlug)}; Path=/thanks; Secure; SameSite=Lax; Max-Age=600`
+  );
+
+  return new Response(null, { status: 303, headers });
+}
+
+// ……联系分支保持 303 到 /thanks/（不设置 dl_slug）……
+return new Response(null, {
+  status: 303,
+  headers: { "Location": new URL("/thanks/", request.url).toString() }
+});
+
 };
