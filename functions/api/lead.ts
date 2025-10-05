@@ -45,12 +45,13 @@ export const onRequestPost: PagesFunction<{ DB: D1Database, R2: R2Bucket, TURNST
     const url = new URL("/thanks/", request.url);
     url.searchParams.set("dl", downloadSlug);
 
-    const resp = Response.redirect(url.toString(), 303);
-    resp.headers.append(
-      "Set-Cookie",
-      `dl_ticket=${id}; Path=/downloads; HttpOnly; Secure; SameSite=Lax; Max-Age=900`
-    );
-    return resp;
+    return new Response(null, {
+      status: 303,
+      headers: {
+        "Location": url.toString(),
+        "Set-Cookie": `dl_ticket=${id}; Path=/downloads; HttpOnly; Secure; SameSite=Lax; Max-Age=900`
+      }
+    });
   }
 
   return Response.redirect(new URL("/thanks/", request.url), 303);
