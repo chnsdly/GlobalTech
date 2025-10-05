@@ -13,7 +13,7 @@ async ({ request, env, params }) => {
   const ticket = getCookie(request.headers.get("Cookie") || "", "dl_ticket");
   const baseHeaders = { "X-Robots-Tag": "noindex, nofollow" };
 
-  const keyPrefix = (env.DOWNLOADS_PREFIX || "downloads").replace(/\/+$/, "");
+  const keyPrefix = (env.DOWNLOADS_PREFIX || "downloads").replace(/^\/+|\/+$/g, "");
 
   if (!slug || !ticket) {
     return new Response("Forbidden", { status: 403, headers: baseHeaders });
