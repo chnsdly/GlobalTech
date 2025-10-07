@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Insights on GlobalTech</title>
+    <link>http://localhost:1313/zh/resources/articles/</link>
+    <description>Recent content in Insights on GlobalTech</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 18 Jul 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/zh/resources/articles/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Choose CNC</title>
+      <link>http://localhost:1313/zh/resources/articles/how-to-choose-cnc-copy-5/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh/resources/articles/how-to-choose-cnc-copy-5/</guid>
+      <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
