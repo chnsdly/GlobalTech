@@ -1,0 +1,32 @@
+{{ if.Paginator.HasPages }}
+<div class="res-pager">
+    
+    {{ if.Paginator.Prev }}
+    <a href="{{.Paginator.Prev.URL }}" class="pager-prev">
+        &laquo; 上一页
+    </a>
+    {{ else }}
+    <span class="pager-prev disabled">
+        &laquo; 上一页
+    </span>
+    {{ end }}
+
+    {{ range.Paginator.Pagers }}
+        {{ $page :=. }}
+        <a href="{{ $page.URL }}" class="pager-num {{ if $page.IsCurrent }}current{{ end }}">
+            {{ $page.PageNumber }}
+        </a>
+    {{ end }}
+    
+    {{ if.Paginator.Next }}
+    <a href="{{.Paginator.Next.URL }}" class="pager-next">
+        下一页 &raquo;
+    </a>
+    {{ else }}
+    <span class="pager-next disabled">
+        下一页 &raquo;
+    </span>
+    {{ end }}
+
+</div>
+{{ end }}

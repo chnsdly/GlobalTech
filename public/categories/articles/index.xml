@@ -15,5 +15,12 @@
       <guid>http://localhost:1313/resources/articles/how-to-choose-cnc-copy-5/</guid>
       <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
     </item>
+    <item>
+      <title>How to Choose CNC</title>
+      <link>http://localhost:1313/resources/faq/how-to-choose-cnc-copy-2/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/resources/faq/how-to-choose-cnc-copy-2/</guid>
+      <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>

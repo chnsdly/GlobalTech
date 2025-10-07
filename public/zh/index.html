@@ -372,6 +372,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     const header = document.getElementById('site-header');
     const body = document.body;
+    const bodyHiddenClass = 'header-hidden';
 
     
     if (header) {
@@ -390,6 +391,7 @@
         
         if (currentScrollY <= scrollThreshold) {
           header.classList.remove('is-hidden');
+          body.classList.remove(bodyHiddenClass);
           lastScrollY = currentScrollY;
           return;
         }
@@ -402,10 +404,12 @@
         
         if (currentScrollY < lastScrollY) {
           header.classList.remove('is-hidden');
+          body.classList.remove(bodyHiddenClass);
         }
         
         else if (currentScrollY > lastScrollY) {
           header.classList.add('is-hidden');
+          body.classList.add(bodyHiddenClass);
         }
 
         

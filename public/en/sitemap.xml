@@ -183,15 +183,6 @@
     <loc>http://localhost:1313/categories/articles/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/case/</loc>
-    <lastmod>2025-07-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/resources/cases/</loc>
-    <lastmod>2025-07-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/resources/cases/how-to-choose-cnc-copy-3/</loc>
-    <lastmod>2025-07-18T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/categories/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
@@ -207,12 +198,6 @@
     <loc>http://localhost:1313/resources/faq/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/faq/</loc>
-    <lastmod>2025-07-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/resources/faq/how-to-choose-cnc-copy-2/</loc>
-    <lastmod>2025-07-18T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/hdpe/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
@@ -220,6 +205,9 @@
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/resources/articles/how-to-choose-cnc-copy-5/</loc>
+    <lastmod>2025-07-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/resources/faq/how-to-choose-cnc-copy-2/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/resources/news/</loc>
@@ -234,11 +222,11 @@
     <loc>http://localhost:1313/tags/testing/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/about/</loc>
-  </url><url>
     <loc>http://localhost:1313/industries/</loc>
   </url><url>
     <loc>http://localhost:1313/industries/indu-1/</loc>
+  </url><url>
+    <loc>http://localhost:1313/about/</loc>
   </url><url>
     <loc>http://localhost:1313/resources/downloads/baoheng/</loc>
   </url><url>

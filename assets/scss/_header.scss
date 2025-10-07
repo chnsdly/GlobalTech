@@ -1,6 +1,5 @@
 
 .site-header {
-  --header-height: 72px;    /* 导航栏高度 */
   --burger-length: 30px;      /* 汉堡线长 */
   --burger-thickness: 3px;    /* 汉堡线粗 */
   --burger-gap: 6px;          /* 汉堡线间距 */
@@ -26,6 +25,16 @@
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   transition: var(--header-transition);
+}
+
+body {
+  --header-offset: var(--header-height);
+  padding-top: var(--header-offset);
+  transition: padding-top var(--t-normal) var(--ease);
+}
+
+body.header-hidden {
+  --header-offset: 0px;
 }
 
 .site-header.is-scrolled {

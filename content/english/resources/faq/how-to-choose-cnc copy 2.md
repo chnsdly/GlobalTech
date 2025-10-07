@@ -1,12 +1,13 @@
 ---
-title: "faq--How to Choose a 5-Axis CNC"
-date: 2025-07-18
-draft: false
-description: "Key specs and checks when selecting a 5-axis CNC for aerospace parts.Key specs and checks when selecting a 5-axis CNC for aerospace parts.Key specs and checks when selecting a 5-axis CNC for aerospace parts."
+title: "How to Choose CNC"
+description: "用于列表页摘要（不写则用 Summary/正文截断）"
 cover_asset: "images/insights/hero.jpg"
+format: "faq" # 可取：blog | case | whitepaper | download | video | faq
 author: "你的作者名"
-categories: "faq"
+date: 2025-07-18
+categories: ["articles"]  
 tags: ["HDPE","Testing"]  
+readMinutes: 3
 popular: true 
 ---
 

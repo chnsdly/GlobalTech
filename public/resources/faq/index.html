@@ -324,6 +324,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     const header = document.getElementById('site-header');
     const body = document.body;
+    const bodyHiddenClass = 'header-hidden';
 
     
     if (header) {
@@ -342,6 +343,7 @@
         
         if (currentScrollY <= scrollThreshold) {
           header.classList.remove('is-hidden');
+          body.classList.remove(bodyHiddenClass);
           lastScrollY = currentScrollY;
           return;
         }
@@ -354,10 +356,12 @@
         
         if (currentScrollY < lastScrollY) {
           header.classList.remove('is-hidden');
+          body.classList.remove(bodyHiddenClass);
         }
         
         else if (currentScrollY > lastScrollY) {
           header.classList.add('is-hidden');
+          body.classList.add(bodyHiddenClass);
         }
 
         
@@ -421,218 +425,205 @@
     
 <section class="blog-classic">
   <div class="container">
-    <div class="layout">
+    <div class="layout layout--two">
 
       
       <div class="col-main">
         
-        
-        <article class="post-card">
-          <a class="post-media" href="/resources/faq/how-to-choose-cnc-copy-2/" aria-label="faq--How to Choose a 5-Axis CNC">
+
+        <ul class="res-list" role="list">
+          
             
-              <picture style='display:block;background:#f3f4f6 url("/images/insights/hero_hu_6b63f1d0fbc83c21.webp") center/cover no-repeat;'>
+            
+
+            
+            
+            
+            
+            
+            
+            
+
+            
+            
+            
+            
+            
+            
+            
+
+            <li class="res-row">
+              <div class="res-thumb" aria-hidden="true">
+                
+                  <picture style='display:block;background:#f3f4f6 url("/images/insights/hero_hu_6b63f1d0fbc83c21.webp") center/cover no-repeat;'>
     <source type="image/avif"
-            srcset='/images/insights/hero_hu_cd4e14c2fbc0c188.jpg 640w'
-            sizes="(max-width: 1024px) 100vw, 832px">
+            srcset='/images/insights/hero_hu_7837093e0f349fe0.jpg 256w, /images/insights/hero_hu_3fa12481826abd5.jpg 512w, /images/insights/hero_hu_dd075ab7e8728432.jpg 768w'
+            sizes="(max-width: 48rem) 100vw, 128px">
     <source type="image/webp"
-            srcset='/images/insights/hero_hu_f00c2a964e75dc8f.webp 640w'
-            sizes="(max-width: 1024px) 100vw, 832px">
+            srcset='/images/insights/hero_hu_22600659b1e233e3.webp 256w, /images/insights/hero_hu_959d280efee14b61.webp 512w, /images/insights/hero_hu_addbd090b033bb5f.webp 768w'
+            sizes="(max-width: 48rem) 100vw, 128px">
     <img
-      src='/images/insights/hero_hu_39d6c1959402e363.jpg'
-      srcset='/images/insights/hero_hu_39d6c1959402e363.jpg 640w'
-      sizes='(max-width: 1024px) 100vw, 832px'
-      alt='faq--How to Choose a 5-Axis CNC'
-      width='640' height='480'
-      style='aspect-ratio: 640/480;'
+      src='/images/insights/hero_hu_2787a4be993ee5ed.jpg'
+      srcset='/images/insights/hero_hu_d0db5db326731ee5.jpg 256w, /images/insights/hero_hu_52a2e8934f32121e.jpg 512w, /images/insights/hero_hu_2787a4be993ee5ed.jpg 768w'
+      sizes='(max-width: 48rem) 100vw, 128px'
+      alt='How to Choose CNC'
+      width='768' height='576'
+      style='aspect-ratio: 768/576;'
       loading='lazy'
-      decoding='async'class=''
+      decoding='async'class='res-thumb__img'
     >
-    <noscript><img src='/images/insights/hero_hu_39d6c1959402e363.jpg' alt='faq--How to Choose a 5-Axis CNC' width='640' height='480' class=''></noscript>
+    <noscript><img src='/images/insights/hero_hu_2787a4be993ee5ed.jpg' alt='How to Choose CNC' width='768' height='576' class='res-thumb__img'></noscript>
   </picture>
-            
-          </a>
+                
+                <span class="badge badge--blog">Blog</span>
+                
+              </div>
 
-          <h2 class="post-title"><a href="/resources/faq/how-to-choose-cnc-copy-2/">faq--How to Choose a 5-Axis CNC</a></h2>
+              <div class="res-main">
+                <a class="res-title" href="/resources/faq/how-to-choose-cnc-copy-2/">How to Choose CNC</a>
 
-          <ul class="post-meta" role="list">
-            <li class="meta-item meta-date">
-              Jul 18, 2025
+                <p class="res-desc">用于列表页摘要（不写则用 Summary/正文截断）</p>
+
+                <div class="res-meta">
+                  
+
+                  
+                  
+                    <span>阅读：1 分钟</span>
+                  
+
+                  
+
+                  
+                  
+
+                  
+                  
+                  
+                  
+
+                  <span>
+                    
+                      Updated: Jul 18, 2025
+                    
+                  </span>
+                </div>
+              </div>
+
+              <div class="res-cta">
+                <a class="button "
+                   href="/resources/faq/how-to-choose-cnc-copy-2/">阅读</a>
+              </div>
             </li>
-            <li class="meta-item meta-author">你的作者名</li>
-            
-              
-              <li class="meta-item meta-cat">
-                <a href='/categories/102/'>102</a>
-              </li>
-              
-            
-          </ul>
-
-          <div class="post-excerpt">
-            
-              <p>Key specs and checks when selecting a 5-axis CNC for aerospace parts.Key specs and checks when selecting a 5-axis CNC for aerospace parts.Key specs and checks when selecting a 5-axis CNC for aerospace parts.</p>
-            
-          </div>
-
-          <p class="post-cta">
-            <a class="btn readmore" href="/resources/faq/how-to-choose-cnc-copy-2/">
-              Continue Reading
-            </a>
-          </p>
-
-          <hr class="sep">
-        </article>
-        
+          
+        </ul>
 
         
-        <nav class="pager" aria-label='Pagination'>
-          
-            <span class="pager-prev disabled" aria-disabled="true">Prev</span>
-          
-
-          <ul class="pager-list" role="list">
-            
-              
-              <li>
-                
-                  <span class="pager-num current" aria-current="page">1</span>
-                
-              </li>
-            
-          </ul>
-
-          
-            <span class="pager-next disabled" aria-disabled="true">Next</span>
-          
-        </nav>
       </div>
 
       
-      <aside class="col-side is-flat" aria-label="Sidebar">
-
+      <aside class="col-side is-flat">
         
-        <section class="widget widget-popular">
-          <p class="widget-title">Popular Posts</p>
-
-          
-          
-          
-          
-
-
-          <ul class="popular-list">
-            
+        
+        
+        
+        
+        
+          <section class="widget widget-popular">
+            <p class="widget-title">Popular</p>
+            <ul class="popular-list">
               
-              
-              
-              
-              
-              
-
-              <li class="popular-item">
-                <a class="popular-link" href="/resources/faq/how-to-choose-cnc-copy-2/">
-                  <span class="thumb">
-                    
+                <li class="popular-item">
+                  <a class="popular-link" href="/resources/faq/how-to-choose-cnc-copy-2/">
+                    <span class="ph ph--sm">
                       
-                      <picture style='display:block;background:#f3f4f6 url("/images/insights/hero_hu_6b63f1d0fbc83c21.webp") center/cover no-repeat;'>
+                        <picture style='display:block;background:#f3f4f6 url("/images/insights/hero_hu_6b63f1d0fbc83c21.webp") center/cover no-repeat;'>
     <source type="image/avif"
             srcset='/images/insights/hero_hu_43602c669d27e934.jpg 84w, /images/insights/hero_hu_84e646e3c93fda9b.jpg 168w, /images/insights/hero_hu_31dd90d02c04847f.jpg 252w'
-            sizes="(max-width: 1024px) 84px, 84px">
+            sizes="84px">
     <source type="image/webp"
             srcset='/images/insights/hero_hu_4e045ebc87047674.webp 84w, /images/insights/hero_hu_19b80c95fd162b6d.webp 168w, /images/insights/hero_hu_5d827b50c94f543f.webp 252w'
-            sizes="(max-width: 1024px) 84px, 84px">
+            sizes="84px">
     <img
       src='/images/insights/hero_hu_51398fd84f0b5a06.jpg'
       srcset='/images/insights/hero_hu_477b789619a00c2d.jpg 84w, /images/insights/hero_hu_da94c544f2d8a011.jpg 168w, /images/insights/hero_hu_51398fd84f0b5a06.jpg 252w'
-      sizes='(max-width: 1024px) 84px, 84px'
-      alt='faq--How to Choose a 5-Axis CNC'
+      sizes='84px'
+      alt='How to Choose CNC'
       width='252' height='189'
       style='aspect-ratio: 252/189;'
       loading='lazy'
-      decoding='async'class='thumb-picture'
+      decoding='async'class='ph__img'
     >
-    <noscript><img src='/images/insights/hero_hu_51398fd84f0b5a06.jpg' alt='faq--How to Choose a 5-Axis CNC' width='252' height='189' class='thumb-picture'></noscript>
+    <noscript><img src='/images/insights/hero_hu_51398fd84f0b5a06.jpg' alt='How to Choose CNC' width='252' height='189' class='ph__img'></noscript>
   </picture>
-                    
-                  </span>
-                  <span class="txt">
-                    <span class="t clamp2">faq--How to Choose a 5-Axis CNC</span>
-                    <span class="s clamp1">
-                      Key specs and checks when selecting a 5-axis CNC for aerospace parts.Key specs and checks when selecting a 5-axis CNC for aerospace parts.Key specs and checks when selecting a 5-axis CNC for aerospace parts.
+                      
                     </span>
-                  </span>
+                    <span class="s">
+                      <span class="s2 clamp2">How to Choose CNC</span>
+                      <span class="s clamp1">
+                        用于列表页摘要（不写则用 Summary/正文截断）
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              
+            </ul>
+          </section>
+        
+
+        
+        
+        
+          <section class="widget widget-sections">
+            <p class="widget-title">Sections</p>
+            <ul class="section-list">
+              <li class="section-item">
+                <a class="chip " href="/resources/">
+                  All
+                  <span class="count">7</span>
                 </a>
               </li>
-            
-          </ul>
-        </section>
-
-        
-        
-         
-        
-        <section class="widget widget-cats">
-          <p class="widget-title">Sections</p>
-          <ul class="cat-list">
-            
-            <li>
-              <a class="cat-link "
-                href="/resources/">
-                All
-              </a>
-            </li>
-        
-            
-            
-            <li>
-              <a class="cat-link " href="/resources/articles/">articles</a>
-              <span class="cnt">1</span>
-            </li>
-            
-            
-            <li>
-              <a class="cat-link " href="/resources/cases/">cases</a>
-              <span class="cnt">1</span>
-            </li>
-            
-            
-            <li>
-              <a class="cat-link " href="/resources/downloads/">downloads</a>
-              <span class="cnt">4</span>
-            </li>
-            
-            
-            <li>
-              <a class="cat-link active" href="/resources/faq/">faq</a>
-              <span class="cnt">1</span>
-            </li>
-            
-            
-            <li>
-              <a class="cat-link " href="/resources/news/">news</a>
-              <span class="cnt">1</span>
-            </li>
-            
-          </ul>
-        </section>
+              
+                <li class="section-item">
+                  <a class="chip " href="/resources/articles/">
+                    articles <span class="count">1</span>
+                  </a>
+                </li>
+              
+                <li class="section-item">
+                  <a class="chip " href="/resources/downloads/">
+                    downloads <span class="count">4</span>
+                  </a>
+                </li>
+              
+                <li class="section-item">
+                  <a class="chip is-active" href="/resources/faq/">
+                    faq <span class="count">1</span>
+                  </a>
+                </li>
+              
+                <li class="section-item">
+                  <a class="chip " href="/resources/news/">
+                    news <span class="count">1</span>
+                  </a>
+                </li>
+              
+            </ul>
+          </section>
         
 
-
-
         
         
-        
-        <section class="widget widget-tags">
-          <p class="widget-title">Tags</p>
-          <div class="tag-cloud">
-            
-              <a class="chip" href="/tags/hdpe/">#HDPE</a>
-            
-              <a class="chip" href="/tags/testing/">#Testing</a>
-            
-          </div>
-        </section>
-        
+          <section class="widget widget-tags">
+            <p class="widget-title">Tags</p>
+            <div class="tag-cloud">
+              
+                <a class="chip" href="/tags/hdpe/">#HDPE</a>
+              
+                <a class="chip" href="/tags/testing/">#Testing</a>
+              
+            </div>
+          </section>
         
       </aside>
 
