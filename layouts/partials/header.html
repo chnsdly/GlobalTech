@@ -13,7 +13,8 @@
       <ul>
         {{ range .Site.Menus.main }}
         {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-        <li class="{{ if .HasChildren }}has-dropdown{{ end }}">
+        {{ $isProducts := eq .Identifier "products" }}
+        <li class="{{ if .HasChildren }}has-dropdown{{ end }}{{ if $isProducts }} has-mega{{ end }}">
           <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">
             <span>{{ .Name }}</span>
             {{ if .HasChildren }}
@@ -27,6 +28,39 @@
           </a>
 
           {{ if .HasChildren }}
+          {{ if $isProducts }}
+          <div class="mega-menu" aria-label="Products submenu">
+            <div class="mega-menu__inner container container--wide">
+              <div class="mega-menu__grid">
+              {{ range .Children }}
+              {{ $group := . }}
+              {{ $groupActive := or ($current.IsMenuCurrent "main" $group) ($current.HasMenuCurrent "main" $group) }}
+              <div class="mega-menu__group">
+                {{ $groupHasUrl := $group.URL }}
+                <div class="mega-menu__title-wrapper">
+                  {{ if $groupHasUrl }}
+                  <a href="{{ $group.URL | relLangURL }}" class="mega-menu__title {{ if $groupActive }}is-active{{ end }}">{{ $group.Name }}</a>
+                  {{ else }}
+                  <span class="mega-menu__title">{{ $group.Name }}</span>
+                  {{ end }}
+                </div>
+                {{ if $group.HasChildren }}
+                {{ $isStyleGroup := eq $group.Identifier "products-style" }}
+                <ul class="mega-menu__list{{ if $isStyleGroup }} mega-menu__list--single{{ end }}">
+                  {{ range $group.Children }}
+                  {{ $itemActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+                  <li>
+                    <a href="{{ .URL | relLangURL }}" class="{{ if $itemActive }}is-active{{ end }}">{{ .Name }}</a>
+                  </li>
+                  {{ end }}
+                </ul>
+                {{ end }}
+              </div>
+              {{ end }}
+              </div>
+            </div>
+          </div>
+          {{ else }}
           <ul class="dropdown-menu">
             {{ range .Children }}
             {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
@@ -35,6 +69,7 @@
             </li>
             {{ end }}
           </ul>
+          {{ end }}
           {{ end }}
         </li>
         {{ end }}

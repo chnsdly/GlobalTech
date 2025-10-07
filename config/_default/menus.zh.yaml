@@ -13,8 +13,8 @@ main:
 
   # --- 产品子菜单 ---
 
-    # --- 按样式 ---
-  - name: "按样式"
+    # --- 样式 ---
+  - name: "样式"
     url: ""
     identifier: "products-style"
     parent: "products"
@@ -54,22 +54,22 @@ main:
     parent: "products-load"
     weight: 123
 
-    # --- 按尺寸 ---
-  - name: "按尺寸"
+    # --- 尺寸(mm) ---
+  - name: "尺寸(mm)"
     url: ""
     identifier: "products-dimension"
     parent: "products"
     weight: 13
 
-  - name: "1200x1000mm (欧标)"
+  - name: "1200x1000 (欧标)"
     url: "/products/dimension/1200x1000/"
     parent: "products-dimension"
     weight: 131
-  - name: "1100x1100mm (日韩标)"
+  - name: "1100x1100 (日韩标)"
     url: "/products/dimension/1100x1100/"
     parent: "products-dimension"
     weight: 132
-  - name: "1200x800mm (欧标)"
+  - name: "1200x800 (欧标)"
     url: "/products/dimension/1200x800/"
     parent: "products-dimension"
     weight: 133
