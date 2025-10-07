@@ -121,28 +121,34 @@ weight = 20
   weight = 25
 
 [[main]]
-name = "资源中心"
+name = "Resources"
 url = "/resources/"
 identifier = "resources"
 weight = 30
 
   [[main]]
-  name = "博客/新闻"
+  name = "Insights"
   url = "/resources/articles/"
   parent = "resources"
   weight = 31
 
   [[main]]
-  name = "下载中心"
-  url = "/resources/downloads/"
+  name = "Newsroom"
+  url = "/resources/news/"
   parent = "resources"
   weight = 32
 
   [[main]]
-  name = "常见问题 (FAQ)"
-  url = "/resources/faq/"
+  name = "Downloads"
+  url = "/resources/downloads/"
   parent = "resources"
   weight = 33
+
+  [[main]]
+  name = "FAQ"
+  url = "/resources/faq/"
+  parent = "resources"
+  weight = 34
 
 [[main]]
 name = "关于我们"

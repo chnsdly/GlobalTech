@@ -1,5 +1,5 @@
 ---
-title: "faq"
-description: "Insights and updates from our engineering team."
+title: "FAQ"
+description: "Answers to the most common questions about plastic pallet performance, customization, and logistics."
 ---
 
