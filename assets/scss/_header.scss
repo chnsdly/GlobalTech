@@ -115,7 +115,7 @@ body.header-hidden {
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% - var(--border-w));
   left: 0;
   min-width: 200px;
   background-color: var(--surface);
@@ -142,7 +142,8 @@ body.header-hidden {
 .dropdown-menu a {
   display: block;
   color: var(--on-surface);
-  padding: calc(var(--space) ) calc(var(--space) * 3);
+  padding: calc(var(--space)) calc(var(--space) * 2);
+  transition: background-color var(--t-normal) var(--ease), color var(--t-normal) var(--ease);
 }
 
 .dropdown-menu::before {
@@ -155,11 +156,7 @@ body.header-hidden {
 }
 
 
-.dropdown-menu a:hover {
-  background-color: var(--brand);
-  color: var(--on-brand);
-  text-decoration: none;
-}
+
 
 .navbar__menu li.has-mega {
   position: static;
@@ -169,7 +166,7 @@ body.header-hidden {
   position: absolute;
   left: 50%;
   transform: translate(-50%, calc(var(--space) * -2.5));
-  top: 100%;
+  top: calc(100% - var(--border-w));
   width: 100vw;
   background-color: var(--surface);
   color: var(--on-surface);
@@ -247,9 +244,12 @@ body.header-hidden {
 }
 
 .mega-menu__list a {
+  display: block;
   font-size: var(--fs-1);
   color: var(--on-surface);
-  padding: 0;
+  padding: calc(var(--space)) calc(var(--space) * 2);
+  border-radius: 0;
+  transition: background-color var(--t-normal) var(--ease), color var(--t-normal) var(--ease);
 }
 
 .mega-menu__list a.is-active {
@@ -257,9 +257,11 @@ body.header-hidden {
   color: var(--brand);
 }
 
+.dropdown-menu a:hover,
 .mega-menu__list a:hover {
+  background-color: unquote("rgb(from var(--brand) r g b / 12%)");
   color: var(--brand);
-  background: none;
+  text-decoration: none;
 }
 
 @media (max-width: 1024px) {
@@ -309,7 +311,7 @@ body.header-hidden {
 /* 语言下拉菜单 */
 .lang-switcher__dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% - var(--border-w));
   right: 0;
   min-width: 150px;
   background-color: var(--surface);
