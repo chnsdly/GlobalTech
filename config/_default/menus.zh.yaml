@@ -111,18 +111,22 @@ main:
     identifier: "resources"
     weight: 30
 
-  - name: "行业洞察 (博客/新闻)"
-    url: "/resources/blog-news/"
+  - name: "行业洞察 (博客)"
+    url: "/resources/articles/"
     parent: "resources"
     weight: 31
+  - name: "企业动态 (新闻)"
+    url: "/resources/news/"
+    parent: "resources"
+    weight: 32
   - name: "下载中心 (规格书/认证)"
     url: "/resources/downloads/"
     parent: "resources"
-    weight: 32
+    weight: 33
   - name: "常见问题 (FAQ)"
     url: "/resources/faq/"
     parent: "resources"
-    weight: 33
+    weight: 34
 
   # ====================================================================================
   # 4. 关于我们 (Level 1)
