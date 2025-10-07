@@ -10,7 +10,7 @@ identifier = "products"
 weight = 10
 
   [[main]]
-  name = "按样式"
+  name = "样式"
   url = ""
   identifier = "products-style"
   parent = "products"
@@ -53,158 +53,158 @@ weight = 10
     weight = 116
 
   [[main]]
-  name = "按尺寸"
+  name = "尺寸(mm)"
   url = ""
   identifier = "products-dimension"
   parent = "products"
   weight = 13
 
     [[main]]
-    name = "1000×600mm"
+    name = "1000×600"
     url = "/products/dimension/1000x600/"
     parent = "products-dimension"
     weight = 131
 
     [[main]]
-    name = "800×800mm"
+    name = "800×800"
     url = "/products/dimension/800x800/"
     parent = "products-dimension"
     weight = 132
 
     [[main]]
-    name = "900×900mm"
+    name = "900×900"
     url = "/products/dimension/900x900/"
     parent = "products-dimension"
     weight = 133
 
     [[main]]
-    name = "1000×800mm"
+    name = "1000×800"
     url = "/products/dimension/1000x800/"
     parent = "products-dimension"
     weight = 134
 
     [[main]]
-    name = "1000×1000mm"
+    name = "1000×1000"
     url = "/products/dimension/1000x1000/"
     parent = "products-dimension"
     weight = 135
 
     [[main]]
-    name = "1100×1100mm"
+    name = "1100×1100"
     url = "/products/dimension/1100x1100/"
     parent = "products-dimension"
     weight = 136
 
     [[main]]
-    name = "1200×800mm"
+    name = "1200×800"
     url = "/products/dimension/1200x800/"
     parent = "products-dimension"
     weight = 137
 
     [[main]]
-    name = "1200×1000mm"
+    name = "1200×1000"
     url = "/products/dimension/1200x1000/"
     parent = "products-dimension"
     weight = 138
 
     [[main]]
-    name = "1200×1100mm"
+    name = "1200×1100"
     url = "/products/dimension/1200x1100/"
     parent = "products-dimension"
     weight = 139
 
     [[main]]
-    name = "1200×1200mm"
+    name = "1200×1200"
     url = "/products/dimension/1200x1200/"
     parent = "products-dimension"
     weight = 140
 
     [[main]]
-    name = "1300×1100mm"
+    name = "1300×1100"
     url = "/products/dimension/1300x1100/"
     parent = "products-dimension"
     weight = 141
 
     [[main]]
-    name = "1300×1200mm"
+    name = "1300×1200"
     url = "/products/dimension/1300x1200/"
     parent = "products-dimension"
     weight = 142
 
     [[main]]
-    name = "1300×1300mm"
+    name = "1300×1300"
     url = "/products/dimension/1300x1300/"
     parent = "products-dimension"
     weight = 143
 
     [[main]]
-    name = "1400×1100mm"
+    name = "1400×1100"
     url = "/products/dimension/1400x1100/"
     parent = "products-dimension"
     weight = 144
 
     [[main]]
-    name = "1400×1200mm"
+    name = "1400×1200"
     url = "/products/dimension/1400x1200/"
     parent = "products-dimension"
     weight = 145
 
     [[main]]
-    name = "1400×1300mm"
+    name = "1400×1300"
     url = "/products/dimension/1400x1300/"
     parent = "products-dimension"
     weight = 146
 
     [[main]]
-    name = "1400×1400mm"
+    name = "1400×1400"
     url = "/products/dimension/1400x1400/"
     parent = "products-dimension"
     weight = 147
 
     [[main]]
-    name = "1500×1100mm"
+    name = "1500×1100"
     url = "/products/dimension/1500x1100/"
     parent = "products-dimension"
     weight = 148
 
     [[main]]
-    name = "1500×1200mm"
+    name = "1500×1200"
     url = "/products/dimension/1500x1200/"
     parent = "products-dimension"
     weight = 149
 
     [[main]]
-    name = "1500×1300mm"
+    name = "1500×1300"
     url = "/products/dimension/1500x1300/"
     parent = "products-dimension"
     weight = 150
 
     [[main]]
-    name = "1500×1400mm"
+    name = "1500×1400"
     url = "/products/dimension/1500x1400/"
     parent = "products-dimension"
     weight = 151
 
     [[main]]
-    name = "1600×1100mm"
+    name = "1600×1100"
     url = "/products/dimension/1600x1100/"
     parent = "products-dimension"
     weight = 152
 
     [[main]]
-    name = "1600×1200mm"
+    name = "1600×1200"
     url = "/products/dimension/1600x1200/"
     parent = "products-dimension"
     weight = 153
 
     [[main]]
-    name = "1700×1200mm"
+    name = "1700×1200"
     url = "/products/dimension/1700x1200/"
     parent = "products-dimension"
     weight = 154
 
     [[main]]
-    name = "1800×1200mm"
+    name = "1800×1200"
     url = "/products/dimension/1800x1200/"
     parent = "products-dimension"
     weight = 155
