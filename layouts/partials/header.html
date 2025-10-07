@@ -119,15 +119,47 @@
     <ul>
       {{ range .Site.Menus.main }}
       {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-      <li>
-        <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
-        {{ if .HasChildren }}
-        <ul class="submenu">
-          {{ range .Children }}
-          {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-          <li><a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a></li>
+      <li class="drawer__menu-item{{ if .HasChildren }} has-children{{ end }}">
+        <div class="drawer__menu-row">
+          <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
+          {{ if .HasChildren }}
+          <button type="button" class="submenu-toggle" aria-expanded="false" aria-label="切换{{ .Name }}子菜单">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M7.293 4.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L10.586 10 7.293 6.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
           {{ end }}
-        </ul>
+        </div>
+        {{ if .HasChildren }}
+        <div class="submenu-panel">
+          <ul class="submenu submenu--level2">
+            {{ range .Children }}
+            {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+            <li class="drawer__submenu-item{{ if .HasChildren }} has-children{{ end }}">
+              <div class="drawer__menu-row">
+                <a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a>
+                {{ if .HasChildren }}
+                <button type="button" class="submenu-toggle" aria-expanded="false" aria-label="切换{{ .Name }}子菜单">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.293 4.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L10.586 10 7.293 6.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+                {{ end }}
+              </div>
+              {{ if .HasChildren }}
+              <div class="submenu-panel">
+                <ul class="submenu submenu--level3">
+                  {{ range .Children }}
+                  {{ $grandchildActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+                  <li><a href="{{ .URL | relLangURL }}" class="{{ if $grandchildActive }}is-active{{ end }}">{{ .Name }}</a></li>
+                  {{ end }}
+                </ul>
+              </div>
+              {{ end }}
+            </li>
+            {{ end }}
+          </ul>
+        </div>
         {{ end }}
       </li>
       {{ end }}
@@ -244,5 +276,35 @@
         closeDrawer();
       }
     });
+
+    const drawerMenu = document.querySelector('.drawer__menu');
+    if (drawerMenu) {
+      drawerMenu.addEventListener('click', (event) => {
+        const toggle = event.target.closest('.submenu-toggle');
+        if (!toggle) return;
+
+        event.preventDefault();
+
+        const menuItem = toggle.closest('li');
+        if (!menuItem) return;
+
+        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+        const nextState = !isExpanded;
+
+        toggle.setAttribute('aria-expanded', nextState ? 'true' : 'false');
+        menuItem.classList.toggle('is-open', nextState);
+
+        if (!nextState) {
+          const openDescendants = menuItem.querySelectorAll('li.is-open');
+          openDescendants.forEach((item) => {
+            item.classList.remove('is-open');
+            const descendantToggle = item.querySelector('.submenu-toggle');
+            if (descendantToggle) {
+              descendantToggle.setAttribute('aria-expanded', 'false');
+            }
+          });
+        }
+      });
+    }
   });
 </script>
