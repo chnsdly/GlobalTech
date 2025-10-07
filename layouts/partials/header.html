@@ -45,7 +45,8 @@
                   {{ end }}
                 </div>
                 {{ if $group.HasChildren }}
-                <ul class="mega-menu__list">
+                {{ $isStyleGroup := eq $group.Identifier "products-style" }}
+                <ul class="mega-menu__list{{ if $isStyleGroup }} mega-menu__list--single{{ end }}">
                   {{ range $group.Children }}
                   {{ $itemActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
                   <li>
