@@ -1,5 +1,5 @@
 ---
-title: "downloads"
-description: "Insights and updates from our engineering team."
+title: "Downloads"
+description: "Access specification sheets, certification documents, and helpful checklists for every pallet line."
 ---
 

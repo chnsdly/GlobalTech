@@ -1,5 +1,5 @@
 ---
-title: "articles"
-description: "Insights and updates from our engineering team."
+title: "Insights"
+description: "Deep dives into pallet design, material handling trends, and best practices from our experts."
 ---
 
