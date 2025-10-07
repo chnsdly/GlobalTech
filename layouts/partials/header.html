@@ -1,3 +1,19 @@
+{{ if hugo.IsMultilingual }}
+  {{ $currentPage := . }}
+  {{ $languageOptions := slice $currentPage }}
+  {{ range .Translations }}
+    {{ $languageOptions = $languageOptions | append . }}
+  {{ end }}
+  {{ range .Site.Home.AllTranslations }}
+    {{ $lang := .Language.Lang }}
+    {{ if not (first 1 (where $languageOptions "Language.Lang" $lang)) }}
+      {{ $languageOptions = $languageOptions | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $languageOptions = sort $languageOptions "Language.Weight" }}
+  {{ $.Scratch.Set "languageOptions" $languageOptions }}
+{{ end }}
+
 <header class="site-header" id="site-header">
   <nav class="navbar">
 
@@ -78,25 +94,19 @@
 
     <div class="navbar__actions">
       {{ if hugo.IsMultilingual }}
-      <div class="lang-switcher">
-        <button class="lang-switcher__button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5"
-            stroke="currentColor" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M2 12h20"></path>
-            <path d="M12 2a15.75 15.75 0 0 1 0 20"></path>
-            <path d="M12 2a15.75 15.75 0 0 0 0 20"></path>
-          </svg>
-          <span>{{ .Site.Language.LanguageName }}</span>
-        </button>
-        <div class="lang-switcher__dropdown">
-          {{ range .Site.Home.AllTranslations }}
-          {{ if ne .Language.Lang $.Site.Language.Lang }}
-          <a href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
-          {{ end }}
-          {{ end }}
+        {{ $languageOptions := $.Scratch.Get "languageOptions" }}
+        {{ $languageLabel := i18n "language_switcher_label" | default "选择语言" }}
+        {{ $currentLang := $.Language.Lang }}
+        <div class="lang-switcher lang-switcher--desktop" data-lang-switcher>
+          <label class="sr-only" for="lang-switcher-desktop">{{ $languageLabel }}</label>
+          <select id="lang-switcher-desktop" class="lang-switcher__select">
+            {{ range $languageOptions }}
+              <option value="{{ .RelPermalink }}" {{ if eq .Language.Lang $currentLang }}selected{{ end }}>
+                {{ .Language.LanguageName }}
+              </option>
+            {{ end }}
+          </select>
         </div>
-      </div>
       {{ end }}
 
       <button class="navbar__toggler" id="drawer-toggler" aria-label="Open menu">
@@ -119,15 +129,47 @@
     <ul>
       {{ range .Site.Menus.main }}
       {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-      <li>
-        <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
-        {{ if .HasChildren }}
-        <ul class="submenu">
-          {{ range .Children }}
-          {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-          <li><a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a></li>
+      <li class="drawer__menu-item{{ if .HasChildren }} has-children{{ end }}">
+        <div class="drawer__menu-row">
+          <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
+          {{ if .HasChildren }}
+          <button type="button" class="submenu-toggle" aria-expanded="false" aria-label="切换{{ .Name }}子菜单">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M7.293 4.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L10.586 10 7.293 6.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
           {{ end }}
-        </ul>
+        </div>
+        {{ if .HasChildren }}
+        <div class="submenu-panel">
+          <ul class="submenu submenu--level2">
+            {{ range .Children }}
+            {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+            <li class="drawer__submenu-item{{ if .HasChildren }} has-children{{ end }}">
+              <div class="drawer__menu-row">
+                <a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a>
+                {{ if .HasChildren }}
+                <button type="button" class="submenu-toggle" aria-expanded="false" aria-label="切换{{ .Name }}子菜单">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.293 4.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L10.586 10 7.293 6.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+                {{ end }}
+              </div>
+              {{ if .HasChildren }}
+              <div class="submenu-panel">
+                <ul class="submenu submenu--level3">
+                  {{ range .Children }}
+                  {{ $grandchildActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+                  <li><a href="{{ .URL | relLangURL }}" class="{{ if $grandchildActive }}is-active{{ end }}">{{ .Name }}</a></li>
+                  {{ end }}
+                </ul>
+              </div>
+              {{ end }}
+            </li>
+            {{ end }}
+          </ul>
+        </div>
         {{ end }}
       </li>
       {{ end }}
@@ -135,13 +177,21 @@
   </nav>
 
   {{ if hugo.IsMultilingual }}
-  <div class="drawer__footer">
-    <div class="lang-switcher">
-      {{ range .Site.Home.AllTranslations }}
-      <a class="lang-switcher__button" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
-      {{ end }}
+    {{ $languageOptions := $.Scratch.Get "languageOptions" }}
+    {{ $languageLabel := i18n "language_switcher_label" | default "选择语言" }}
+    {{ $currentLang := $.Language.Lang }}
+    <div class="drawer__footer">
+      <div class="lang-switcher lang-switcher--mobile" data-lang-switcher>
+        <label class="sr-only" for="lang-switcher-mobile">{{ $languageLabel }}</label>
+        <select id="lang-switcher-mobile" class="lang-switcher__select">
+          {{ range $languageOptions }}
+            <option value="{{ .RelPermalink }}" {{ if eq .Language.Lang $currentLang }}selected{{ end }}>
+              {{ .Language.LanguageName }}
+            </option>
+          {{ end }}
+        </select>
+      </div>
     </div>
-  </div>
   {{ end }}
 </aside>
 
@@ -243,6 +293,46 @@
       if (event.key === 'Escape' && body.getAttribute('data-drawer-open') === 'true') {
         closeDrawer();
       }
+    });
+
+    const drawerMenu = document.querySelector('.drawer__menu');
+    if (drawerMenu) {
+      drawerMenu.addEventListener('click', (event) => {
+        const toggle = event.target.closest('.submenu-toggle');
+        if (!toggle) return;
+
+        event.preventDefault();
+
+        const menuItem = toggle.closest('li');
+        if (!menuItem) return;
+
+        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+        const nextState = !isExpanded;
+
+        toggle.setAttribute('aria-expanded', nextState ? 'true' : 'false');
+        menuItem.classList.toggle('is-open', nextState);
+
+        if (!nextState) {
+          const openDescendants = menuItem.querySelectorAll('li.is-open');
+          openDescendants.forEach((item) => {
+            item.classList.remove('is-open');
+            const descendantToggle = item.querySelector('.submenu-toggle');
+            if (descendantToggle) {
+              descendantToggle.setAttribute('aria-expanded', 'false');
+            }
+          });
+        }
+      });
+    }
+
+    const langSwitchers = document.querySelectorAll('[data-lang-switcher] .lang-switcher__select');
+    langSwitchers.forEach((select) => {
+      select.addEventListener('change', () => {
+        const target = select.value;
+        if (target) {
+          window.location.href = target;
+        }
+      });
     });
   });
 </script>
