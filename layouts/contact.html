@@ -1,3 +1,3 @@
 {{ define "main" }}
-{{ partial "lead-form.html" (dict "type" "contact" "page" . "sitekey" "0x4AAAAAAB43R0lGyzeXeIiK") }}
+{{ partial "lead-form.html" (dict "type" "contact" "page" . "sitekey" .Site.Params.turnstile_site_key) }}
 {{ end }}
