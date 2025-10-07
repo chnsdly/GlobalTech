@@ -121,7 +121,7 @@ weight = 20
   weight = 25
 
 [[main]]
-name = "Resources"
+name = "资源中心"
 url = "/resources/"
 identifier = "resources"
 weight = 30
