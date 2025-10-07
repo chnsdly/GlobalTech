@@ -6,6 +6,28 @@
     <description>Recent content in Categories on GlobalTech</description>
     <generator>Hugo</generator>
     <language>en-US</language>
+    <lastBuildDate>Fri, 18 Jul 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/en/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Articles</title>
+      <link>http://localhost:1313/en/categories/articles/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/en/categories/articles/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Downloads</title>
+      <link>http://localhost:1313/en/categories/downloads/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/en/categories/downloads/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>News</title>
+      <link>http://localhost:1313/en/categories/news/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/en/categories/news/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

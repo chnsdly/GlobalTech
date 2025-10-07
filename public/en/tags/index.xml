@@ -6,6 +6,21 @@
     <description>Recent content in Tags on GlobalTech</description>
     <generator>Hugo</generator>
     <language>en-US</language>
+    <lastBuildDate>Fri, 18 Jul 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/en/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HDPE</title>
+      <link>http://localhost:1313/en/tags/hdpe/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/en/tags/hdpe/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Testing</title>
+      <link>http://localhost:1313/en/tags/testing/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/en/tags/testing/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

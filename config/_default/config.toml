@@ -1,5 +1,5 @@
 baseURL = "https://example.com/"
-defaultContentLanguage = "zh"
+defaultContentLanguage = "en"
 title = "GlobalTech"
 enableRobotsTXT = true
 theme = []
