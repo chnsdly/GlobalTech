@@ -14,4 +14,17 @@ turnstile_site_key = "0x4AAAAAAB43R0lGyzeXeIiK"
 
 # 热门文章数量
 [blog.popular]
-  limit = 3  
+  limit = 3
+
+[navigation]
+  variant = "aurora"
+
+  [navigation.cta]
+    label = "Contact sales"
+    url = "/contact/"
+    newTab = false
+
+  [navigation.search]
+    enable = true
+    placeholder = "Search the site"
+    param = "q"

@@ -1,3 +1,16 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
 title = 'My New Hugo Site'
+
+[params.navigation]
+variant = "aurora"
+
+  [params.navigation.cta]
+  label = "Contact sales"
+  url = "/contact/"
+  newTab = false
+
+  [params.navigation.search]
+  enable = true
+  placeholder = "Search the site"
+  param = "q"
