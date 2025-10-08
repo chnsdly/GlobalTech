@@ -15,7 +15,7 @@
         {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
         {{ $isProducts := eq .Identifier "products" }}
         <li class="{{ if .HasChildren }}has-dropdown{{ end }}{{ if $isProducts }} has-mega{{ end }}">
-          <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">
+          <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}"{{ if $active }} aria-current="page"{{ end }}>
             <span>{{ .Name }}</span>
             {{ if .HasChildren }}
             <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -39,7 +39,7 @@
                 {{ $groupHasUrl := $group.URL }}
                 <div class="mega-menu__title-wrapper">
                   {{ if $groupHasUrl }}
-                  <a href="{{ $group.URL | relLangURL }}" class="mega-menu__title {{ if $groupActive }}is-active{{ end }}">{{ $group.Name }}</a>
+                  <a href="{{ $group.URL | relLangURL }}" class="mega-menu__title {{ if $groupActive }}is-active{{ end }}"{{ if $groupActive }} aria-current="page"{{ end }}>{{ $group.Name }}</a>
                   {{ else }}
                   <span class="mega-menu__title">{{ $group.Name }}</span>
                   {{ end }}
@@ -50,7 +50,7 @@
                   {{ range $group.Children }}
                   {{ $itemActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
                   <li>
-                    <a href="{{ .URL | relLangURL }}" class="{{ if $itemActive }}is-active{{ end }}">{{ .Name }}</a>
+                    <a href="{{ .URL | relLangURL }}" class="{{ if $itemActive }}is-active{{ end }}"{{ if $itemActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
                   </li>
                   {{ end }}
                 </ul>
@@ -65,7 +65,7 @@
             {{ range .Children }}
             {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
             <li>
-              <a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a>
+              <a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}"{{ if $childActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
             </li>
             {{ end }}
           </ul>
@@ -124,7 +124,7 @@
 
   <nav class="drawer__menu" aria-label="Mobile navigation">
     {{ $current := . }}
-    <div class="drawer__panel is-active" data-panel="root" data-title="{{ $menuTitle }}" aria-hidden="false">
+    <div class="drawer__panel is-active" id="panel-root" data-panel="root" data-title="{{ $menuTitle }}" aria-hidden="false">
       <ul class="drawer__list">
         {{ range .Site.Menus.main }}
         {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
@@ -132,12 +132,12 @@
         {{ $panelSlug := lower (replaceRE "[^a-zA-Z0-9]+" "-" $panelKey) }}
         {{ $panelID := printf "panel-%s" $panelSlug }}
         <li class="drawer__item drawer__item--root{{ if .HasChildren }} has-children{{ end }}">
-          <a href="{{ .URL | relLangURL }}" class="drawer__link {{ if $active }}is-active{{ end }}">
+          <a href="{{ .URL | relLangURL }}" class="drawer__link {{ if $active }}is-active{{ end }}"{{ if $active }} aria-current="page"{{ end }}>
             <span>{{ .Name }}</span>
           </a>
           {{ if .HasChildren }}
-          <button class="drawer__arrow" type="button" data-target="{{ $panelID }}"
-            aria-label="{{ printf "View submenu for %s" .Name }}">
+          <button class="drawer__arrow" type="button" data-target="{{ $panelID }}" aria-controls="{{ $panelID }}"
+            aria-haspopup="true" aria-expanded="false" aria-label="{{ printf "View submenu for %s" .Name }}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd"
                 d="M7.22 4.22a.75.75 0 011.06 0l5.5 5.5a.75.75 0 010 1.06l-5.5 5.5a.75.75 0 11-1.06-1.06L11.94 10 7.22 5.28a.75.75 0 010-1.06z"
@@ -151,7 +151,7 @@
 
       {{ if hugo.IsMultilingual }}
       <div class="drawer__languages" data-languages>
-        <button class="drawer__languages-toggle" type="button" aria-expanded="false" data-languages-toggle>
+        <button class="drawer__languages-toggle" type="button" aria-expanded="false" data-languages-toggle aria-controls="drawer-languages-panel">
           <span>{{ i18n "language" | default "Language" }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd"
@@ -159,12 +159,14 @@
               clip-rule="evenodd" />
           </svg>
         </button>
-        <div class="drawer__languages-panel" data-languages-panel hidden>
+        <div class="drawer__languages-panel" id="drawer-languages-panel" data-languages-panel hidden>
           <ul class="drawer__languages-list">
             {{ range .Site.Home.AllTranslations }}
+            {{ if ne .Language.Lang $.Site.Language.Lang }}
             <li>
               <a class="drawer__link" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
             </li>
+            {{ end }}
             {{ end }}
           </ul>
         </div>
@@ -177,7 +179,7 @@
     {{ $panelKey := default .Name .Identifier }}
     {{ $panelSlug := lower (replaceRE "[^a-zA-Z0-9]+" "-" $panelKey) }}
     {{ $panelID := printf "panel-%s" $panelSlug }}
-    <div class="drawer__panel{{ if eq .Identifier "products" }} drawer__panel--products{{ end }}" data-panel="{{ $panelID }}"
+    <div class="drawer__panel{{ if eq .Identifier "products" }} drawer__panel--products{{ end }}" id="{{ $panelID }}" data-panel="{{ $panelID }}"
       data-title="{{ .Name }}" aria-hidden="true" hidden>
       <button class="drawer__panel-back" type="button" data-panel-back
         aria-label="{{ i18n "backToMenu" | default "Back to main menu" }}">
@@ -186,13 +188,13 @@
             d="M12.78 4.22a.75.75 0 010 1.06L8.56 9.5H16a.75.75 0 010 1.5H8.56l4.22 4.22a.75.75 0 11-1.06 1.06l-5.5-5.5a.75.75 0 010-1.06l5.5-5.5a.75.75 0 011.06 0z"
             clip-rule="evenodd" />
         </svg>
-        <span>{{ i18n "menu" | default "Menu" }}</span>
+        <span class="sr-only">{{ i18n "menu" | default "Menu" }}</span>
       </button>
       <ul class="drawer__list">
         {{ range .Children }}
         {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
         <li class="drawer__item drawer__item--second{{ if .HasChildren }} has-children{{ end }}">
-          <a href="{{ .URL | relLangURL }}" class="drawer__link {{ if $childActive }}is-active{{ end }}">
+          <a href="{{ .URL | relLangURL }}" class="drawer__link {{ if $childActive }}is-active{{ end }}"{{ if $childActive }} aria-current="page"{{ end }}>
             <span>{{ .Name }}</span>
           </a>
           {{ if .HasChildren }}
@@ -200,7 +202,7 @@
             {{ range .Children }}
             {{ $grandActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
             <li>
-              <a href="{{ .URL | relLangURL }}" class="drawer__sublink {{ if $grandActive }}is-active{{ end }}">{{ .Name }}</a>
+              <a href="{{ .URL | relLangURL }}" class="drawer__sublink {{ if $grandActive }}is-active{{ end }}"{{ if $grandActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
             </li>
             {{ end }}
           </ul>
@@ -290,6 +292,30 @@
     const languageToggle = drawer ? drawer.querySelector('[data-languages-toggle]') : null;
     const languagePanel = drawer ? drawer.querySelector('[data-languages-panel]') : null;
     let activePanel = rootPanel;
+    const focusableSelector = 'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
+
+    const isElementVisible = (element) => {
+      if (!element) return false;
+      return element.offsetWidth > 0 || element.offsetHeight > 0 || element.getClientRects().length > 0;
+    };
+
+    const focusFirstElement = (container) => {
+      if (!container) return;
+      const focusable = Array.from(container.querySelectorAll(focusableSelector)).filter(isElementVisible);
+      if (focusable.length) {
+        requestAnimationFrame(() => {
+          focusable[0].focus({ preventScroll: true });
+        });
+      }
+    };
+
+    const resetSubmenuTriggers = () => {
+      if (!drawer) return;
+      const triggers = drawer.querySelectorAll('.drawer__arrow[data-target]');
+      triggers.forEach((trigger) => {
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+    };
 
     const collapseLanguages = () => {
       if (!languageContainer || !languageToggle || !languagePanel) return;
@@ -298,7 +324,7 @@
       languagePanel.hidden = true;
     };
 
-    const showPanel = (panelId) => {
+    const showPanel = (panelId, { shouldFocus = true } = {}) => {
       if (!drawer) return;
       const target = typeof panelId === 'string'
         ? drawer.querySelector(`[data-panel="${panelId}"]`)
@@ -329,13 +355,18 @@
       if (!isRoot) {
         collapseLanguages();
       }
+
+      if (shouldFocus) {
+        focusFirstElement(activePanel);
+      }
     };
 
     const resetDrawerState = () => {
       collapseLanguages();
       if (rootPanel) {
-        showPanel('root');
+        showPanel('root', { shouldFocus: false });
       }
+      resetSubmenuTriggers();
     };
 
     const setTogglerState = (isOpen) => {
@@ -352,6 +383,9 @@
         resetDrawerState();
       }
       setTogglerState(true);
+      if (rootPanel) {
+        focusFirstElement(rootPanel);
+      }
     };
 
     const closeDrawer = () => {
@@ -361,6 +395,9 @@
         resetDrawerState();
       }
       setTogglerState(false);
+      if (drawerToggler) {
+        drawerToggler.focus({ preventScroll: true });
+      }
     };
 
     if (drawerToggler) {
@@ -380,7 +417,10 @@
     }
 
     if (drawerBack) {
-      drawerBack.addEventListener('click', () => showPanel('root'));
+      drawerBack.addEventListener('click', () => {
+        showPanel('root');
+        resetSubmenuTriggers();
+      });
     }
 
     if (drawer && drawerPanels.length) {
@@ -389,6 +429,8 @@
         button.addEventListener('click', () => {
           const panelId = button.getAttribute('data-target');
           if (panelId) {
+            resetSubmenuTriggers();
+            button.setAttribute('aria-expanded', 'true');
             showPanel(panelId);
           }
         });
@@ -398,6 +440,7 @@
       panelBackButtons.forEach((button) => {
         button.addEventListener('click', () => {
           showPanel('root');
+          resetSubmenuTriggers();
         });
       });
     }
@@ -414,8 +457,33 @@
     }
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && body.getAttribute('data-drawer-open') === 'true') {
+      const isDrawerOpen = body.getAttribute('data-drawer-open') === 'true';
+      if (!isDrawerOpen) {
+        return;
+      }
+
+      if (event.key === 'Escape') {
         closeDrawer();
+        return;
+      }
+
+      if (event.key === 'Tab' && drawer) {
+        const focusable = Array.from(drawer.querySelectorAll(focusableSelector)).filter(isElementVisible);
+        if (!focusable.length) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement;
+
+        if (event.shiftKey) {
+          if (active === first || !drawer.contains(active)) {
+            event.preventDefault();
+            last.focus();
+          }
+        } else if (active === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     });
 
