@@ -1,97 +1,94 @@
-{{ $navScratch := newScratch }}
-{{ $navScratch.Set "variant" "classic" }}
-{{ with .Site.Params.navigation }}
-  {{ with .variant }}
-    {{ $navScratch.Set "variant" . }}
-  {{ end }}
-{{ end }}
-{{ with .Params.navigation }}
-  {{ with .variant }}
-    {{ $navScratch.Set "variant" . }}
-  {{ end }}
-{{ end }}
-{{ $navVariantRaw := $navScratch.Get "variant" }}
-{{ $navVariantSlug := default "classic" ($navVariantRaw | urlize) }}
-<header class="site-header nav-theme nav-theme--{{ $navVariantSlug }}" id="site-header" data-nav-theme
-  data-nav-variant="{{ $navVariantSlug }}" data-nav-variant-default="{{ $navVariantSlug }}">
+{{ $companyName := .Site.Params.company_name | default .Site.Title }}
+{{ $tagline := or .Site.Params.company_tagline .Site.Params.tagline }}
+<header class="site-header" id="site-header" data-header>
   <nav class="navbar">
-
-    <div class="navbar__logo">
-      <a href="{{ " /" | relLangURL }}">
-        <img src='{{ (.Site.Params.logo | default "images/logo.jpg") | relURL }}' width="72" height="72"
-          alt='{{ .Site.Params.company_name | default .Site.Title }}'>
-      </a>
-    </div>
-
-    <nav class="navbar__menu" aria-label="Main navigation">
-      {{ $current := . }}
-      <ul>
-        {{ range .Site.Menus.main }}
-        {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-        {{ $isProducts := eq .Identifier "products" }}
-        <li class="{{ if .HasChildren }}has-dropdown{{ end }}{{ if $isProducts }} has-mega{{ end }}">
-          <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}"{{ if $active }} aria-current="page"{{ end }}>
-            <span>{{ .Name }}</span>
-            {{ if .HasChildren }}
-            <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-              aria-hidden="true">
-              <path fill-rule="evenodd"
-                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                clip-rule="evenodd" />
-            </svg>
+    <div class="navbar__inner container container--xl">
+      <div class="navbar__brand">
+        <a class="navbar__brand-link" href="{{ " /" | relLangURL }}" aria-label="{{ $companyName }}">
+          <span class="navbar__brand-mark">
+            <img class="navbar__brand-logo" src='{{ (.Site.Params.logo | default "images/logo.jpg") | relURL }}' width="56"
+              height="56" alt='{{ $companyName }}'>
+          </span>
+          <span class="navbar__brand-text">
+            <span class="navbar__brand-title">{{ $companyName }}</span>
+            {{ with $tagline }}
+            <span class="navbar__brand-subtitle">{{ . }}</span>
             {{ end }}
-          </a>
+          </span>
+        </a>
+      </div>
 
-          {{ if .HasChildren }}
-          {{ if $isProducts }}
-          <div class="mega-menu" aria-label="Products submenu">
-            <div class="mega-menu__inner container container--wide">
-              <div class="mega-menu__grid">
-              {{ range .Children }}
-              {{ $group := . }}
-              {{ $groupActive := or ($current.IsMenuCurrent "main" $group) ($current.HasMenuCurrent "main" $group) }}
-              <div class="mega-menu__group">
-                {{ $groupHasUrl := $group.URL }}
-                <div class="mega-menu__title-wrapper">
-                  {{ if $groupHasUrl }}
-                  <a href="{{ $group.URL | relLangURL }}" class="mega-menu__title {{ if $groupActive }}is-active{{ end }}"{{ if $groupActive }} aria-current="page"{{ end }}>{{ $group.Name }}</a>
-                  {{ else }}
-                  <span class="mega-menu__title">{{ $group.Name }}</span>
-                  {{ end }}
-                </div>
-                {{ if $group.HasChildren }}
-                {{ $isStyleGroup := eq $group.Identifier "products-style" }}
-                <ul class="mega-menu__list{{ if $isStyleGroup }} mega-menu__list--single{{ end }}">
-                  {{ range $group.Children }}
-                  {{ $itemActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-                  <li>
-                    <a href="{{ .URL | relLangURL }}" class="{{ if $itemActive }}is-active{{ end }}"{{ if $itemActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
-                  </li>
-                  {{ end }}
-                </ul>
+      <div class="navbar__menu-wrapper" data-navbar-menu>
+        <nav class="navbar__menu" aria-label="Main navigation">
+          {{ $current := . }}
+          <ul>
+            {{ range .Site.Menus.main }}
+            {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+            {{ $isProducts := eq .Identifier "products" }}
+            <li class="{{ if .HasChildren }}has-dropdown{{ end }}{{ if $isProducts }} has-mega{{ end }}">
+              <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}"{{ if $active }} aria-current="page"{{ end }}>
+                <span>{{ .Name }}</span>
+                {{ if .HasChildren }}
+                <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                  aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                    clip-rule="evenodd" />
+                </svg>
                 {{ end }}
+              </a>
+
+              {{ if .HasChildren }}
+              {{ if $isProducts }}
+              <div class="mega-menu" aria-label="Products submenu">
+                <div class="mega-menu__inner container container--wide">
+                  <div class="mega-menu__grid">
+                    {{ range .Children }}
+                    {{ $group := . }}
+                    {{ $groupActive := or ($current.IsMenuCurrent "main" $group) ($current.HasMenuCurrent "main" $group) }}
+                    <div class="mega-menu__group">
+                      {{ $groupHasUrl := $group.URL }}
+                      <div class="mega-menu__title-wrapper">
+                        {{ if $groupHasUrl }}
+                        <a href="{{ $group.URL | relLangURL }}" class="mega-menu__title {{ if $groupActive }}is-active{{ end }}"{{ if $groupActive }} aria-current="page"{{ end }}>{{ $group.Name }}</a>
+                        {{ else }}
+                        <span class="mega-menu__title">{{ $group.Name }}</span>
+                        {{ end }}
+                      </div>
+                      {{ if $group.HasChildren }}
+                      {{ $isStyleGroup := eq $group.Identifier "products-style" }}
+                      <ul class="mega-menu__list{{ if $isStyleGroup }} mega-menu__list--single{{ end }}">
+                        {{ range $group.Children }}
+                        {{ $itemActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+                        <li>
+                          <a href="{{ .URL | relLangURL }}" class="{{ if $itemActive }}is-active{{ end }}"{{ if $itemActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
+                        </li>
+                        {{ end }}
+                      </ul>
+                      {{ end }}
+                    </div>
+                    {{ end }}
+                  </div>
+                </div>
               </div>
+              {{ else }}
+              <ul class="dropdown-menu">
+                {{ range .Children }}
+                {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+                <li>
+                  <a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}"{{ if $childActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
+                </li>
+                {{ end }}
+              </ul>
               {{ end }}
-              </div>
-            </div>
-          </div>
-          {{ else }}
-          <ul class="dropdown-menu">
-            {{ range .Children }}
-            {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-            <li>
-              <a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}"{{ if $childActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
+              {{ end }}
             </li>
             {{ end }}
           </ul>
-          {{ end }}
-          {{ end }}
-        </li>
-        {{ end }}
-      </ul>
-    </nav>
+        </nav>
+      </div>
 
-    <div class="navbar__actions">
+      <div class="navbar__actions">
       {{ if hugo.IsMultilingual }}
       <div class="lang-switcher">
         <button class="lang-switcher__button">
@@ -119,15 +116,14 @@
         <span class="toggler-bar"></span>
         <span class="toggler-bar"></span>
       </button>
+      </div>
     </div>
   </nav>
 </header>
 
 {{ $menuTitle := i18n "menu" | default "Menu" }}
-<div class="drawer-overlay nav-theme nav-theme--{{ $navVariantSlug }}" id="drawer-overlay" data-nav-theme
-  data-nav-variant="{{ $navVariantSlug }}"></div>
-<aside class="drawer nav-theme nav-theme--{{ $navVariantSlug }}" id="drawer" aria-hidden="true" data-nav-theme
-  data-nav-variant="{{ $navVariantSlug }}">
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer__header">
     <button class="drawer__back" id="drawer-back" type="button" aria-label="{{ i18n "backToMenu" | default "Back to main menu" }}" hidden>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -304,40 +300,12 @@
     const drawerBack = document.getElementById('drawer-back');
     const drawerTitle = document.getElementById('drawer-title');
     const drawerPanels = drawer ? Array.from(drawer.querySelectorAll('[data-panel]')) : [];
-    const navThemeElements = Array.from(document.querySelectorAll('[data-nav-theme]'));
-    const navThemeClassPrefix = 'nav-theme--';
-    const navVariantDefault = header?.dataset.navVariantDefault || 'classic';
     const rootPanel = drawer ? drawer.querySelector('[data-panel="root"]') : null;
     const languageContainer = drawer ? drawer.querySelector('[data-languages]') : null;
     const languageToggle = drawer ? drawer.querySelector('[data-languages-toggle]') : null;
     const languagePanel = drawer ? drawer.querySelector('[data-languages-panel]') : null;
     let activePanel = rootPanel;
     const focusableSelector = 'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
-
-    const normalizeVariant = (value) => {
-      if (!value) return navVariantDefault;
-      return value
-        .toString()
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '') || navVariantDefault;
-    };
-
-    const applyNavVariant = (value) => {
-      const variant = normalizeVariant(value);
-      navThemeElements.forEach((element) => {
-        const classList = Array.from(element.classList);
-        classList
-          .filter((cls) => cls.startsWith(navThemeClassPrefix))
-          .forEach((cls) => element.classList.remove(cls));
-        element.classList.add(`${navThemeClassPrefix}${variant}`);
-        element.setAttribute('data-nav-variant', variant);
-      });
-      document.documentElement.setAttribute('data-nav-variant', variant);
-      document.body.setAttribute('data-nav-variant', variant);
-      return variant;
-    };
 
     const isElementVisible = (element) => {
       if (!element) return false;
@@ -353,34 +321,6 @@
         });
       }
     };
-
-    applyNavVariant(navVariantDefault);
-    const navVariantParams = new URLSearchParams(window.location.search);
-    const requestedVariant = navVariantParams.get('nav')
-      || navVariantParams.get('navvariant')
-      || navVariantParams.get('nav-theme')
-      || navVariantParams.get('navstyle');
-    if (requestedVariant) {
-      applyNavVariant(requestedVariant);
-    }
-
-    window.__setNavVariant = (value) => applyNavVariant(value || navVariantDefault);
-    window.__getNavVariant = () => document.body.getAttribute('data-nav-variant');
-
-    const navVariantChoices = ['classic', 'minimal', 'centered', 'elevated'];
-    if (!navVariantChoices.includes(navVariantDefault)) {
-      navVariantChoices.unshift(navVariantDefault);
-    }
-    document.addEventListener('keydown', (event) => {
-      if (!event.shiftKey || !event.altKey || event.code !== 'KeyN') {
-        return;
-      }
-      event.preventDefault();
-      const currentVariant = document.body.getAttribute('data-nav-variant') || navVariantDefault;
-      const currentIndex = navVariantChoices.indexOf(currentVariant);
-      const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % navVariantChoices.length : 0;
-      applyNavVariant(navVariantChoices[nextIndex]);
-    });
 
     const resetSubmenuTriggers = () => {
       if (!drawer) return;
