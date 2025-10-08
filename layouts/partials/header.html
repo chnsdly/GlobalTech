@@ -177,7 +177,17 @@
     {{ $panelKey := default .Name .Identifier }}
     {{ $panelSlug := lower (replaceRE "[^a-zA-Z0-9]+" "-" $panelKey) }}
     {{ $panelID := printf "panel-%s" $panelSlug }}
-    <div class="drawer__panel" data-panel="{{ $panelID }}" data-title="{{ .Name }}" aria-hidden="true" hidden>
+    <div class="drawer__panel{{ if eq .Identifier "products" }} drawer__panel--products{{ end }}" data-panel="{{ $panelID }}"
+      data-title="{{ .Name }}" aria-hidden="true" hidden>
+      <button class="drawer__panel-back" type="button" data-panel-back
+        aria-label="{{ i18n "backToMenu" | default "Back to main menu" }}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd"
+            d="M12.78 4.22a.75.75 0 010 1.06L8.56 9.5H16a.75.75 0 010 1.5H8.56l4.22 4.22a.75.75 0 11-1.06 1.06l-5.5-5.5a.75.75 0 010-1.06l5.5-5.5a.75.75 0 011.06 0z"
+            clip-rule="evenodd" />
+        </svg>
+        <span>{{ i18n "menu" | default "Menu" }}</span>
+      </button>
       <ul class="drawer__list">
         {{ range .Children }}
         {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
@@ -381,6 +391,13 @@
           if (panelId) {
             showPanel(panelId);
           }
+        });
+      });
+
+      const panelBackButtons = drawer.querySelectorAll('[data-panel-back]');
+      panelBackButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          showPanel('root');
         });
       });
     }

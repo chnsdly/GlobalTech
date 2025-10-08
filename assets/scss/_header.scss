@@ -505,6 +505,31 @@ body[data-drawer-open='true'] {
   overflow-y: auto;
 }
 
+.drawer__panel-back {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1.5);
+  border: none;
+  background: none;
+  color: var(--on-brand);
+  font-size: var(--fs-1);
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: calc(var(--space) * 2);
+  cursor: pointer;
+  transition: color var(--t-normal) var(--ease);
+}
+
+.drawer__panel-back:hover,
+.drawer__panel-back:focus-visible {
+  color: var(--on-brand-strong, var(--on-brand));
+}
+
+.drawer__panel-back svg {
+  width: 20px;
+  height: 20px;
+}
+
 .drawer__list {
   list-style: none;
   margin: 0;
@@ -603,6 +628,25 @@ body[data-drawer-open='true'] {
 
 .drawer--submenu .drawer__languages {
   display: none;
+}
+
+.drawer__panel--products .drawer__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: calc(var(--space) * 4);
+}
+
+.drawer__panel--products .drawer__item {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.drawer__panel--products .drawer__sublist {
+  padding: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: calc(var(--space) * 2);
 }
 
 .drawer__languages-toggle {
