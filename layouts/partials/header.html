@@ -108,42 +108,52 @@
   </nav>
 </header>
 
+{{- $menuTree := slice -}}
+{{- range .Site.Menus.main -}}
+  {{- $menuTree = $menuTree | append (partial "mobile-menu-tree.html" (dict "item" .)) -}}
+{{- end -}}
+
 <div class="drawer-overlay" id="drawer-overlay"></div>
-<aside class="drawer" id="drawer">
+<aside class="drawer" id="drawer" aria-hidden="true" data-submenu-label="{{ i18n "openSubmenuFor" | default "View submenu for %s" }}">
   <div class="drawer__header">
-    <span class="sr-only">Menu</span>
+    <button class="drawer__back" id="drawer-back" type="button" aria-label="{{ i18n "backToPrevious" | default "Back" }}" hidden>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd"
+          d="M12.78 4.22a.75.75 0 010 1.06L8.56 9.5H15a.75.75 0 010 1.5H8.56l4.22 4.22a.75.75 0 11-1.06 1.06l-5.5-5.5a.75.75 0 010-1.06l5.5-5.5a.75.75 0 011.06 0z"
+          clip-rule="evenodd" />
+      </svg>
+    </button>
+    <span class="drawer__title" id="drawer-title" data-root-title="{{ i18n "menu" | default "Menu" }}">{{ i18n "menu" | default "Menu" }}</span>
   </div>
 
   <nav class="drawer__menu" aria-label="Mobile navigation">
-    {{ $current := . }}
-    <ul>
-      {{ range .Site.Menus.main }}
-      {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-      <li>
-        <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
-        {{ if .HasChildren }}
-        <ul class="submenu">
-          {{ range .Children }}
-          {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-          <li><a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a></li>
-          {{ end }}
-        </ul>
-        {{ end }}
-      </li>
-      {{ end }}
-    </ul>
+    <ul class="drawer__list" id="drawer-menu-list"></ul>
   </nav>
 
   {{ if hugo.IsMultilingual }}
-  <div class="drawer__footer">
-    <div class="lang-switcher">
-      {{ range .Site.Home.AllTranslations }}
-      <a class="lang-switcher__button" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
-      {{ end }}
+  <div class="drawer__languages" id="drawer-languages">
+    <button class="drawer__languages-toggle" id="drawer-language-toggle" type="button" aria-expanded="false">
+      <span>{{ i18n "language" | default "Language" }}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd"
+          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+          clip-rule="evenodd" />
+      </svg>
+    </button>
+    <div class="drawer__languages-panel" id="drawer-language-panel" hidden>
+      <ul>
+        {{ range .Site.Home.AllTranslations }}
+        <li><a href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a></li>
+        {{ end }}
+      </ul>
     </div>
   </div>
   {{ end }}
 </aside>
+
+<script id="mobile-menu-data" type="application/json">
+  {{- $menuTree | jsonify -}}
+</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -209,27 +219,191 @@
       handleSmartHeader();
     }
 
-    // --- 2. 抽屉 (Drawer) 逻辑 (保持不变) ---
+    // --- 2. 抽屉 (Drawer) 逻辑 ---
     const drawerToggler = document.getElementById('drawer-toggler');
     const drawerOverlay = document.getElementById('drawer-overlay');
+    const drawer = document.getElementById('drawer');
+    const drawerMenuList = document.getElementById('drawer-menu-list');
+    const drawerTitle = document.getElementById('drawer-title');
+    const drawerBackButton = document.getElementById('drawer-back');
+    const drawerLanguages = document.getElementById('drawer-languages');
+    const languageToggle = document.getElementById('drawer-language-toggle');
+    const languagePanel = document.getElementById('drawer-language-panel');
+    const menuDataEl = document.getElementById('mobile-menu-data');
 
-    const openDrawer = () => {
+    const rootTitle = drawerTitle ? (drawerTitle.dataset.rootTitle || drawerTitle.textContent || 'Menu') : 'Menu';
+    const submenuLabelTemplate = drawer ? drawer.getAttribute('data-submenu-label') || 'View submenu for %s' : 'View submenu for %s';
+
+    let menuData = [];
+    if (menuDataEl) {
+      try {
+        menuData = JSON.parse(menuDataEl.textContent.trim());
+      } catch (error) {
+        console.error('Failed to parse mobile menu data', error);
+      }
+    }
+
+    let menuStack = [];
+    let currentItems = menuData;
+
+    const createChevronSvg = () => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      svg.setAttribute('viewBox', '0 0 20 20');
+      svg.setAttribute('fill', 'currentColor');
+      svg.setAttribute('aria-hidden', 'true');
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('fill-rule', 'evenodd');
+      path.setAttribute('clip-rule', 'evenodd');
+      path.setAttribute('d', 'M7.21 5.23a.75.75 0 011.06-.02l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 11-1.04-1.08L10.44 10 7.23 6.29a.75.75 0 01-.02-1.06z');
+
+      svg.appendChild(path);
+      return svg;
+    };
+
+    const renderMenu = (items, title) => {
+      if (!drawerMenuList) return;
+
+      const fragment = document.createDocumentFragment();
+
+      items.forEach((item) => {
+        const li = document.createElement('li');
+        li.className = 'drawer__item';
+
+        const link = document.createElement('a');
+        link.className = 'drawer__link';
+        link.href = item.url || '#';
+        link.textContent = item.name;
+        li.appendChild(link);
+
+        link.addEventListener('click', () => {
+          if (body.getAttribute('data-drawer-open') === 'true') {
+            closeDrawer();
+          }
+        });
+
+        if (Array.isArray(item.children) && item.children.length > 0) {
+          const expand = document.createElement('button');
+          expand.type = 'button';
+          expand.className = 'drawer__expand';
+          let label = submenuLabelTemplate;
+          if (label.includes('%s')) {
+            label = label.replace('%s', item.name);
+          } else {
+            label = `${label} ${item.name}`;
+          }
+          expand.setAttribute('aria-label', label);
+
+          const srText = document.createElement('span');
+          srText.className = 'sr-only';
+          srText.textContent = label;
+          expand.appendChild(srText);
+          expand.appendChild(createChevronSvg());
+
+          expand.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            menuStack.push({ items: currentItems, title: drawerTitle ? drawerTitle.textContent : rootTitle });
+            currentItems = item.children;
+            renderMenu(currentItems, item.name);
+          });
+
+          li.appendChild(expand);
+        }
+
+        fragment.appendChild(li);
+      });
+
+      drawerMenuList.replaceChildren(fragment);
+
+      if (drawerTitle) {
+        drawerTitle.textContent = title;
+      }
+
+      const isRoot = menuStack.length === 0;
+      if (drawerBackButton) {
+        drawerBackButton.hidden = isRoot;
+      }
+      if (drawerLanguages) {
+        drawerLanguages.hidden = !isRoot;
+      }
+
+      if (!isRoot && languageToggle && languagePanel) {
+        languageToggle.setAttribute('aria-expanded', 'false');
+        languageToggle.classList.remove('is-open');
+        languagePanel.hidden = true;
+      }
+    };
+
+    const resetToRoot = () => {
+      menuStack = [];
+      currentItems = menuData;
+      renderMenu(currentItems, rootTitle);
+      if (languageToggle && languagePanel) {
+        languageToggle.setAttribute('aria-expanded', 'false');
+        languageToggle.classList.remove('is-open');
+        languagePanel.hidden = true;
+      }
+    };
+
+    if (drawerBackButton) {
+      drawerBackButton.addEventListener('click', () => {
+        if (menuStack.length === 0) {
+          resetToRoot();
+          return;
+        }
+
+        const previous = menuStack.pop();
+        currentItems = previous.items;
+        renderMenu(currentItems, previous.title);
+      });
+    }
+
+    if (languageToggle && languagePanel) {
+      languagePanel.hidden = true;
+      languageToggle.addEventListener('click', () => {
+        const expanded = languageToggle.getAttribute('aria-expanded') === 'true';
+        languageToggle.setAttribute('aria-expanded', String(!expanded));
+        languageToggle.classList.toggle('is-open', !expanded);
+        languagePanel.hidden = expanded;
+      });
+    }
+
+    function openDrawer() {
       body.setAttribute('data-drawer-open', 'true');
-      if (drawerToggler) drawerToggler.classList.add('open');
-    };
-    const closeDrawer = () => {
+      if (drawer) drawer.setAttribute('aria-hidden', 'false');
+      if (drawerToggler) {
+        drawerToggler.classList.add('open');
+        drawerToggler.setAttribute('aria-expanded', 'true');
+        drawerToggler.setAttribute('aria-label', 'Close menu');
+      }
+      resetToRoot();
+    }
+
+    function closeDrawer() {
       body.setAttribute('data-drawer-open', 'false');
-      if (drawerToggler) drawerToggler.classList.remove('open');
-    };
+      if (drawer) drawer.setAttribute('aria-hidden', 'true');
+      if (drawerToggler) {
+        drawerToggler.classList.remove('open');
+        drawerToggler.setAttribute('aria-expanded', 'false');
+        drawerToggler.setAttribute('aria-label', 'Open menu');
+      }
+      if (languageToggle && languagePanel) {
+        languageToggle.setAttribute('aria-expanded', 'false');
+        languageToggle.classList.remove('is-open');
+        languagePanel.hidden = true;
+      }
+    }
 
     if (drawerToggler) {
+      drawerToggler.setAttribute('aria-expanded', 'false');
       drawerToggler.addEventListener('click', () => {
         const isOpen = body.getAttribute('data-drawer-open') === 'true';
         if (isOpen) {
-          // 关闭抽屉
           closeDrawer();
         } else {
-          // 打开抽屉
           openDrawer();
         }
       });
@@ -244,5 +418,9 @@
         closeDrawer();
       }
     });
+
+    if (menuData.length > 0) {
+      renderMenu(menuData, rootTitle);
+    }
   });
 </script>

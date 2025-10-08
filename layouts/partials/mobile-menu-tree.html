@@ -1,0 +1,14 @@
+{{- $item := .item -}}
+{{- $children := slice -}}
+{{- if $item.HasChildren -}}
+  {{- range $item.Children -}}
+    {{- $children = $children | append (partial "mobile-menu-tree.html" (dict "item" .)) -}}
+  {{- end -}}
+{{- end -}}
+{{- return (dict
+  "name" $item.Name
+  "url" (($item.URL | default "") | relLangURL)
+  "identifier" ($item.Identifier | default "")
+  "children" $children
+) -}}
+
