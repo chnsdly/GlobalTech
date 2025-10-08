@@ -1,3 +1,19 @@
+{{ if hugo.IsMultilingual }}
+  {{ $currentPage := . }}
+  {{ $languageOptions := slice $currentPage }}
+  {{ range .Translations }}
+    {{ $languageOptions = $languageOptions | append . }}
+  {{ end }}
+  {{ range .Site.Home.AllTranslations }}
+    {{ $lang := .Language.Lang }}
+    {{ if not (first 1 (where $languageOptions "Language.Lang" $lang)) }}
+      {{ $languageOptions = $languageOptions | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $languageOptions = sort $languageOptions "Language.Weight" }}
+  {{ $.Scratch.Set "languageOptions" $languageOptions }}
+{{ end }}
+
 <header class="site-header" id="site-header">
   <nav class="navbar">
 
@@ -78,28 +94,24 @@
 
     <div class="navbar__actions">
       {{ if hugo.IsMultilingual }}
-      <div class="lang-switcher">
-        <button class="lang-switcher__button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5"
-            stroke="currentColor" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M2 12h20"></path>
-            <path d="M12 2a15.75 15.75 0 0 1 0 20"></path>
-            <path d="M12 2a15.75 15.75 0 0 0 0 20"></path>
-          </svg>
-          <span>{{ .Site.Language.LanguageName }}</span>
-        </button>
-        <div class="lang-switcher__dropdown">
-          {{ range .Site.Home.AllTranslations }}
-          {{ if ne .Language.Lang $.Site.Language.Lang }}
-          <a href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
-          {{ end }}
-          {{ end }}
+        {{ $languageOptions := $.Scratch.Get "languageOptions" }}
+        {{ $languageLabel := i18n "language_switcher_label" | default "选择语言" }}
+        {{ $currentLang := $.Language.Lang }}
+        <div class="lang-switcher lang-switcher--desktop" data-lang-switcher>
+          <label class="sr-only" for="lang-switcher-desktop">{{ $languageLabel }}</label>
+          <select id="lang-switcher-desktop" class="lang-switcher__select">
+            {{ range $languageOptions }}
+              <option value="{{ .RelPermalink }}" {{ if eq .Language.Lang $currentLang }}selected{{ end }}>
+                {{ .Language.LanguageName }}
+              </option>
+            {{ end }}
+          </select>
         </div>
-      </div>
       {{ end }}
 
-      <button class="navbar__toggler" id="drawer-toggler" aria-label="Open menu">
+      {{ $openLabel := i18n "mobile_open_menu" | default "打开菜单" }}
+      {{ $closeLabel := i18n "mobile_close_menu" | default "关闭菜单" }}
+      <button class="navbar__toggler" id="drawer-toggler" aria-controls="drawer" aria-expanded="false" aria-label="{{ $openLabel }}" data-open-label="{{ $openLabel }}" data-close-label="{{ $closeLabel }}">
         <span class="toggler-bar"></span>
         <span class="toggler-bar"></span>
         <span class="toggler-bar"></span>
@@ -109,40 +121,90 @@
 </header>
 
 <div class="drawer-overlay" id="drawer-overlay"></div>
-<aside class="drawer" id="drawer">
-  <div class="drawer__header">
-    <span class="sr-only">Menu</span>
-  </div>
-
-  <nav class="drawer__menu" aria-label="Mobile navigation">
+<aside class="drawer" id="drawer" data-root-panel="root" aria-hidden="true">
+  <div class="drawer__viewport" data-drawer-viewport>
     {{ $current := . }}
-    <ul>
-      {{ range .Site.Menus.main }}
-      {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-      <li>
-        <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
-        {{ if .HasChildren }}
-        <ul class="submenu">
-          {{ range .Children }}
-          {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-          <li><a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a></li>
-          {{ end }}
-        </ul>
+    <section class="drawer__panel is-active" data-panel="root" aria-label="{{ i18n "mobile_primary_navigation" | default "主导航" }}">
+      <ul class="drawer__menu-list drawer__menu-list--level1">
+        {{ range $index, $item := .Site.Menus.main }}
+        {{ $active := or ($current.IsMenuCurrent "main" $item) ($current.HasMenuCurrent "main" $item) }}
+        {{ $panelID := printf "panel-%d" $index }}
+        <li class="drawer__item{{ if $item.HasChildren }} has-children{{ end }}">
+          <div class="drawer__item-row">
+            <a href="{{ $item.URL | relLangURL }}" class="drawer__link{{ if $active }} is-active{{ end }}">{{ $item.Name }}</a>
+            {{ if $item.HasChildren }}
+            <button type="button" class="drawer__forward" data-target="{{ $panelID }}" aria-label="{{ printf (i18n "mobile_view_submenu" | default "查看%s的子菜单") $item.Name }}">
+              <svg aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M7.293 4.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L10.586 10 7.293 6.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            {{ end }}
+          </div>
+        </li>
         {{ end }}
-      </li>
-      {{ end }}
-    </ul>
-  </nav>
+      </ul>
 
-  {{ if hugo.IsMultilingual }}
-  <div class="drawer__footer">
-    <div class="lang-switcher">
-      {{ range .Site.Home.AllTranslations }}
-      <a class="lang-switcher__button" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+      {{ if and (hugo.IsMultilingual) ($.Scratch.Get "languageOptions") }}
+      {{ $languageOptions := $.Scratch.Get "languageOptions" }}
+      {{ $languageLabel := i18n "language_switcher_label" | default "选择语言" }}
+      {{ $currentLang := $.Language.Lang }}
+      <div class="drawer__language" data-lang-switcher>
+        <button type="button" class="drawer__language-toggle" aria-expanded="false">
+          <span>{{ $languageLabel }}</span>
+          <svg aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        <div class="drawer__language-panel" hidden>
+          <label class="sr-only" for="lang-switcher-mobile">{{ $languageLabel }}</label>
+          <select id="lang-switcher-mobile" class="lang-switcher__select">
+            {{ range $languageOptions }}
+            <option value="{{ .RelPermalink }}" {{ if eq .Language.Lang $currentLang }}selected{{ end }}>
+              {{ .Language.LanguageName }}
+            </option>
+            {{ end }}
+          </select>
+        </div>
+      </div>
       {{ end }}
-    </div>
+    </section>
+
+    {{ range $index, $item := .Site.Menus.main }}
+    {{ if $item.HasChildren }}
+    {{ $panelID := printf "panel-%d" $index }}
+    <section class="drawer__panel" data-panel="{{ $panelID }}" aria-label="{{ $item.Name }}">
+      <div class="drawer__panel-header">
+        <button type="button" class="drawer__back" data-target="root">
+          <svg aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M12.707 4.293a1 1 0 010 1.414L9.414 9l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+          <span>{{ i18n "mobile_back_to_main" | default "返回" }}</span>
+        </button>
+        <span class="drawer__panel-title">{{ $item.Name }}</span>
+      </div>
+
+      <ul class="drawer__menu-list drawer__menu-list--level2">
+        {{ range $child := $item.Children }}
+        {{ $childActive := or ($current.IsMenuCurrent "main" $child) ($current.HasMenuCurrent "main" $child) }}
+        <li class="drawer__item{{ if $child.HasChildren }} has-grandchildren{{ end }}">
+          <a href="{{ $child.URL | relLangURL }}" class="drawer__link{{ if $childActive }} is-active{{ end }}">{{ $child.Name }}</a>
+          {{ if $child.HasChildren }}
+          <ul class="drawer__menu-list drawer__menu-list--level3">
+            {{ range $grandchild := $child.Children }}
+            {{ $grandchildActive := or ($current.IsMenuCurrent "main" $grandchild) ($current.HasMenuCurrent "main" $grandchild) }}
+            <li class="drawer__item">
+              <a href="{{ $grandchild.URL | relLangURL }}" class="drawer__link{{ if $grandchildActive }} is-active{{ end }}">{{ $grandchild.Name }}</a>
+            </li>
+            {{ end }}
+          </ul>
+          {{ end }}
+        </li>
+        {{ end }}
+      </ul>
+    </section>
+    {{ end }}
+    {{ end }}
   </div>
-  {{ end }}
 </aside>
 
 <script>
@@ -209,27 +271,117 @@
       handleSmartHeader();
     }
 
-    // --- 2. 抽屉 (Drawer) 逻辑 (保持不变) ---
+    // --- 2. 抽屉 (Drawer) 逻辑 ---
     const drawerToggler = document.getElementById('drawer-toggler');
     const drawerOverlay = document.getElementById('drawer-overlay');
+    const drawer = document.getElementById('drawer');
+    const rootPanelId = drawer ? drawer.getAttribute('data-root-panel') || 'root' : 'root';
+    const drawerViewport = drawer ? drawer.querySelector('[data-drawer-viewport]') : null;
+
+    const drawerPanels = drawer ? Array.from(drawer.querySelectorAll('.drawer__panel')) : [];
+    drawerPanels.forEach((panel) => {
+      const isActive = panel.classList.contains('is-active');
+      panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+    });
+    if (drawer) {
+      drawer.classList.toggle('drawer--showing-root', true);
+      drawer.setAttribute('data-active-panel', rootPanelId);
+    }
+
+    const drawerLanguage = drawer ? drawer.querySelector('.drawer__language') : null;
+    let collapseLanguagePanel = () => {};
+
+    if (drawerLanguage) {
+      const languageToggle = drawerLanguage.querySelector('.drawer__language-toggle');
+      const languagePanel = drawerLanguage.querySelector('.drawer__language-panel');
+
+      if (languageToggle && languagePanel) {
+        collapseLanguagePanel = () => {
+          languageToggle.setAttribute('aria-expanded', 'false');
+          languagePanel.hidden = true;
+        };
+
+        const expandLanguagePanel = () => {
+          languageToggle.setAttribute('aria-expanded', 'true');
+          languagePanel.hidden = false;
+        };
+
+        languageToggle.addEventListener('click', () => {
+          const expanded = languageToggle.getAttribute('aria-expanded') === 'true';
+          if (expanded) {
+            collapseLanguagePanel();
+          } else {
+            expandLanguagePanel();
+          }
+        });
+      }
+    }
+
+    const setActivePanel = (panelId) => {
+      if (!drawer) return;
+
+      const targetPanel = drawer.querySelector(`.drawer__panel[data-panel="${panelId}"]`);
+      if (!targetPanel) return;
+
+      const currentPanel = drawer.querySelector('.drawer__panel.is-active');
+      if (currentPanel && currentPanel !== targetPanel) {
+        currentPanel.classList.remove('is-active');
+        currentPanel.setAttribute('aria-hidden', 'true');
+      }
+
+      targetPanel.classList.add('is-active');
+      targetPanel.setAttribute('aria-hidden', 'false');
+      drawer.setAttribute('data-active-panel', panelId);
+
+      const isRoot = panelId === rootPanelId;
+      drawer.classList.toggle('drawer--showing-root', isRoot);
+      drawer.classList.toggle('drawer--showing-subview', !isRoot);
+
+      if (!isRoot) {
+        collapseLanguagePanel();
+      }
+    };
+
+    const setDrawerOpenState = (shouldOpen) => {
+      body.setAttribute('data-drawer-open', shouldOpen ? 'true' : 'false');
+
+      if (drawerToggler) {
+        drawerToggler.classList.toggle('open', shouldOpen);
+        drawerToggler.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+
+        const { openLabel = '打开菜单', closeLabel = '关闭菜单' } = drawerToggler.dataset;
+        drawerToggler.setAttribute('aria-label', shouldOpen ? closeLabel : openLabel);
+      }
+
+      if (drawer) {
+        drawer.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
+        if (!shouldOpen) {
+          collapseLanguagePanel();
+        }
+      }
+
+      if (drawerOverlay) {
+        drawerOverlay.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
+      }
+    };
 
     const openDrawer = () => {
-      body.setAttribute('data-drawer-open', 'true');
-      if (drawerToggler) drawerToggler.classList.add('open');
+      setActivePanel(rootPanelId);
+      setDrawerOpenState(true);
     };
+
     const closeDrawer = () => {
-      body.setAttribute('data-drawer-open', 'false');
-      if (drawerToggler) drawerToggler.classList.remove('open');
+      setActivePanel(rootPanelId);
+      setDrawerOpenState(false);
     };
 
     if (drawerToggler) {
-      drawerToggler.addEventListener('click', () => {
+      drawerToggler.addEventListener('click', (event) => {
+        event.preventDefault();
         const isOpen = body.getAttribute('data-drawer-open') === 'true';
         if (isOpen) {
-          // 关闭抽屉
           closeDrawer();
         } else {
-          // 打开抽屉
           openDrawer();
         }
       });
@@ -243,6 +395,37 @@
       if (event.key === 'Escape' && body.getAttribute('data-drawer-open') === 'true') {
         closeDrawer();
       }
+    });
+
+    if (drawerViewport) {
+      drawerViewport.addEventListener('click', (event) => {
+        const forward = event.target.closest('.drawer__forward');
+        if (forward) {
+          event.preventDefault();
+          const target = forward.getAttribute('data-target');
+          if (target) {
+            setActivePanel(target);
+          }
+          return;
+        }
+
+        const back = event.target.closest('.drawer__back');
+        if (back) {
+          event.preventDefault();
+          const target = back.getAttribute('data-target') || rootPanelId;
+          setActivePanel(target);
+        }
+      });
+    }
+
+    const langSwitchers = document.querySelectorAll('[data-lang-switcher] .lang-switcher__select');
+    langSwitchers.forEach((select) => {
+      select.addEventListener('change', () => {
+        const target = select.value;
+        if (target) {
+          window.location.href = target;
+        }
+      });
     });
   });
 </script>
