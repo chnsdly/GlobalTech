@@ -425,18 +425,18 @@ body[data-drawer-open="true"] #site-header {
 .drawer {
   position: fixed;
   top: 0;
+  left: 0;
   right: 0;
-  bottom: 0;
-  width: 80%;
-  max-width: 320px;
   background-color: var(--brand);
   background-color: unquote("rgb(from var(--brand) r g b / var(--layer-alpha))");
   z-index: var(--z-modal);
-  transform: translateX(100%);
+  transform: translateY(-100%);
   transition: transform var(--t-normal) var(--ease);
   display: flex;
   flex-direction: column;
-  padding: calc(var(--space) * 4);
+  padding: calc(var(--space) * 4) calc(var(--space) * 3) calc(var(--space) * 6);
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 body[data-drawer-open='true'] .drawer-overlay {
@@ -445,7 +445,7 @@ body[data-drawer-open='true'] .drawer-overlay {
 }
 
 body[data-drawer-open='true'] .drawer {
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 body[data-drawer-open='true'] {
@@ -454,14 +454,49 @@ body[data-drawer-open='true'] {
 
 .drawer__header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: calc(var(--space) * 6);
+  gap: calc(var(--space) * 2);
+  margin-bottom: calc(var(--space) * 4);
 }
 
+.drawer__back {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space));
+  border: none;
+  background: none;
+  color: var(--on-brand);
+  font-size: var(--fs-2);
+  font-weight: 500;
+  padding: calc(var(--space));
+  border-radius: var(--radius);
+  cursor: pointer;
+}
 
-.drawer__menu {
+.drawer__back:hover,
+.drawer__back:focus-visible {
+  background-color: unquote("rgb(from var(--on-brand) r g b / 15%)");
+  outline: none;
+}
+
+.drawer__back:focus-visible {
+  box-shadow: 0 0 0 2px unquote("rgb(from var(--on-brand) r g b / 35%)");
+}
+
+.drawer__back svg {
+  width: 20px;
+  height: 20px;
+}
+
+.drawer__title {
+  color: var(--on-brand);
+  font-size: var(--fs-3);
+  font-weight: 600;
   flex-grow: 1;
+}
+
+.drawer__body {
+  flex: 1;
   overflow-y: auto;
 }
 
@@ -471,9 +506,26 @@ body[data-drawer-open='true'] {
   margin: 0;
 }
 
-.drawer__menu a {
+.drawer__list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space));
+}
+
+.drawer__item {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space));
+}
+
+.drawer__item.has-children {
+  justify-content: space-between;
+}
+
+.drawer__link {
+  flex: 1;
   display: block;
-  padding: calc(var(--space) * 3) calc(var(--space) * 2);
+  padding: calc(var(--space) * 2.5) calc(var(--space) * 2);
   font-size: var(--fs-2);
   color: var(--on-brand);
   border-radius: var(--radius);
@@ -481,27 +533,69 @@ body[data-drawer-open='true'] {
   transition: background-color var(--t-normal) var(--ease);
 }
 
-.drawer__menu a:hover,
-.drawer__menu a.is-active {
-  background-color: var(--brand);
-  color: var(--on-brand);
+.drawer__list--level2 .drawer__link {
+  font-size: var(--fs-2);
 }
 
-[data-theme="dark"] .drawer__menu a:hover,
-[data-theme="dark"] .drawer__menu a.is-active {
-  background-color: var(--brand);
-  color: var(--on-brand);
-}
-
-/* 移动端子菜单样式 */
-.drawer__menu .submenu {
-  padding-left: calc(var(--space) * 4);
-  margin-top: calc(var(--space) * -1);
-}
-
-.drawer__menu .submenu a {
+.drawer__list--level3 .drawer__link {
   font-size: var(--fs-1);
-  padding-block: calc(var(--space) * 2);
+  padding-block: calc(var(--space) * 1.5);
+  padding-left: calc(var(--space) * 3);
+}
+
+.drawer__link:hover,
+.drawer__link:focus-visible,
+.drawer__link.is-active {
+  background-color: var(--brand);
+  color: var(--on-brand);
+}
+
+.drawer__link:focus-visible {
+  outline: none;
+}
+
+.drawer__arrow {
+  border: none;
+  background: none;
+  color: var(--on-brand);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--space) * 1.5);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--t-normal) var(--ease);
+}
+
+.drawer__arrow:hover {
+  background-color: unquote("rgb(from var(--on-brand) r g b / 15%)");
+}
+
+.drawer__arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.drawer__arrow:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px unquote("rgb(from var(--on-brand) r g b / 35%)");
+}
+
+.drawer__submenu {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 2);
+}
+
+.drawer__list--level2 {
+  gap: calc(var(--space) * 1.5);
+}
+
+.drawer__list--level3 {
+  gap: calc(var(--space));
+  margin-top: calc(var(--space));
+  padding-left: calc(var(--space) * 2);
+  border-left: var(--border-w) solid unquote("rgb(from var(--on-brand) r g b / 20%)");
 }
 
 .drawer__footer {

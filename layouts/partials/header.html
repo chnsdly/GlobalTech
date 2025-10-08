@@ -111,31 +111,71 @@
 <div class="drawer-overlay" id="drawer-overlay"></div>
 <aside class="drawer" id="drawer">
   <div class="drawer__header">
-    <span class="sr-only">Menu</span>
+    {{ $backLabel := i18n "mobile_menu_back" | default "Back" }}
+    <button type="button" class="drawer__back" id="drawer-back" aria-label="{{ $backLabel }}" hidden>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor"
+        aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 5l-7 7 7 7" />
+      </svg>
+      <span>{{ $backLabel }}</span>
+    </button>
+    {{ $menuTitle := i18n "mobile_menu_title" | default "Menu" }}
+    <span class="drawer__title" id="drawer-title" data-default-title="{{ $menuTitle }}">{{ $menuTitle }}</span>
   </div>
 
-  <nav class="drawer__menu" aria-label="Mobile navigation">
-    {{ $current := . }}
-    <ul>
+  <div class="drawer__body">
+    <nav class="drawer__menu" aria-label="Mobile navigation">
+      {{ $current := . }}
+      <ul class="drawer__list drawer__list--level1" data-drawer-primary>
+        {{ range .Site.Menus.main }}
+        {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+        {{ $menuKey := printf "submenu-%s" (anchorize (or .Identifier .Name)) }}
+        <li class="drawer__item {{ if .HasChildren }}has-children{{ end }}">
+          <a href="{{ .URL | relLangURL }}" class="drawer__link {{ if $active }}is-active{{ end }}">{{ .Name }}</a>
+          {{ if .HasChildren }}
+          {{ $submenuLabel := i18n "mobile_menu_open_submenu" | default "View submenu" }}
+          <button class="drawer__arrow" type="button" data-submenu-target="{{ $menuKey }}"
+            aria-label="{{ $submenuLabel }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5"
+              stroke="currentColor" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          {{ end }}
+        </li>
+        {{ end }}
+      </ul>
+
       {{ range .Site.Menus.main }}
-      {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-      <li>
-        <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
-        {{ if .HasChildren }}
-        <ul class="submenu">
+      {{ if .HasChildren }}
+      {{ $menuKey := printf "submenu-%s" (anchorize (or .Identifier .Name)) }}
+      <div class="drawer__submenu" data-drawer-submenu="{{ $menuKey }}" data-parent-name="{{ .Name }}" hidden>
+        <ul class="drawer__list drawer__list--level2">
           {{ range .Children }}
           {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-          <li><a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a></li>
+          <li class="drawer__item {{ if .HasChildren }}has-children{{ end }}">
+            <a href="{{ .URL | relLangURL }}" class="drawer__link {{ if $childActive }}is-active{{ end }}">{{ .Name }}</a>
+            {{ if .HasChildren }}
+            <ul class="drawer__list drawer__list--level3">
+              {{ range .Children }}
+              {{ $grandActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+              <li class="drawer__item">
+                <a href="{{ .URL | relLangURL }}" class="drawer__link {{ if $grandActive }}is-active{{ end }}">{{ .Name }}</a>
+              </li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </li>
           {{ end }}
         </ul>
-        {{ end }}
-      </li>
+      </div>
       {{ end }}
-    </ul>
-  </nav>
+      {{ end }}
+    </nav>
+  </div>
 
   {{ if hugo.IsMultilingual }}
-  <div class="drawer__footer">
+  <div class="drawer__footer" data-drawer-langs>
     <div class="lang-switcher">
       {{ range .Site.Home.AllTranslations }}
       <a class="lang-switcher__button" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
@@ -212,14 +252,60 @@
     // --- 2. 抽屉 (Drawer) 逻辑 (保持不变) ---
     const drawerToggler = document.getElementById('drawer-toggler');
     const drawerOverlay = document.getElementById('drawer-overlay');
+    const drawer = document.getElementById('drawer');
+    const drawerMenu = drawer ? drawer.querySelector('.drawer__menu') : null;
+    const drawerPrimary = drawer ? drawer.querySelector('[data-drawer-primary]') : null;
+    const drawerSubmenus = drawer ? Array.from(drawer.querySelectorAll('[data-drawer-submenu]')) : [];
+    const drawerBack = document.getElementById('drawer-back');
+    const drawerTitle = document.getElementById('drawer-title');
+    const drawerLangs = drawer ? drawer.querySelector('[data-drawer-langs]') : null;
+    const defaultDrawerTitle = drawerTitle ? drawerTitle.dataset.defaultTitle || drawerTitle.textContent : '';
+
+    if (drawerToggler) {
+      drawerToggler.setAttribute('aria-expanded', 'false');
+    }
+
+    let activeSubmenu = null;
+
+    const showPrimaryView = () => {
+      if (drawerPrimary) drawerPrimary.removeAttribute('hidden');
+      drawerSubmenus.forEach((submenu) => submenu.setAttribute('hidden', ''));
+      activeSubmenu = null;
+      if (drawerBack) drawerBack.hidden = true;
+      if (drawerLangs) drawerLangs.removeAttribute('hidden');
+      if (drawerTitle && defaultDrawerTitle) drawerTitle.textContent = defaultDrawerTitle;
+      if (drawer) drawer.classList.remove('drawer--submenu');
+    };
+
+    const showSubmenu = (submenu) => {
+      if (!submenu) return;
+      if (drawerPrimary) drawerPrimary.setAttribute('hidden', '');
+      drawerSubmenus.forEach((item) => {
+        if (item !== submenu) item.setAttribute('hidden', '');
+      });
+      submenu.removeAttribute('hidden');
+      activeSubmenu = submenu;
+      if (drawerBack) drawerBack.hidden = false;
+      if (drawerLangs) drawerLangs.setAttribute('hidden', '');
+      if (drawerTitle) drawerTitle.textContent = submenu.dataset.parentName || defaultDrawerTitle;
+      if (drawer) drawer.classList.add('drawer--submenu');
+    };
 
     const openDrawer = () => {
+      showPrimaryView();
       body.setAttribute('data-drawer-open', 'true');
-      if (drawerToggler) drawerToggler.classList.add('open');
+      if (drawerToggler) {
+        drawerToggler.classList.add('open');
+        drawerToggler.setAttribute('aria-expanded', 'true');
+      }
     };
     const closeDrawer = () => {
+      showPrimaryView();
       body.setAttribute('data-drawer-open', 'false');
-      if (drawerToggler) drawerToggler.classList.remove('open');
+      if (drawerToggler) {
+        drawerToggler.classList.remove('open');
+        drawerToggler.setAttribute('aria-expanded', 'false');
+      }
     };
 
     if (drawerToggler) {
@@ -237,6 +323,26 @@
 
     if (drawerOverlay) {
       drawerOverlay.addEventListener('click', closeDrawer);
+    }
+
+    if (drawerBack) {
+      drawerBack.addEventListener('click', () => {
+        if (activeSubmenu) {
+          showPrimaryView();
+        }
+      });
+    }
+
+    if (drawerMenu) {
+      drawerMenu.addEventListener('click', (event) => {
+        const arrowButton = event.target.closest('[data-submenu-target]');
+        if (!arrowButton) return;
+        event.preventDefault();
+        const targetId = arrowButton.getAttribute('data-submenu-target');
+        if (!targetId) return;
+        const submenu = drawerSubmenus.find((item) => item.dataset.drawerSubmenu === targetId);
+        showSubmenu(submenu);
+      });
     }
 
     document.addEventListener('keydown', (event) => {
