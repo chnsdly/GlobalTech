@@ -6,6 +6,10 @@ logo = "images/logo.jpg"
 
 turnstile_site_key = "0x4AAAAAAB43R0lGyzeXeIiK"
 
+[navigation]
+  # 可选值：classic、sleek、minimal、bold
+  variant = "classic"
+
 # 社交媒体链接
 [social]
   linkedin = "https://linkedin.com/company/globaltech"
