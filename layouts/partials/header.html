@@ -1,5 +1,8 @@
-<header class="site-header" id="site-header">
-  <nav class="navbar">
+{{ $navConfig := default dict .Site.Params.navigation }}
+{{ $variantParam := default "classic" (index $navConfig "variant") }}
+{{ $variantSlug := lower (replaceRE "[^a-z0-9]+" "-" $variantParam) }}
+<header class="site-header site-header--{{ $variantSlug }}" id="site-header" data-nav-variant="{{ $variantSlug }}">
+  <nav class="navbar" data-nav-variant="{{ $variantSlug }}">
 
     <div class="navbar__logo">
       <a href="{{ " /" | relLangURL }}">
@@ -15,7 +18,7 @@
         {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
         {{ $isProducts := eq .Identifier "products" }}
         <li class="{{ if .HasChildren }}has-dropdown{{ end }}{{ if $isProducts }} has-mega{{ end }}">
-          <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">
+          <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}"{{ if $active }} aria-current="page"{{ end }}>
             <span>{{ .Name }}</span>
             {{ if .HasChildren }}
             <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -39,7 +42,7 @@
                 {{ $groupHasUrl := $group.URL }}
                 <div class="mega-menu__title-wrapper">
                   {{ if $groupHasUrl }}
-                  <a href="{{ $group.URL | relLangURL }}" class="mega-menu__title {{ if $groupActive }}is-active{{ end }}">{{ $group.Name }}</a>
+                  <a href="{{ $group.URL | relLangURL }}" class="mega-menu__title {{ if $groupActive }}is-active{{ end }}"{{ if $groupActive }} aria-current="page"{{ end }}>{{ $group.Name }}</a>
                   {{ else }}
                   <span class="mega-menu__title">{{ $group.Name }}</span>
                   {{ end }}
@@ -50,7 +53,7 @@
                   {{ range $group.Children }}
                   {{ $itemActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
                   <li>
-                    <a href="{{ .URL | relLangURL }}" class="{{ if $itemActive }}is-active{{ end }}">{{ .Name }}</a>
+                    <a href="{{ .URL | relLangURL }}" class="{{ if $itemActive }}is-active{{ end }}"{{ if $itemActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
                   </li>
                   {{ end }}
                 </ul>
@@ -65,7 +68,7 @@
             {{ range .Children }}
             {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
             <li>
-              <a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a>
+              <a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}"{{ if $childActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
             </li>
             {{ end }}
           </ul>
@@ -99,7 +102,7 @@
       </div>
       {{ end }}
 
-      <button class="navbar__toggler" id="drawer-toggler" aria-label="Open menu">
+      <button class="navbar__toggler" id="drawer-toggler" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
         <span class="toggler-bar"></span>
         <span class="toggler-bar"></span>
         <span class="toggler-bar"></span>
@@ -108,41 +111,112 @@
   </nav>
 </header>
 
+{{ $menuTitle := i18n "menu" | default "Menu" }}
 <div class="drawer-overlay" id="drawer-overlay"></div>
-<aside class="drawer" id="drawer">
+<aside class="drawer" id="drawer" aria-hidden="true" data-nav-variant="{{ $variantSlug }}">
   <div class="drawer__header">
-    <span class="sr-only">Menu</span>
+    <button class="drawer__back" id="drawer-back" type="button" aria-label="{{ i18n "backToMenu" | default "Back to main menu" }}" hidden>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd"
+          d="M12.78 4.22a.75.75 0 010 1.06L8.56 9.5H16a.75.75 0 010 1.5H8.56l4.22 4.22a.75.75 0 11-1.06 1.06l-5.5-5.5a.75.75 0 010-1.06l5.5-5.5a.75.75 0 011.06 0z"
+          clip-rule="evenodd" />
+      </svg>
+    </button>
+    <span class="drawer__title" id="drawer-title" data-default="{{ $menuTitle }}">{{ $menuTitle }}</span>
   </div>
 
   <nav class="drawer__menu" aria-label="Mobile navigation">
     {{ $current := . }}
-    <ul>
-      {{ range .Site.Menus.main }}
-      {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-      <li>
-        <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
-        {{ if .HasChildren }}
-        <ul class="submenu">
-          {{ range .Children }}
-          {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-          <li><a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a></li>
+    <div class="drawer__panel is-active" id="panel-root" data-panel="root" data-title="{{ $menuTitle }}" aria-hidden="false">
+      <ul class="drawer__list">
+        {{ range .Site.Menus.main }}
+        {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+        {{ $panelKey := default .Name .Identifier }}
+        {{ $panelSlug := lower (replaceRE "[^a-zA-Z0-9]+" "-" $panelKey) }}
+        {{ $panelID := printf "panel-%s" $panelSlug }}
+        <li class="drawer__item drawer__item--root{{ if .HasChildren }} has-children{{ end }}">
+          <a href="{{ .URL | relLangURL }}" class="drawer__link {{ if $active }}is-active{{ end }}"{{ if $active }} aria-current="page"{{ end }}>
+            <span>{{ .Name }}</span>
+          </a>
+          {{ if .HasChildren }}
+          <button class="drawer__arrow" type="button" data-target="{{ $panelID }}" aria-controls="{{ $panelID }}"
+            aria-haspopup="true" aria-expanded="false" aria-label="{{ printf "View submenu for %s" .Name }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M7.22 4.22a.75.75 0 011.06 0l5.5 5.5a.75.75 0 010 1.06l-5.5 5.5a.75.75 0 11-1.06-1.06L11.94 10 7.22 5.28a.75.75 0 010-1.06z"
+                clip-rule="evenodd" />
+            </svg>
+          </button>
           {{ end }}
-        </ul>
+        </li>
         {{ end }}
-      </li>
-      {{ end }}
-    </ul>
-  </nav>
+      </ul>
 
-  {{ if hugo.IsMultilingual }}
-  <div class="drawer__footer">
-    <div class="lang-switcher">
-      {{ range .Site.Home.AllTranslations }}
-      <a class="lang-switcher__button" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+      {{ if hugo.IsMultilingual }}
+      <div class="drawer__languages" data-languages>
+        <button class="drawer__languages-toggle" type="button" aria-expanded="false" data-languages-toggle aria-controls="drawer-languages-panel">
+          <span>{{ i18n "language" | default "Language" }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd" />
+          </svg>
+        </button>
+        <div class="drawer__languages-panel" id="drawer-languages-panel" data-languages-panel hidden>
+          <ul class="drawer__languages-list">
+            {{ range .Site.Home.AllTranslations }}
+            {{ if ne .Language.Lang $.Site.Language.Lang }}
+            <li>
+              <a class="drawer__link" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+            </li>
+            {{ end }}
+            {{ end }}
+          </ul>
+        </div>
+      </div>
       {{ end }}
     </div>
-  </div>
-  {{ end }}
+
+    {{ range .Site.Menus.main }}
+    {{ if .HasChildren }}
+    {{ $panelKey := default .Name .Identifier }}
+    {{ $panelSlug := lower (replaceRE "[^a-zA-Z0-9]+" "-" $panelKey) }}
+    {{ $panelID := printf "panel-%s" $panelSlug }}
+    <div class="drawer__panel{{ if eq .Identifier "products" }} drawer__panel--products{{ end }}" id="{{ $panelID }}" data-panel="{{ $panelID }}"
+      data-title="{{ .Name }}" aria-hidden="true" hidden>
+      <button class="drawer__panel-back" type="button" data-panel-back
+        aria-label="{{ i18n "backToMenu" | default "Back to main menu" }}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd"
+            d="M12.78 4.22a.75.75 0 010 1.06L8.56 9.5H16a.75.75 0 010 1.5H8.56l4.22 4.22a.75.75 0 11-1.06 1.06l-5.5-5.5a.75.75 0 010-1.06l5.5-5.5a.75.75 0 011.06 0z"
+            clip-rule="evenodd" />
+        </svg>
+        <span class="sr-only">{{ i18n "menu" | default "Menu" }}</span>
+      </button>
+      <ul class="drawer__list">
+        {{ range .Children }}
+        {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+        <li class="drawer__item drawer__item--second{{ if .HasChildren }} has-children{{ end }}">
+          <a href="{{ .URL | relLangURL }}" class="drawer__link {{ if $childActive }}is-active{{ end }}"{{ if $childActive }} aria-current="page"{{ end }}>
+            <span>{{ .Name }}</span>
+          </a>
+          {{ if .HasChildren }}
+          <ul class="drawer__sublist">
+            {{ range .Children }}
+            {{ $grandActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+            <li>
+              <a href="{{ .URL | relLangURL }}" class="drawer__sublink {{ if $grandActive }}is-active{{ end }}"{{ if $grandActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
+            </li>
+            {{ end }}
+          </ul>
+          {{ end }}
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+    {{ end }}
+  </nav>
 </aside>
 
 <script>
@@ -209,27 +283,133 @@
       handleSmartHeader();
     }
 
-    // --- 2. 抽屉 (Drawer) 逻辑 (保持不变) ---
+    // --- 2. 抽屉 (Drawer) 逻辑 ---
+    const drawer = document.getElementById('drawer');
     const drawerToggler = document.getElementById('drawer-toggler');
     const drawerOverlay = document.getElementById('drawer-overlay');
+    const drawerBack = document.getElementById('drawer-back');
+    const drawerTitle = document.getElementById('drawer-title');
+    const drawerPanels = drawer ? Array.from(drawer.querySelectorAll('[data-panel]')) : [];
+    const rootPanel = drawer ? drawer.querySelector('[data-panel="root"]') : null;
+    const languageContainer = drawer ? drawer.querySelector('[data-languages]') : null;
+    const languageToggle = drawer ? drawer.querySelector('[data-languages-toggle]') : null;
+    const languagePanel = drawer ? drawer.querySelector('[data-languages-panel]') : null;
+    let activePanel = rootPanel;
+    const focusableSelector = 'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
+
+    const isElementVisible = (element) => {
+      if (!element) return false;
+      return element.offsetWidth > 0 || element.offsetHeight > 0 || element.getClientRects().length > 0;
+    };
+
+    const focusFirstElement = (container) => {
+      if (!container) return;
+      const focusable = Array.from(container.querySelectorAll(focusableSelector)).filter(isElementVisible);
+      if (focusable.length) {
+        requestAnimationFrame(() => {
+          focusable[0].focus({ preventScroll: true });
+        });
+      }
+    };
+
+    const resetSubmenuTriggers = () => {
+      if (!drawer) return;
+      const triggers = drawer.querySelectorAll('.drawer__arrow[data-target]');
+      triggers.forEach((trigger) => {
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+    };
+
+    const collapseLanguages = () => {
+      if (!languageContainer || !languageToggle || !languagePanel) return;
+      languageContainer.classList.remove('is-open');
+      languageToggle.setAttribute('aria-expanded', 'false');
+      languagePanel.hidden = true;
+    };
+
+    const showPanel = (panelId, { shouldFocus = true } = {}) => {
+      if (!drawer) return;
+      const target = typeof panelId === 'string'
+        ? drawer.querySelector(`[data-panel="${panelId}"]`)
+        : panelId;
+      if (!target) return;
+
+      drawerPanels.forEach((panel) => {
+        const isTarget = panel === target;
+        panel.classList.toggle('is-active', isTarget);
+        panel.toggleAttribute('hidden', !isTarget);
+        panel.setAttribute('aria-hidden', isTarget ? 'false' : 'true');
+      });
+
+      activePanel = target;
+      const isRoot = activePanel === rootPanel;
+      drawer.classList.toggle('drawer--submenu', !isRoot);
+
+      if (drawerBack) {
+        drawerBack.hidden = isRoot;
+      }
+
+      if (drawerTitle) {
+        const defaultTitle = drawerTitle.dataset.default || drawerTitle.textContent || '';
+        const panelTitle = activePanel.dataset.title || defaultTitle;
+        drawerTitle.textContent = panelTitle;
+      }
+
+      if (!isRoot) {
+        collapseLanguages();
+      }
+
+      if (shouldFocus) {
+        focusFirstElement(activePanel);
+      }
+    };
+
+    const resetDrawerState = () => {
+      collapseLanguages();
+      if (rootPanel) {
+        showPanel('root', { shouldFocus: false });
+      }
+      resetSubmenuTriggers();
+    };
+
+    const setTogglerState = (isOpen) => {
+      if (!drawerToggler) return;
+      drawerToggler.classList.toggle('open', isOpen);
+      drawerToggler.setAttribute('aria-expanded', String(isOpen));
+      drawerToggler.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    };
 
     const openDrawer = () => {
       body.setAttribute('data-drawer-open', 'true');
-      if (drawerToggler) drawerToggler.classList.add('open');
+      if (drawer) {
+        drawer.setAttribute('aria-hidden', 'false');
+        resetDrawerState();
+      }
+      setTogglerState(true);
+      if (rootPanel) {
+        focusFirstElement(rootPanel);
+      }
     };
+
     const closeDrawer = () => {
       body.setAttribute('data-drawer-open', 'false');
-      if (drawerToggler) drawerToggler.classList.remove('open');
+      if (drawer) {
+        drawer.setAttribute('aria-hidden', 'true');
+        resetDrawerState();
+      }
+      setTogglerState(false);
+      if (drawerToggler) {
+        drawerToggler.focus({ preventScroll: true });
+      }
     };
 
     if (drawerToggler) {
+      drawerToggler.setAttribute('aria-expanded', 'false');
       drawerToggler.addEventListener('click', () => {
         const isOpen = body.getAttribute('data-drawer-open') === 'true';
         if (isOpen) {
-          // 关闭抽屉
           closeDrawer();
         } else {
-          // 打开抽屉
           openDrawer();
         }
       });
@@ -239,10 +419,77 @@
       drawerOverlay.addEventListener('click', closeDrawer);
     }
 
+    if (drawerBack) {
+      drawerBack.addEventListener('click', () => {
+        showPanel('root');
+        resetSubmenuTriggers();
+      });
+    }
+
+    if (drawer && drawerPanels.length) {
+      const submenuTriggers = drawer.querySelectorAll('.drawer__arrow[data-target]');
+      submenuTriggers.forEach((button) => {
+        button.addEventListener('click', () => {
+          const panelId = button.getAttribute('data-target');
+          if (panelId) {
+            resetSubmenuTriggers();
+            button.setAttribute('aria-expanded', 'true');
+            showPanel(panelId);
+          }
+        });
+      });
+
+      const panelBackButtons = drawer.querySelectorAll('[data-panel-back]');
+      panelBackButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          showPanel('root');
+          resetSubmenuTriggers();
+        });
+      });
+    }
+
+    if (languageToggle && languagePanel && languageContainer) {
+      languagePanel.hidden = true;
+      languageToggle.addEventListener('click', () => {
+        const isExpanded = languageToggle.getAttribute('aria-expanded') === 'true';
+        const nextState = !isExpanded;
+        languageToggle.setAttribute('aria-expanded', String(nextState));
+        languageContainer.classList.toggle('is-open', nextState);
+        languagePanel.hidden = !nextState;
+      });
+    }
+
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && body.getAttribute('data-drawer-open') === 'true') {
+      const isDrawerOpen = body.getAttribute('data-drawer-open') === 'true';
+      if (!isDrawerOpen) {
+        return;
+      }
+
+      if (event.key === 'Escape') {
         closeDrawer();
+        return;
+      }
+
+      if (event.key === 'Tab' && drawer) {
+        const focusable = Array.from(drawer.querySelectorAll(focusableSelector)).filter(isElementVisible);
+        if (!focusable.length) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement;
+
+        if (event.shiftKey) {
+          if (active === first || !drawer.contains(active)) {
+            event.preventDefault();
+            last.focus();
+          }
+        } else if (active === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     });
+
+    resetDrawerState();
   });
 </script>
