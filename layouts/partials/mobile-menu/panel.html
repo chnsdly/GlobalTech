@@ -1,0 +1,46 @@
+{{- $item := .item -}}
+{{- $path := .path -}}
+{{- $parentID := .parentID -}}
+{{- $level := .level -}}
+{{- $panelID := printf "drawer-panel-%s" $path -}}
+{{- $listLevelClass := printf "drawer__list--level%d" $level -}}
+{{- $backLabel := i18n "nav_back_label" | default "返回上一级" -}}
+{{- $backToRootLabel := i18n "nav_back_to_root_label" | default "返回一级菜单" -}}
+{{- $panelTitle := $item.Name -}}
+<div class="drawer__panel" data-menu-panel="{{ $panelID }}" data-parent-panel="{{ $parentID }}">
+  <div class="drawer__panel-header">
+    <button type="button" class="drawer__back" data-target="{{ $parentID }}" aria-label="{{ if eq $parentID "drawer-panel-root" }}{{ $backToRootLabel }}{{ else }}{{ $backLabel }}{{ end }}">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M15.41 7.41a1 1 0 0 1 0 1.41L12.24 12l3.17 3.18a1 1 0 1 1-1.42 1.41l-3.88-3.88a1.5 1.5 0 0 1 0-2.12l3.88-3.88a1 1 0 0 1 1.42 0Z" />
+      </svg>
+      <span>{{ if eq $parentID "drawer-panel-root" }}{{ $backToRootLabel }}{{ else }}{{ $backLabel }}{{ end }}</span>
+    </button>
+    <span class="drawer__panel-title">{{ $panelTitle }}</span>
+  </div>
+  <ul class="drawer__list {{ $listLevelClass }}">
+    {{- range $item.Children -}}
+      {{- $child := . -}}
+      {{- $childKey := cond (ne $child.Identifier "") $child.Identifier $child.Name -}}
+      {{- $childPath := printf "%s-%s" $path (anchorize $childKey) -}}
+      {{- $childPanelID := printf "drawer-panel-%s" $childPath -}}
+      {{- $hasChildren := $child.HasChildren -}}
+      <li class="drawer__list-item{{ if $hasChildren }} has-children{{ end }}">
+        <a href="{{ $child.URL | relLangURL }}">{{ $child.Name }}</a>
+        {{- if $hasChildren -}}
+          <button type="button" class="drawer__arrow" data-target="{{ $childPanelID }}" aria-label="{{ printf "查看%s子菜单" $child.Name }}">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9.29 6.71a1 1 0 0 1 1.42 0l4.58 4.58a1 1 0 0 1 0 1.42l-4.58 4.58a1 1 0 1 1-1.42-1.42L13.17 12 9.29 8.12a1 1 0 0 1 0-1.41Z" />
+            </svg>
+          </button>
+        {{- end -}}
+      </li>
+    {{- end -}}
+  </ul>
+</div>
+{{- range $item.Children -}}
+  {{- if .HasChildren -}}
+    {{- $childKey := cond (ne .Identifier "") .Identifier .Name -}}
+    {{- $childPath := printf "%s-%s" $path (anchorize $childKey) -}}
+    {{- partial "mobile-menu/panel" (dict "item" . "path" $childPath "parentID" $panelID "level" (add $level 1)) -}}
+  {{- end -}}
+{{- end -}}
