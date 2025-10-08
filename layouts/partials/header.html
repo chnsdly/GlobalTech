@@ -46,7 +46,7 @@
     {{ $requestedVariant = lower (strings.TrimSpace $requestedVariant) }}
   {{ end }}
 {{ end }}
-{{ $variant := "aurora" }}
+{{ $variant := "voyager" }}
 {{ if $requestedVariant }}
   {{ with (index $variantAliases $requestedVariant) }}
     {{ $variant = . }}

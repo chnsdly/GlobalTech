@@ -3,7 +3,7 @@ languageCode = 'en-us'
 title = 'My New Hugo Site'
 
 [params.navigation]
-variant = "aurora"
+variant = "version3"
 
   [params.navigation.cta]
   label = "Contact sales"

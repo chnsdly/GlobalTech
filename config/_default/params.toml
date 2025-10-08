@@ -17,7 +17,7 @@ turnstile_site_key = "0x4AAAAAAB43R0lGyzeXeIiK"
   limit = 3
 
 [navigation]
-  variant = "aurora"
+  variant = "version3"
 
   [navigation.cta]
     label = "Contact sales"
