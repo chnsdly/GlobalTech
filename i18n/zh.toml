@@ -25,4 +25,7 @@ read_more = "阅读全文"
 submit = "发送信息"
 social_title = "社交媒体"
 tags = "标签"
+mobile_menu_title = "菜单"
+mobile_menu_back = "返回一级菜单"
+mobile_menu_open_submenu = "查看子菜单"
 

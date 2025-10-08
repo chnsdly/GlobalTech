@@ -23,4 +23,7 @@ posted_by = "发布者"
 read_more = "阅读全文"
 submit = "发送信息"
 tags = "标签"
+mobile_menu_title = "Menu"
+mobile_menu_back = "Back to main menu"
+mobile_menu_open_submenu = "View submenu"
 
