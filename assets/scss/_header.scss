@@ -1,14 +1,92 @@
+.nav-experience {
+  --nav-surface: unquote("rgb(from var(--brand) r g b / var(--layer-alpha))");
+  --nav-ink: var(--on-brand);
+  --nav-border-color: transparent;
+  --nav-shadow-scrolled: var(--shadow);
+  --nav-blur: 16px;
+  --nav-radius: 0px;
+  --nav-menu-gap: calc(var(--space) * 2);
+  --nav-menu-item-radius: var(--radius);
+  --nav-menu-padding-block: calc(var(--space) * 1.5);
+  --nav-menu-padding-inline: calc(var(--space) * 2);
+  --nav-menu-hover-tint: 15%;
+  --nav-menu-active-tint: 25%;
+  --nav-menu-font-weight-active: 600;
+  --nav-menu-letter-spacing: 0.01em;
+  --nav-divider-color: unquote("rgb(from var(--on-surface) r g b / 12%)");
+  --nav-floating-padding: calc(var(--space) * 3);
+  --nav-floating-gap: calc(var(--space) * 2.5);
+  --nav-floating-shadow: none;
+  --nav-floating-border: transparent;
+  --drawer-surface: color-mix(in srgb, var(--surface) 92%, var(--brand) 8%);
+  --drawer-ink: var(--on-surface);
+  --drawer-accent: var(--brand);
+  --drawer-muted: color-mix(in srgb, var(--drawer-ink) 65%, transparent);
+
+  &--b {
+    --nav-surface: color-mix(in srgb, var(--surface) 85%, var(--brand) 15%);
+    --nav-ink: var(--on-surface);
+    --nav-border-color: unquote("rgb(from var(--on-surface) r g b / 16%)");
+    --nav-shadow-scrolled: 0 24px 48px -28px color-mix(in srgb, var(--brand) 45%, transparent);
+    --nav-menu-gap: calc(var(--space) * 3);
+    --nav-menu-item-radius: 999px;
+    --nav-menu-hover-tint: 12%;
+    --nav-menu-active-tint: 18%;
+    --nav-floating-padding: calc(var(--space) * 3);
+    --nav-floating-gap: calc(var(--space) * 3);
+    --drawer-surface: color-mix(in srgb, var(--surface) 95%, var(--brand) 5%);
+    --drawer-ink: var(--on-surface);
+    --drawer-muted: color-mix(in srgb, var(--drawer-ink) 55%, transparent);
+  }
+
+  &--c {
+    --nav-surface: unquote("rgb(from var(--surface) r g b / 90%)");
+    --nav-ink: var(--on-surface);
+    --nav-border-color: unquote("rgb(from var(--on-surface) r g b / 14%)");
+    --nav-shadow-scrolled: 0 18px 40px -30px color-mix(in srgb, var(--on-surface) 50%, transparent);
+    --nav-menu-gap: calc(var(--space) * 2.2);
+    --nav-menu-item-radius: 0;
+    --nav-menu-hover-tint: 10%;
+    --nav-menu-active-tint: 14%;
+    --nav-menu-font-weight-active: 500;
+    --nav-menu-letter-spacing: 0.04em;
+    --nav-floating-padding: calc(var(--space) * 2.5);
+    --nav-floating-gap: calc(var(--space) * 2.5);
+    --drawer-surface: color-mix(in srgb, var(--surface) 88%, white 12%);
+    --drawer-ink: var(--on-surface);
+    --drawer-accent: color-mix(in srgb, var(--brand) 70%, var(--on-surface) 30%);
+    --drawer-muted: color-mix(in srgb, var(--drawer-ink) 50%, transparent);
+  }
+
+  &--d {
+    --nav-surface: color-mix(in srgb, var(--brand) 78%, white 22%);
+    --nav-ink: var(--on-brand);
+    --nav-border-color: transparent;
+    --nav-shadow-scrolled: 0 28px 60px -32px color-mix(in srgb, var(--brand) 55%, transparent);
+    --nav-blur: 24px;
+    --nav-radius: calc(var(--radius) * 3);
+    --nav-menu-gap: calc(var(--space) * 2.5);
+    --nav-menu-item-radius: 999px;
+    --nav-menu-hover-tint: 18%;
+    --nav-menu-active-tint: 26%;
+    --nav-floating-padding: calc(var(--space) * 3.5);
+    --nav-floating-gap: calc(var(--space) * 3.5);
+    --nav-floating-shadow: 0 30px 80px -40px color-mix(in srgb, var(--brand) 60%, transparent);
+    --nav-floating-border: unquote("rgb(from var(--on-brand) r g b / 16%)");
+    --drawer-surface: color-mix(in srgb, var(--nav-surface) 80%, var(--surface) 20%);
+    --drawer-ink: var(--nav-ink);
+    --drawer-muted: color-mix(in srgb, var(--drawer-ink) 55%, transparent);
+  }
+}
 
 .site-header {
-  --burger-length: 30px;      /* 汉堡线长 */
-  --burger-thickness: 3px;    /* 汉堡线粗 */
-  --burger-gap: 6px;          /* 汉堡线间距 */
-  
-  --header-border-color: var(--border);
-  --header-shadow-scrolled: var(--shadow);
-  /* 关键修改：添加 transform 的过渡效果 */
-  --header-transition: background-color var(--t-normal) var(--ease), 
+  --burger-length: 30px;
+  --burger-thickness: 3px;
+  --burger-gap: 6px;
+
+  --header-transition: background-color var(--t-normal) var(--ease),
                        border-color var(--t-normal) var(--ease),
+                       box-shadow var(--t-normal) var(--ease),
                        transform var(--t-normal) var(--ease);
 
   position: fixed;
@@ -17,13 +95,12 @@
   right: 0;
   z-index: var(--z-header);
   height: var(--header-height);
-  padding-inline: calc(var(--space) * 3);
-
-  background-color: var(--brand);
-  background-color: unquote("rgb(from var(--brand) r g b / var(--layer-alpha))");
-
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  padding-inline: var(--nav-floating-padding);
+  color: var(--nav-ink);
+  background: var(--nav-surface);
+  border-bottom: var(--border-w) solid var(--nav-border-color);
+  -webkit-backdrop-filter: blur(var(--nav-blur));
+  backdrop-filter: blur(var(--nav-blur));
   transition: var(--header-transition);
 }
 
@@ -38,8 +115,7 @@ body.header-hidden {
 }
 
 .site-header.is-scrolled {
-  border-bottom-color: var(--header-border-color);
-  box-shadow: var(--header-shadow-scrolled);
+  box-shadow: var(--nav-shadow-scrolled);
 }
 
 /* 新增：向下滚动时隐藏导航栏的样式 */
@@ -52,6 +128,8 @@ body.header-hidden {
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  gap: var(--nav-floating-gap);
+  box-sizing: border-box;
 }
 
 /* ******************** Logo无样式 ******************** */
@@ -64,13 +142,13 @@ body.header-hidden {
   justify-content: center;
   flex-wrap: nowrap;
   min-width: 0;
-  margin-inline: calc(var(--space) * 3); 
+  margin-inline: calc(var(--space));
 }
 
 .navbar__menu>ul {
   display: flex;
   align-items: center;
-  gap: calc(var(--space) * 2);
+  gap: var(--nav-menu-gap);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -84,18 +162,19 @@ body.header-hidden {
   display: flex;
   align-items: center;
   gap: calc(var(--space) * 1);
-  padding-block: calc(var(--space) * 1.5);
-  padding-inline: calc(var(--space) * 2);
+  padding-block: var(--nav-menu-padding-block);
+  padding-inline: var(--nav-menu-padding-inline);
   font-size: var(--fs-1);
-  color: var(--on-brand);    /* 主题：品牌底上的前景色 */
-  border-radius: var(--radius);
+  letter-spacing: var(--nav-menu-letter-spacing);
+  color: var(--nav-ink);
+  border-radius: var(--nav-menu-item-radius);
   transition: color var(--t-normal) var(--ease), background-color var(--t-normal) var(--ease);
   white-space: nowrap;       /* 强制链接不换行 */
 }
 
 .navbar__menu a:hover,
 .navbar__menu a:focus-visible {
-  background-color: unquote("rgb(from var(--on-brand) r g b / 15%)");
+  background-color: color-mix(in srgb, var(--nav-ink) var(--nav-menu-hover-tint), transparent);
   text-decoration: none;
 }
 
@@ -106,8 +185,8 @@ body.header-hidden {
 }
 
 .navbar__menu a.is-active {
-  font-weight: 600;
-  background-color: unquote("rgb(from var(--on-brand) r g b / 25%)");
+  font-weight: var(--nav-menu-font-weight-active);
+  background-color: color-mix(in srgb, var(--nav-ink) var(--nav-menu-active-tint), transparent);
 }
 
 .navbar__menu .dropdown-arrow {
@@ -118,6 +197,125 @@ body.header-hidden {
 
 .navbar__menu li:hover>a .dropdown-arrow {
   transform: rotate(180deg);
+}
+
+/* ===== Variants ===== */
+
+.nav-experience--a {
+  .navbar__menu>ul {
+    justify-content: center;
+  }
+
+  .navbar__actions {
+    gap: calc(var(--space) * 2.5);
+  }
+}
+
+.nav-experience--b {
+  .site-header {
+    background: linear-gradient(135deg,
+      color-mix(in srgb, var(--nav-surface) 90%, transparent) 0%,
+      color-mix(in srgb, var(--brand) 24%, transparent) 100%);
+    border-bottom-color: color-mix(in srgb, var(--brand) 20%, transparent);
+  }
+
+  .navbar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "logo actions"
+      "menu menu";
+    align-items: center;
+  }
+
+  .navbar__logo { grid-area: logo; }
+  .navbar__menu { grid-area: menu; justify-content: flex-start; margin-inline: 0; }
+  .navbar__actions { grid-area: actions; justify-self: end; }
+  .navbar__menu>ul {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .navbar__menu a {
+    font-size: clamp(var(--fs-1), 1vw + 0.8rem, var(--fs-0));
+  }
+}
+
+.nav-experience--c {
+  .site-header {
+    background: var(--surface);
+    border-bottom: var(--border-w) solid var(--nav-border-color);
+    box-shadow: none;
+  }
+
+  .navbar {
+    justify-content: flex-start;
+  }
+
+  .navbar__menu {
+    justify-content: flex-start;
+    margin-inline: calc(var(--space) * 2);
+  }
+
+  .navbar__menu>ul {
+    gap: calc(var(--space) * 1.5);
+  }
+
+  .navbar__actions {
+    padding-left: calc(var(--space) * 2);
+    border-left: var(--border-w) solid var(--nav-divider-color);
+  }
+
+  .navbar__menu a.is-active {
+    position: relative;
+    background-color: transparent;
+    color: var(--brand);
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(var(--space) * 0.5 * -1);
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+  }
+}
+
+.nav-experience--d {
+  .site-header {
+    background: transparent;
+    border-bottom-color: transparent;
+    padding-inline: calc(var(--space) * 1.5);
+  }
+
+  .navbar {
+    position: relative;
+    width: 100%;
+    border-radius: var(--nav-radius);
+    border: var(--border-w) solid var(--nav-floating-border);
+    background: color-mix(in srgb, var(--nav-surface) 92%, transparent);
+    -webkit-backdrop-filter: blur(var(--nav-blur));
+    backdrop-filter: blur(var(--nav-blur));
+    box-shadow: var(--nav-floating-shadow);
+    padding-inline: calc(var(--space) * 2.5);
+  }
+
+  .navbar__menu>ul {
+    justify-content: center;
+  }
+
+  .navbar__menu a {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: clamp(0.75rem, 0.4vw + 0.7rem, var(--fs-1));
+  }
+
+  .navbar__actions {
+    gap: calc(var(--space) * 1.5);
+  }
 }
 
 .dropdown-menu {
@@ -305,12 +503,12 @@ body.header-hidden {
   border: none;
   padding: var(--space) calc(var(--space) * 1);
   border-radius: var(--radius);
-  color: var(--on-brand); 
+  color: var(--nav-ink);
   transition: color var(--t-normal) var(--ease), background-color var(--t-normal) var(--ease);
 }
 
 .lang-switcher__button:hover {
-  background-color: unquote("rgb(from var(--on-brand) r g b / 15%)");
+  background-color: color-mix(in srgb, var(--nav-ink) 14%, transparent);
 }
 
 .lang-switcher__button svg {
@@ -377,7 +575,7 @@ body.header-hidden {
   background: transparent;        /* 关键：去默认背景 */
   border: none;                   /* 关键：去默认边框 */
   cursor: pointer;
-  color: var(--on-brand);         /* 三条线用 currentColor 继承这个颜色 */
+  color: var(--nav-ink);         /* 三条线用 currentColor 继承这个颜色 */
 
   display: none;                  /* 关键：用flex把三条线垂直堆起来 */
   flex-direction: column;
@@ -440,15 +638,15 @@ body[data-drawer-open="true"] #site-header {
   height: 100vh;
   height: 100dvh;
   max-height: 100dvh;
-  background-color: var(--brand);
-  background-color: unquote("rgb(from var(--brand) r g b / var(--layer-alpha))");
+  background-color: var(--drawer-surface);
   z-index: var(--z-modal);
   transform: translateY(-100%);
   transition: transform var(--t-normal) var(--ease);
   display: flex;
   flex-direction: column;
   padding: calc(var(--space) * 4);
-  box-shadow: 0 calc(var(--space) * 2) calc(var(--space) * 8) rgba(0, 0, 0, 0.25);
+  color: var(--drawer-ink);
+  box-shadow: 0 calc(var(--space) * 2) calc(var(--space) * 8) color-mix(in srgb, var(--drawer-ink) 20%, transparent);
 }
 
 body[data-drawer-open='true'] .drawer-overlay {
@@ -479,7 +677,7 @@ body[data-drawer-open='true'] {
   height: 44px;
   border: none;
   background: none;
-  color: var(--on-brand);
+  color: var(--drawer-ink);
   cursor: pointer;
   padding: 0;
 }
@@ -492,7 +690,7 @@ body[data-drawer-open='true'] {
 .drawer__title {
   font-size: var(--fs-3);
   font-weight: 600;
-  color: var(--on-brand);
+  color: var(--drawer-ink);
 }
 
 .drawer__menu {
@@ -522,7 +720,7 @@ body[data-drawer-open='true'] {
   height: 44px;
   border: none;
   background: none;
-  color: var(--on-brand);
+  color: var(--drawer-ink);
   padding: 0;
   margin-bottom: calc(var(--space) * 2);
   cursor: pointer;
@@ -532,8 +730,8 @@ body[data-drawer-open='true'] {
 
 .drawer__panel-back:hover,
 .drawer__panel-back:focus-visible {
-  color: var(--on-brand-strong, var(--on-brand));
-  background-color: unquote("rgb(from var(--on-brand) r g b / 18%)");
+  color: var(--drawer-accent);
+  background-color: color-mix(in srgb, var(--drawer-accent) 18%, transparent);
 }
 
 .drawer__panel-back svg {
@@ -574,17 +772,17 @@ body[data-drawer-open='true'] {
 .drawer__sublink {
   display: block;
   width: 100%;
-  padding: calc(var(--space) * 3) calc(var(--space) * 2);
-  font-size: var(--fs-2);
-  color: var(--on-brand);
+  padding: calc(var(--space) * 1.8) calc(var(--space) * 2.4);
+  font-size: var(--fs-1);
+  color: var(--drawer-ink);
   border-radius: var(--radius);
   text-decoration: none;
   transition: background-color var(--t-normal) var(--ease), color var(--t-normal) var(--ease);
 }
 
 .drawer__sublink {
-  font-size: var(--fs-1);
-  padding-block: calc(var(--space) * 2);
+  font-size: var(--fs-2);
+  padding-block: calc(var(--space) * 1.5);
 }
 
 .drawer__link:hover,
@@ -593,32 +791,40 @@ body[data-drawer-open='true'] {
 .drawer__sublink:hover,
 .drawer__sublink:focus-visible,
 .drawer__sublink.is-active {
-  background-color: var(--brand);
-  color: var(--on-brand);
+  background-color: color-mix(in srgb, var(--drawer-accent) 18%, transparent);
+  color: var(--drawer-accent);
 }
 
 [data-theme="dark"] .drawer__link:hover,
 [data-theme="dark"] .drawer__link.is-active,
 [data-theme="dark"] .drawer__sublink:hover,
 [data-theme="dark"] .drawer__sublink.is-active {
-  background-color: var(--brand);
-  color: var(--on-brand);
+  background-color: color-mix(in srgb, var(--drawer-accent) 24%, transparent);
+  color: var(--drawer-accent);
 }
 
 .drawer__arrow {
   border: none;
   background: none;
-  color: var(--on-brand);
+  color: var(--drawer-ink);
   cursor: pointer;
   padding: calc(var(--space) * 1.5);
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--radius);
+  transition: color var(--t-normal) var(--ease), background-color var(--t-normal) var(--ease);
 }
 
 .drawer__arrow svg {
   width: 18px;
   height: 18px;
+}
+
+.drawer__arrow:hover,
+.drawer__arrow:focus-visible {
+  color: var(--drawer-accent);
+  background-color: color-mix(in srgb, var(--drawer-accent) 18%, transparent);
 }
 
 .drawer__sublist {
@@ -631,7 +837,7 @@ body[data-drawer-open='true'] {
 }
 
 .drawer__languages {
-  border-top: var(--border-w) solid var(--border);
+  border-top: var(--border-w) solid var(--drawer-muted);
   padding-top: calc(var(--space) * 4);
   margin-top: auto;
   display: flex;
@@ -677,11 +883,12 @@ body[data-drawer-open='true'] {
   width: 100%;
   border: none;
   background: none;
-  color: var(--on-brand);
+  color: var(--drawer-ink);
   font-size: var(--fs-2);
   font-weight: 500;
-  padding: calc(var(--space) * 2) 0;
+  padding: calc(var(--space) * 1.8) 0;
   cursor: pointer;
+  transition: color var(--t-normal) var(--ease), background-color var(--t-normal) var(--ease);
 }
 
 .drawer__languages-toggle svg {
@@ -692,6 +899,13 @@ body[data-drawer-open='true'] {
 
 .drawer__languages.is-open .drawer__languages-toggle svg {
   transform: rotate(180deg);
+}
+
+.drawer__languages-toggle:hover,
+.drawer__languages-toggle:focus-visible,
+.drawer__languages.is-open .drawer__languages-toggle {
+  color: var(--drawer-accent);
+  background-color: color-mix(in srgb, var(--drawer-accent) 18%, transparent);
 }
 
 .drawer__languages-panel {
@@ -713,9 +927,9 @@ body[data-drawer-open='true'] {
 
 .drawer__languages-list a {
   display: block;
-  padding: calc(var(--space) * 3) calc(var(--space) * 2);
+  padding: calc(var(--space) * 1.6) calc(var(--space) * 2.2);
   font-size: var(--fs-2);
-  color: var(--on-brand);
+  color: var(--drawer-ink);
   border-radius: var(--radius);
   text-decoration: none;
   transition: background-color var(--t-normal) var(--ease), color var(--t-normal) var(--ease);
@@ -723,7 +937,8 @@ body[data-drawer-open='true'] {
 
 .drawer__languages-list a:hover,
 .drawer__languages-list a:focus-visible {
-  background-color: var(--brand);
+  background-color: color-mix(in srgb, var(--drawer-accent) 18%, transparent);
+  color: var(--drawer-accent);
 }
 
 /*
