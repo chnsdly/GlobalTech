@@ -99,7 +99,11 @@
       </div>
       {{ end }}
 
-      <button class="navbar__toggler" id="drawer-toggler" aria-label="Open menu">
+      <button class="navbar__toggler" id="drawer-toggler"
+        aria-label="{{ i18n "mobile_menu_open" | default "Open menu" }}" aria-expanded="false"
+        aria-controls="drawer"
+        data-open-label="{{ i18n "mobile_menu_open" | default "Open menu" }}"
+        data-close-label="{{ i18n "mobile_menu_close" | default "Close menu" }}">
         <span class="toggler-bar"></span>
         <span class="toggler-bar"></span>
         <span class="toggler-bar"></span>
@@ -109,41 +113,54 @@
 </header>
 
 <div class="drawer-overlay" id="drawer-overlay"></div>
-<aside class="drawer" id="drawer">
-  <div class="drawer__header">
-    <span class="sr-only">Menu</span>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer__top">
+    <button class="drawer__back" id="drawer-back" type="button"
+      aria-label="{{ i18n "mobile_menu_back" | default "Back" }}" hidden>
+      <svg class="drawer__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+        aria-hidden="true">
+        <path fill-rule="evenodd"
+          d="M12.78 15.78a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 010-1.06l4.5-4.5a.75.75 0 111.06 1.06L8.81 10l3.97 3.97a.75.75 0 010 1.06z"
+          clip-rule="evenodd" />
+      </svg>
+    </button>
+    <span class="drawer__title" id="drawer-title"
+      data-root-title="{{ i18n "mobile_menu_title" | default "Menu" }}">{{ i18n "mobile_menu_title" | default "Menu" }}</span>
   </div>
 
-  <nav class="drawer__menu" aria-label="Mobile navigation">
-    {{ $current := . }}
-    <ul>
-      {{ range .Site.Menus.main }}
-      {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-      <li>
-        <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
-        {{ if .HasChildren }}
-        <ul class="submenu">
-          {{ range .Children }}
-          {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-          <li><a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a></li>
-          {{ end }}
-        </ul>
-        {{ end }}
-      </li>
-      {{ end }}
-    </ul>
-  </nav>
+  <nav class="drawer__menu" id="drawer-menu" aria-label="Mobile navigation"></nav>
 
   {{ if hugo.IsMultilingual }}
-  <div class="drawer__footer">
-    <div class="lang-switcher">
+  <div class="drawer__languages" id="drawer-languages">
+    <button class="drawer__languages-toggle" id="drawer-languages-toggle" type="button" aria-expanded="false"
+      aria-controls="drawer-language-list">
+      <span>{{ i18n "mobile_menu_language" | default "Languages" }}</span>
+      <svg class="drawer__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+        aria-hidden="true">
+        <path fill-rule="evenodd"
+          d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+          clip-rule="evenodd" />
+      </svg>
+    </button>
+    <ul class="drawer__languages-list" id="drawer-language-list">
       {{ range .Site.Home.AllTranslations }}
-      <a class="lang-switcher__button" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+      {{ if eq .Language.Lang $.Site.Language.Lang }}
+      <li class="is-active"><span>{{ .Language.LanguageName }}</span></li>
+      {{ else }}
+      <li><a href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a></li>
       {{ end }}
-    </div>
+      {{ end }}
+    </ul>
   </div>
   {{ end }}
 </aside>
+
+{{- $mobileMenuData := slice -}}
+{{- $currentPage := . -}}
+{{- range .Site.Menus.main -}}
+  {{- $mobileMenuData = $mobileMenuData | append (partial "mobile-menu-node.html" (dict "Item" . "Current" $currentPage)) -}}
+{{- end -}}
+<script type="application/json" id="mobile-menu-data">{{ $mobileMenuData | jsonify | safeHTML }}</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -209,27 +226,181 @@
       handleSmartHeader();
     }
 
-    // --- 2. 抽屉 (Drawer) 逻辑 (保持不变) ---
+    // --- 2. 抽屉 (Drawer) 逻辑 ---
+    const drawer = document.getElementById('drawer');
+    const drawerMenu = document.getElementById('drawer-menu');
+    const drawerTitle = document.getElementById('drawer-title');
+    const drawerBack = document.getElementById('drawer-back');
+    const drawerLanguages = document.getElementById('drawer-languages');
+    const drawerLanguagesToggle = document.getElementById('drawer-languages-toggle');
+    const drawerLanguageList = document.getElementById('drawer-language-list');
     const drawerToggler = document.getElementById('drawer-toggler');
     const drawerOverlay = document.getElementById('drawer-overlay');
+    const menuDataElement = document.getElementById('mobile-menu-data');
+
+    const rootTitle = drawerTitle ? (drawerTitle.dataset.rootTitle || drawerTitle.textContent.trim()) : '';
+    const menuData = menuDataElement ? JSON.parse(menuDataElement.textContent) : [];
+    const openLabel = drawerToggler ? (drawerToggler.dataset.openLabel || drawerToggler.getAttribute('aria-label') || 'Open menu') : 'Open menu';
+    const closeLabel = drawerToggler ? (drawerToggler.dataset.closeLabel || 'Close menu') : 'Close menu';
+
+    let menuStack = [];
+
+    const collapseLanguages = () => {
+      if (drawerLanguagesToggle) {
+        drawerLanguagesToggle.setAttribute('aria-expanded', 'false');
+      }
+      if (drawerLanguageList) {
+        drawerLanguageList.classList.remove('is-open');
+      }
+    };
+
+    const createChevronIcon = () => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'drawer__icon');
+      svg.setAttribute('viewBox', '0 0 20 20');
+      svg.setAttribute('fill', 'currentColor');
+      svg.setAttribute('aria-hidden', 'true');
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('fill-rule', 'evenodd');
+      path.setAttribute('clip-rule', 'evenodd');
+      path.setAttribute('d', 'M7.22 4.22a.75.75 0 011.06 0l4.5 4.5a.75.75 0 010 1.06l-4.5 4.5a.75.75 0 01-1.06-1.06L10.19 10 7.22 7.03a.75.75 0 010-1.06z');
+      svg.appendChild(path);
+      return svg;
+    };
+
+    const renderMenu = () => {
+      if (!drawerMenu) return;
+      const currentLevel = menuStack[menuStack.length - 1] || { items: [] };
+      const items = Array.isArray(currentLevel.items) ? currentLevel.items : [];
+      const title = currentLevel.title || rootTitle;
+
+      drawerMenu.innerHTML = '';
+
+      if (drawerTitle) {
+        drawerTitle.textContent = title;
+      }
+
+      if (drawerBack) {
+        const hasParent = menuStack.length > 1;
+        drawerBack.hidden = !hasParent;
+        drawerBack.setAttribute('aria-hidden', hasParent ? 'false' : 'true');
+      }
+
+      const list = document.createElement('ul');
+      list.className = 'drawer__list';
+
+      items.forEach((item) => {
+        const listItem = document.createElement('li');
+        const row = document.createElement('div');
+        row.className = 'drawer__item-row';
+
+        const linkText = item && item.name ? item.name : '';
+        const hasChildren = item && Array.isArray(item.children) && item.children.length > 0;
+        const isActive = Boolean(item && item.active);
+
+        if (item && item.url) {
+          const link = document.createElement('a');
+          link.className = 'drawer__link';
+          link.href = item.url;
+          link.textContent = linkText;
+          if (isActive) {
+            link.classList.add('is-active');
+            row.classList.add('is-active');
+          }
+          row.appendChild(link);
+        } else {
+          const label = document.createElement('span');
+          label.className = 'drawer__link';
+          label.textContent = linkText;
+          if (isActive) {
+            label.classList.add('is-active');
+            row.classList.add('is-active');
+          }
+          row.appendChild(label);
+        }
+
+        if (hasChildren) {
+          const toggle = document.createElement('button');
+          toggle.type = 'button';
+          toggle.className = 'drawer__child-toggle';
+          toggle.setAttribute('aria-label', linkText);
+          toggle.setAttribute('aria-haspopup', 'true');
+          toggle.setAttribute('aria-expanded', 'false');
+          if (linkText) {
+            toggle.setAttribute('title', linkText);
+          }
+          toggle.appendChild(createChevronIcon());
+          toggle.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            menuStack.push({ title: linkText, items: item.children });
+            collapseLanguages();
+            renderMenu();
+          });
+          row.appendChild(toggle);
+        }
+
+        listItem.appendChild(row);
+        list.appendChild(listItem);
+      });
+
+      drawerMenu.appendChild(list);
+
+      if (drawerLanguages) {
+        const atRoot = menuStack.length === 1;
+        drawerLanguages.hidden = !atRoot;
+        if (!atRoot) {
+          collapseLanguages();
+        } else if (drawerLanguagesToggle) {
+          const expanded = drawerLanguageList && drawerLanguageList.classList.contains('is-open');
+          drawerLanguagesToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        }
+      }
+    };
+
+    const resetMenuStack = () => {
+      menuStack = [{ title: rootTitle || '', items: menuData }];
+    };
 
     const openDrawer = () => {
+      resetMenuStack();
+      collapseLanguages();
+      renderMenu();
       body.setAttribute('data-drawer-open', 'true');
-      if (drawerToggler) drawerToggler.classList.add('open');
+      if (drawer) {
+        drawer.setAttribute('aria-hidden', 'false');
+      }
+      if (drawerToggler) {
+        drawerToggler.classList.add('open');
+        drawerToggler.setAttribute('aria-expanded', 'true');
+        drawerToggler.setAttribute('aria-label', closeLabel);
+      }
     };
+
     const closeDrawer = () => {
       body.setAttribute('data-drawer-open', 'false');
-      if (drawerToggler) drawerToggler.classList.remove('open');
+      if (drawer) {
+        drawer.setAttribute('aria-hidden', 'true');
+      }
+      if (drawerToggler) {
+        drawerToggler.classList.remove('open');
+        drawerToggler.setAttribute('aria-expanded', 'false');
+        drawerToggler.setAttribute('aria-label', openLabel);
+      }
+      resetMenuStack();
+      collapseLanguages();
+      renderMenu();
     };
+
+    resetMenuStack();
+    renderMenu();
 
     if (drawerToggler) {
       drawerToggler.addEventListener('click', () => {
         const isOpen = body.getAttribute('data-drawer-open') === 'true';
         if (isOpen) {
-          // 关闭抽屉
           closeDrawer();
         } else {
-          // 打开抽屉
           openDrawer();
         }
       });
@@ -237,6 +408,33 @@
 
     if (drawerOverlay) {
       drawerOverlay.addEventListener('click', closeDrawer);
+    }
+
+    if (drawerBack) {
+      drawerBack.addEventListener('click', () => {
+        if (menuStack.length > 1) {
+          menuStack.pop();
+          renderMenu();
+        }
+      });
+    }
+
+    if (drawerMenu) {
+      drawerMenu.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target.closest('a') : null;
+        if (target && body.getAttribute('data-drawer-open') === 'true') {
+          closeDrawer();
+        }
+      });
+    }
+
+    if (drawerLanguagesToggle && drawerLanguageList) {
+      drawerLanguagesToggle.addEventListener('click', () => {
+        const expanded = drawerLanguagesToggle.getAttribute('aria-expanded') === 'true';
+        const nextState = !expanded;
+        drawerLanguagesToggle.setAttribute('aria-expanded', nextState ? 'true' : 'false');
+        drawerLanguageList.classList.toggle('is-open', nextState);
+      });
     }
 
     document.addEventListener('keydown', (event) => {

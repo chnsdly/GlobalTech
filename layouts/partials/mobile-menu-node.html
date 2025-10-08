@@ -1,0 +1,15 @@
+{{- $item := .Item -}}
+{{- $current := .Current -}}
+{{- $children := slice -}}
+{{- range $item.Children -}}
+  {{- $children = $children | append (partial "mobile-menu-node.html" (dict "Item" . "Current" $current)) -}}
+{{- end -}}
+{{- $url := "" -}}
+{{- if $item.URL -}}
+  {{- $url = $item.URL | relLangURL -}}
+{{- end -}}
+{{- $isActive := false -}}
+{{- if $current -}}
+  {{- $isActive = or ($current.IsMenuCurrent "main" $item) ($current.HasMenuCurrent "main" $item) -}}
+{{- end -}}
+{{- return (dict "name" $item.Name "url" $url "children" $children "active" $isActive) -}}
