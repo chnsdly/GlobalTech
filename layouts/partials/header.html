@@ -82,13 +82,29 @@
   <nav class="drawer__menu" aria-label="Mobile navigation">
     {{ $current := . }}
     <ul>
-      {{ range .Site.Menus.main }}
-      {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
-      <li>
-        <a href="{{ .URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ .Name }}</a>
-        {{ if .HasChildren }}
-        <ul class="submenu">
-          {{ range .Children }}
+      {{ range $index, $item := .Site.Menus.main }}
+      {{ $active := or ($current.IsMenuCurrent "main" $item) ($current.HasMenuCurrent "main" $item) }}
+      <li class="{{ if $item.HasChildren }}has-submenu{{ end }}{{ if and $item.HasChildren $active }} is-open{{ end }}">
+        <div class="drawer__link-wrapper">
+          <a href="{{ $item.URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ $item.Name }}</a>
+          {{ if $item.HasChildren }}
+          {{ $submenuID := printf "drawer-submenu-%d" $index }}
+          <button class="submenu-toggle" type="button" aria-controls="{{ $submenuID }}"
+            aria-expanded="{{ if $active }}true{{ else }}false{{ end }}"
+            aria-label="{{ with i18n "toggle_submenu" }}{{ . }}{{ else }}{{ printf "切换%s子菜单" $item.Name }}{{ end }}">
+            <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd" />
+            </svg>
+          </button>
+          {{ end }}
+        </div>
+        {{ if $item.HasChildren }}
+        {{ $submenuID := printf "drawer-submenu-%d" $index }}
+        <ul class="submenu" id="{{ $submenuID }}" {{ if not $active }}hidden{{ end }}>
+          {{ range $item.Children }}
           {{ $childActive := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
           <li><a href="{{ .URL | relLangURL }}" class="{{ if $childActive }}is-active{{ end }}">{{ .Name }}</a></li>
           {{ end }}
@@ -208,6 +224,73 @@
       if (event.key === 'Escape' && body.getAttribute('data-drawer-open') === 'true') {
         closeDrawer();
       }
+    });
+
+    const drawerSubmenus = document.querySelectorAll('.drawer__menu .has-submenu');
+
+    drawerSubmenus.forEach((item) => {
+      const toggleBtn = item.querySelector('.submenu-toggle');
+      const submenu = item.querySelector('.submenu');
+
+      if (!toggleBtn || !submenu) return;
+
+      const openSubmenu = () => {
+        submenu.hidden = false;
+        const height = submenu.scrollHeight;
+        submenu.style.maxHeight = `${height}px`;
+        item.classList.add('is-open');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+
+        const handleOpenTransitionEnd = (event) => {
+          if (event.propertyName !== 'max-height') return;
+          submenu.style.maxHeight = 'none';
+          submenu.removeEventListener('transitionend', handleOpenTransitionEnd);
+        };
+
+        submenu.addEventListener('transitionend', handleOpenTransitionEnd);
+      };
+
+      const closeSubmenu = () => {
+        const height = submenu.scrollHeight;
+        submenu.style.maxHeight = `${height}px`;
+
+        requestAnimationFrame(() => {
+          submenu.style.maxHeight = '0px';
+        });
+
+        item.classList.remove('is-open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+
+        const handleCloseTransitionEnd = (event) => {
+          if (event.propertyName !== 'max-height') return;
+          submenu.hidden = true;
+          submenu.style.maxHeight = '';
+          submenu.removeEventListener('transitionend', handleCloseTransitionEnd);
+        };
+
+        submenu.addEventListener('transitionend', handleCloseTransitionEnd);
+      };
+
+      const isInitiallyExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+
+      if (isInitiallyExpanded) {
+        submenu.hidden = false;
+        submenu.style.maxHeight = 'none';
+        item.classList.add('is-open');
+      } else {
+        submenu.hidden = true;
+        submenu.style.maxHeight = '0px';
+        item.classList.remove('is-open');
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+        if (isExpanded) {
+          closeSubmenu();
+        } else {
+          openSubmenu();
+        }
+      });
     });
   });
 </script>
