@@ -1,12 +1,63 @@
 {{ $navParams := .Site.Params.navigation }}
 {{ $variantOptions := slice "aurora" "meridian" "voyager" "zenith" }}
-{{ $requestedVariant := "aurora" }}
+{{ $variantAliases := dict
+  "aurora" "aurora"
+  "aurora-theme" "aurora"
+  "variant1" "aurora"
+  "version1" "aurora"
+  "nav1" "aurora"
+  "v1" "aurora"
+  "1" "aurora"
+  "版本1" "aurora"
+  "方案1" "aurora"
+  "meridian" "meridian"
+  "meridian-theme" "meridian"
+  "variant2" "meridian"
+  "version2" "meridian"
+  "nav2" "meridian"
+  "v2" "meridian"
+  "2" "meridian"
+  "版本2" "meridian"
+  "方案2" "meridian"
+  "voyager" "voyager"
+  "voyager-theme" "voyager"
+  "variant3" "voyager"
+  "version3" "voyager"
+  "nav3" "voyager"
+  "v3" "voyager"
+  "3" "voyager"
+  "版本3" "voyager"
+  "方案3" "voyager"
+  "zenith" "zenith"
+  "zenith-theme" "zenith"
+  "variant4" "zenith"
+  "version4" "zenith"
+  "nav4" "zenith"
+  "v4" "zenith"
+  "4" "zenith"
+  "版本4" "zenith"
+  "方案4" "zenith"
+}}
+{{ $variantIndexMap := dict "aurora" "variant1" "meridian" "variant2" "voyager" "variant3" "zenith" "variant4" }}
+{{ $requestedVariant := "" }}
 {{ with $navParams }}
   {{ with .variant }}
-    {{ $requestedVariant = lower . }}
+    {{ $requestedVariant = printf "%v" . }}
+    {{ $requestedVariant = lower (strings.TrimSpace $requestedVariant) }}
   {{ end }}
 {{ end }}
-{{ $variant := cond (in $variantOptions $requestedVariant) $requestedVariant "aurora" }}
+{{ $variant := "aurora" }}
+{{ if $requestedVariant }}
+  {{ with (index $variantAliases $requestedVariant) }}
+    {{ $variant = . }}
+  {{ else if in $variantOptions $requestedVariant }}
+    {{ $variant = $requestedVariant }}
+  {{ end }}
+{{ end }}
+{{ $variantPreset := "" }}
+{{ with (index $variantIndexMap $variant) }}
+  {{ $variantPreset = . }}
+{{ end }}
 {{ $menuTitle := i18n "menu" | default "Menu" }}
 
 {{ $ctaLabel := "" }}
@@ -59,7 +110,7 @@
 {{ end }}
 {{ $searchAction = relLangURL $searchAction }}
 
-<header class="site-header site-header--{{ $variant }}" id="site-header" data-nav-variant="{{ $variant }}">
+<header class="site-header site-header--{{ $variant }}{{ if $variantPreset }} site-header--{{ $variantPreset }}{{ end }}" id="site-header" data-nav-variant="{{ $variant }}"{{ if $variantPreset }} data-nav-preset="{{ $variantPreset }}"{{ end }}>
   <div class="navbar container">
     <div class="navbar__logo">
       <a href="{{ "/" | relLangURL }}" class="navbar__brand" aria-label="{{ .Site.Params.company_name | default .Site.Title }} home">
@@ -183,7 +234,7 @@
 </header>
 
 <div class="drawer-overlay" id="drawer-overlay"></div>
-<aside class="drawer drawer--{{ $variant }}" id="drawer" aria-hidden="true">
+<aside class="drawer drawer--{{ $variant }}{{ if $variantPreset }} drawer--{{ $variantPreset }}{{ end }}" id="drawer" aria-hidden="true"{{ if $variantPreset }} data-nav-preset="{{ $variantPreset }}"{{ end }}>
   <div class="drawer__header">
     <button class="drawer__back" id="drawer-back" type="button" aria-label="{{ i18n "backToMenu" | default "Back to main menu" }}" hidden>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -284,6 +335,10 @@
     const navVariant = header ? header.dataset.navVariant : '';
     if (navVariant) {
       document.documentElement.setAttribute('data-nav-variant', navVariant);
+    }
+    const navPreset = header ? header.dataset.navPreset : '';
+    if (navPreset) {
+      document.documentElement.setAttribute('data-nav-preset', navPreset);
     }
 
     const body = document.body;
