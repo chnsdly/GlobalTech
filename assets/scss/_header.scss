@@ -427,12 +427,22 @@ body[data-drawer-open='true'] {
 }
 
 /* 移动端子菜单样式 */
+
 .drawer__menu .submenu {
   padding-left: calc(var(--space) * 4);
   margin-top: calc(var(--space) * -1);
   overflow: hidden;
   max-height: 0;
-  transition: max-height var(--t-normal) var(--ease);
+  opacity: 0;
+  transform: translateY(calc(var(--space) * -1));
+  transition: max-height var(--t-normal) var(--ease),
+              opacity var(--t-normal) var(--ease),
+              transform var(--t-normal) var(--ease);
+}
+
+.drawer__menu .has-submenu.is-open > .submenu {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .drawer__menu .submenu a {

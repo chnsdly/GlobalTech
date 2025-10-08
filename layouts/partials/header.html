@@ -89,9 +89,12 @@
           <a href="{{ $item.URL | relLangURL }}" class="{{ if $active }}is-active{{ end }}">{{ $item.Name }}</a>
           {{ if $item.HasChildren }}
           {{ $submenuID := printf "drawer-submenu-%d" $index }}
+          {{ $toggleLabel := printf "Show submenu for %s" $item.Name }}
+          {{ if eq $.Site.Language.Lang "zh" }}
+          {{ $toggleLabel = printf "展开%s子菜单" $item.Name }}
+          {{ end }}
           <button class="submenu-toggle" type="button" aria-controls="{{ $submenuID }}"
-            aria-expanded="{{ if $active }}true{{ else }}false{{ end }}"
-            aria-label="{{ with i18n "toggle_submenu" }}{{ . }}{{ else }}{{ printf "切换%s子菜单" $item.Name }}{{ end }}">
+            aria-expanded="{{ if $active }}true{{ else }}false{{ end }}" aria-label="{{ $toggleLabel }}">
             <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
               aria-hidden="true">
               <path fill-rule="evenodd"
@@ -190,7 +193,7 @@
       handleSmartHeader();
     }
 
-    // --- 2. 抽屉 (Drawer) 逻辑 (保持不变) ---
+    // --- 2. 抽屉 (Drawer) 逻辑 ---
     const drawerToggler = document.getElementById('drawer-toggler');
     const drawerOverlay = document.getElementById('drawer-overlay');
 
@@ -236,6 +239,9 @@
 
       const openSubmenu = () => {
         submenu.hidden = false;
+        submenu.style.maxHeight = '0px';
+        submenu.offsetHeight; // 强制重绘，确保动画起点生效
+
         const height = submenu.scrollHeight;
         submenu.style.maxHeight = `${height}px`;
         item.classList.add('is-open');
@@ -253,10 +259,8 @@
       const closeSubmenu = () => {
         const height = submenu.scrollHeight;
         submenu.style.maxHeight = `${height}px`;
-
-        requestAnimationFrame(() => {
-          submenu.style.maxHeight = '0px';
-        });
+        submenu.offsetHeight;
+        submenu.style.maxHeight = '0px';
 
         item.classList.remove('is-open');
         toggleBtn.setAttribute('aria-expanded', 'false');
