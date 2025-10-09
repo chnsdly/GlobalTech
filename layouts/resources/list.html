@@ -12,21 +12,9 @@
             {{/* --------- 计算封面 --------- */}}
             {{ $cover := cond (isset $p.Params "cover_asset") $p.Params.cover_asset (cond (isset $p.Params "cover_image") $p.Params.cover_image (cond (isset $p.Params "cover") (index $p.Params "cover" "image") nil)) }}
 
-            {{/* --------- 计算类型/徽章 --------- */}}
-            {{ $kindRaw := or $p.Params.kind $p.Type }}
-            {{ $kind := lower (printf "%v" $kindRaw) }}
-            {{ $mapClass := dict "blog" "badge--blog" "articles" "badge--blog" "post" "badge--blog" "case" "badge--case" "cases" "badge--case" "whitepaper" "badge--whitepaper" "paper" "badge--whitepaper" "download" "badge--download" "dl" "badge--download" "video" "badge--video" "faq" "badge--faq" }}
-            {{ $mapLabel := dict "blog" "Blog" "articles" "Blog" "post" "Blog" "case" "Case" "cases" "Case" "whitepaper" "WPaper" "paper" "WPaper" "download" "DL" "dl" "DL" "video" "Video" "faq" "FAQ" }}
-            {{ $badgeClass := or (index $mapClass $kind) "badge--blog" }}
-            {{ $badgeLabel := or (index $mapLabel $kind) "Blog" }}
 
-            {{/* --------- CTA 文案 --------- */}}
+            {{/* --------- CTA 文案：固定为“阅读” --------- */}}
             {{ $cta := "阅读" }}
-            {{ if in (slice "case" "cases") $kind }}{{ $cta = "查看案例" }}{{ end }}
-            {{ if or (eq $kind "download") (eq $kind "dl") }}{{ $cta = "下载" }}{{ end }}
-            {{ if or (eq $kind "whitepaper") (eq $kind "paper") }}{{ $cta = "免费下载" }}{{ end }}
-            {{ if eq $kind "video" }}{{ $cta = "观看" }}{{ end }}
-            {{ if eq $kind "faq" }}{{ $cta = "查看" }}{{ end }}
 
             <li class="res-row">
               <div class="res-thumb" aria-hidden="true">
@@ -43,8 +31,10 @@
                   <img class="res-thumb__img" loading="lazy" alt=""
                        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='100%25' height='100%25' fill='%23e5e7eb'/%3E%3C/svg%3E">
                 {{ end }}
+                {{/* —— 徽章整段删除（仅此两行） —— 
                 <span class="badge {{ $badgeClass }}">{{ $badgeLabel }}</span>
                 {{ if or $p.Params.gated $p.Params.locked }}<span class="badge badge--lock" title="下载需填写信息">🔒</span>{{ end }}
+                */}}
               </div>
 
               <div class="res-main">
@@ -60,41 +50,45 @@
                   {{- end -}}
                 </p>
 
+                <!-- ======= .res-meta：按你的新规则重构 ======= -->
                 <div class="res-meta">
-                  {{ with or $p.Params.subject $p.Params.topic }}
-                    <span>主题：{{ . }}</span>
+                  {{/* 归一化分类：使用 front matter 的 categories（字符串） */}}
+                  {{ $cat := lower (printf "%v" $p.Params.categories) }}
+                  {{ $isDL := or (eq $cat "download") (eq $cat "downloads") }}
+
+                  {{/* 分类显示标签映射（可按需改文字） */}}
+                  {{ $catLabelMap := dict "articles" "Articles" "download" "Download" "downloads" "Download" "news" "News" "faq" "FAQ" }}
+                  <span>分类：{{ or (index $catLabelMap $cat) $cat }}</span>
+
+                  {{/* articles/news/faq → 显示阅读时间（优先 reading；否则用 ReadingTime） */}}
+                  {{ if not $isDL }}
+                    {{ $rt := cond (gt $p.ReadingTime 0) (printf "%d 分钟" $p.ReadingTime) "" }}
+                    {{ with or $p.Params.reading $rt }}
+                      <span>阅读：{{ . }}</span>
+                    {{ end }}
                   {{ end }}
 
-                  {{ $showRead := not (or (eq $kind "download") (eq $kind "dl") (eq $kind "whitepaper") (eq $kind "paper")) }}
-                  {{ if or $p.Params.reading (and $showRead (gt $p.ReadingTime 0)) }}
-                    <span>阅读：{{ or $p.Params.reading (printf "%d 分钟" $p.ReadingTime) }}</span>
+                  {{/* download → 显示文件大小 */}}
+                  {{ if $isDL }}
+                    {{ with $p.Params.file_size }}
+                      <span>文件：{{ . }}</span>
+                    {{ end }}
                   {{ end }}
 
-                  {{ with $p.Params.pages }}<span>页数：{{ . }}</span>{{ end }}
-
-                  {{ $fileType := or $p.Params.file_type (cond (or (eq $kind "download") (eq $kind "whitepaper") (eq $kind "dl") (eq $kind "paper")) "PDF" nil) }}
-                  {{ if or $fileType $p.Params.file_size }}
-                    <span>文件：{{ if $fileType }}{{ $fileType }} · {{ end }}{{ with $p.Params.file_size }}{{ . }}{{ end }}</span>
-                  {{ end }}
-
-                  {{ with $p.Params.version }}<span>版本：{{ . }}</span>{{ end }}
-                  {{ with $p.Params.industry }}<span>行业：{{ . }}</span>{{ end }}
-                  {{ with $p.Params.result }}<span>结果：{{ . }}</span>{{ end }}
-                  {{ with $p.Params.langs }}<span>语言：{{ delimit . "/" }}</span>{{ end }}
-
+                  {{/* 日期（使用 date；本地化格式） */}}
                   <span>
                     {{ if eq $.Site.Language.Lang "zh" }}
-                      更新：{{ ($p.Lastmod | time).Format "2006-01-02" }}
+                      发布：{{ ($p.Date | time).Format "2006-01-02" }}
                     {{ else }}
-                      Updated: {{ ($p.Lastmod | time).Format "Jan 2, 2006" }}
+                      Published: {{ ($p.Date | time).Format "Jan 2, 2006" }}
                     {{ end }}
                   </span>
                 </div>
+                <!-- ======= 重构结束 ======= -->
               </div>
 
               <div class="res-cta">
-                <a class="button {{ if or (eq $kind "download") (eq $kind "dl") (eq $kind "whitepaper") (eq $kind "paper") }}button--primary{{ end }}"
-                   href="{{ $p.RelPermalink }}">{{ $cta }}</a>
+                <a class="button" href="{{ $p.RelPermalink }}">{{ $cta }}</a>
               </div>
             </li>
           {{ end }}

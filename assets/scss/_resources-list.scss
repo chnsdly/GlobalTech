@@ -70,26 +70,6 @@
   }
 }
 
-/* 类型徽章 */
-.badge {
-  position: absolute; left: .5rem; top: .5rem;
-  display: inline-flex; align-items: center; gap: .25rem;
-  font-size: 12px; padding: .25rem .5rem;
-  border-radius: 999px;
-  background: var(--surface);
-  border: var(--border-w, 1px) solid var(--border);
-  box-shadow: var(--shadow);
-  user-select: none;
-}
-
-.badge--blog      { background: color-mix(in oklch, var(--info, #2563eb),    white 80%); }
-.badge--case      { background: color-mix(in oklch, var(--success, #16a34a), white 80%); }
-.badge--whitepaper{ background: color-mix(in oklch, var(--warning, #d97706), white 80%); }
-.badge--download  { background: color-mix(in oklch, var(--brand, #1f63a3),   white 80%); }
-.badge--video     { background: color-mix(in oklch, var(--info, #2563eb),    white 75%); }
-.badge--faq       { background: color-mix(in oklch, var(--muted, #667085),   white 80%); }
-.badge--lock      { left: auto; right: .5rem; background: color-mix(in oklch, var(--danger, #dc2626), white 80%); }
-
 /* 文本区 */
 .res-main {
   display: grid;
@@ -97,6 +77,7 @@
   min-width: 0; /* 防止长标题把行撑爆 */
 }
 .res-title {
+  font-size: var(--fs-1);
   font-weight: 700;
   text-decoration: none;
   color: var(--on-card, var(--on-surface));
@@ -105,15 +86,16 @@
   &:hover { text-decoration: underline; }
 }
 .res-desc {
+  font-size: var(--fs-xs);
   margin: 0;
-  color: var(--muted, #667085);
+  color: var(--on-surface);
 }
 .res-meta {
   display: flex;
   flex-wrap: wrap;
   gap: .75rem 1.25rem;
   color: var(--muted, #667085);
-  font-size: var(--fs-1, .95rem);
+  font-size: var(--fs-xxs);
 }
 
 /* CTA */

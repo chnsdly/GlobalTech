@@ -9,32 +9,18 @@
     <lastBuildDate>Fri, 18 Jul 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/resources/downloads/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>downloads--How to Choose a 5-Axis CNC</title>
-      <link>http://localhost:1313/resources/downloads/how-to-choose-cnc-copy-4/</link>
+      <title>怎么选择托盘</title>
+      <link>http://localhost:1313/resources/downloads/industry-trend-analysis/</link>
       <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/resources/downloads/how-to-choose-cnc-copy-4/</guid>
+      <guid>http://localhost:1313/resources/downloads/industry-trend-analysis/</guid>
       <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
     </item>
     <item>
-      <title>baoheng123</title>
-      <link>http://localhost:1313/resources/downloads/baoheng/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/resources/downloads/baoheng/</guid>
-      <description>&lt;p&gt;Please fill the form to receive our latest quotation PDF.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Hugo</title>
-      <link>http://localhost:1313/resources/downloads/hugo/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/resources/downloads/hugo/</guid>
-      <description>&lt;p&gt;Please fill the form to receive our latest quotation PDF.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Product-Quotation</title>
-      <link>http://localhost:1313/resources/downloads/quotation/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/resources/downloads/quotation/</guid>
-      <description>&lt;p&gt;Please fill the form to receive our latest quotation PDF.&lt;/p&gt;</description>
+      <title>怎么选择托盘</title>
+      <link>http://localhost:1313/resources/downloads/product-quotation/</link>
+      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/resources/downloads/product-quotation/</guid>
+      <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -1,13 +1,12 @@
 ---
-title: "你们有哪些类型的托盘？"
+title: "怎么选择托盘"
 description: "用于列表页摘要（不写则用 Summary/正文截断）"
 cover_asset: "images/insights/hero.jpg"
-format: "faq" # 可取：blog | case | whitepaper | download | video | faq
-author: "你的作者名"
+categories: "faq" # articles | downloads | news | faq
+tags: ["HDPE","Testing"]
+reading: "4 分钟"
+file_size: "2.8 MB"
 date: 2025-07-18
-categories: ["articles"]  
-tags: ["HDPE","Testing"]  
-readMinutes: 3
 popular: true 
 ---
 

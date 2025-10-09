@@ -1,13 +1,13 @@
 ---
-title: "产品报价"
-layout: "download"             # 让它用我们马上要建的 download 布局
-url: "/resources/downloads/quotation/"   # 访问路径，可按你站点规则改
-download_slug: "Baoheng-Quotation"
-format: "download" # 可取：blog | case | whitepaper | download | video | faq
-file:
-  url: "files/spec-a12.pdf"
-  size: "1.2 MB"
-  format: "PDF"
+title: "怎么选择托盘"
+description: "用于列表页摘要（不写则用 Summary/正文截断）"
+cover_asset: "images/insights/hero.jpg"
+categories: "downloads" # articles | downloads | news | faq
+tags: ["HDPE","Testing"]
+reading: "4 分钟"
+file_size: "2.8 MB"
+date: 2025-07-18
+popular: true 
 ---
 
-Please fill the form to receive our latest quotation PDF.
+Short preview paragraph here. The full article can be longer...
