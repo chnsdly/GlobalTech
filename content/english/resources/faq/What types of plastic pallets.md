@@ -1,5 +1,5 @@
 ---
-title: "How to Choose CNC"
+title: "你们有哪些类型的托盘？"
 description: "用于列表页摘要（不写则用 Summary/正文截断）"
 cover_asset: "images/insights/hero.jpg"
 format: "faq" # 可取：blog | case | whitepaper | download | video | faq
