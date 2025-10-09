@@ -127,25 +127,25 @@ identifier = "resources"
 weight = 30
 
   [[main]]
-  name = "行业洞察 (博客)"
+  name = "博客"
   url = "/resources/articles/"
   parent = "resources"
   weight = 31
 
   [[main]]
-  name = "企业动态 (新闻)"
+  name = "新闻动态"
   url = "/resources/news/"
   parent = "resources"
   weight = 32
 
   [[main]]
-  name = "下载中心 (规格书/认证)"
+  name = "下载中心"
   url = "/resources/downloads/"
   parent = "resources"
   weight = 33
 
   [[main]]
-  name = "常见问题 (FAQ)"
+  name = "常见问题"
   url = "/resources/faq/"
   parent = "resources"
   weight = 34
