@@ -1,6 +1,7 @@
 ---
 title: "怎么选择托盘"
 description: "用于列表页摘要（不写则用 Summary/正文截断）"
+layout: "download" 
 cover_asset: "images/insights/hero.jpg"
 categories: "downloads" # articles | downloads | news | faq
 tags: ["HDPE","Testing"]

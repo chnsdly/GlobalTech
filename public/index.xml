@@ -262,13 +262,6 @@
     </item>
     <item>
       <title>怎么选择托盘</title>
-      <link>http://localhost:1313/resources/downloads/industry-trend-analysis/</link>
-      <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/resources/downloads/industry-trend-analysis/</guid>
-      <description>&lt;p&gt;Short preview paragraph here. The full article can be longer&amp;hellip;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>怎么选择托盘</title>
       <link>http://localhost:1313/resources/downloads/product-quotation/</link>
       <pubDate>Fri, 18 Jul 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/resources/downloads/product-quotation/</guid>
@@ -315,6 +308,13 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/about/</guid>
       <description></description>
+    </item>
+    <item>
+      <title>baoheng123</title>
+      <link>http://localhost:1313/resources/downloads/baoheng/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/resources/downloads/baoheng/</guid>
+      <description>&lt;p&gt;Please fill the form to receive our latest quotation PDF.&lt;/p&gt;</description>
     </item>
     <item>
       <title>联系我们</title>
