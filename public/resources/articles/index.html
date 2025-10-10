@@ -745,5 +745,38 @@
     © 2025 GlobalTech
   </div>
 </footer>
+  
+<iframe id="chatbot-frame"
+  src="https://udify.app/chatbot/t6eJefK31JrzL2sI"
+  title="AI Chat"
+  style="position: fixed; right: 20px; bottom: 80px;
+         width: 380px; max-width: 90vw; height: 520px; max-height: 75vh;
+         border: 0; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.2);
+         display: none; z-index: 9999;"
+  frameborder="0"
+  allow="microphone">
+</iframe>
+
+
+<button id="chatbot-toggle"
+  style="position: fixed; right: 20px; bottom: 20px; z-index: 10000;
+         border: 0; padding: 12px 16px; border-radius: 999px;
+         box-shadow: 0 6px 20px rgba(0,0,0,.15); background: white; cursor: pointer;">
+  💬 Chat
+</button>
+
+<script>
+(function () {
+  var f = document.getElementById('chatbot-frame');
+  var b = document.getElementById('chatbot-toggle');
+  b.addEventListener('click', function () {
+    var open = f.style.display !== 'none';
+    f.style.display = open ? 'none' : 'block';
+    b.textContent = open ? '💬 Chat' : '✖ Close';
+    b.setAttribute('aria-expanded', !open);
+  });
+})();
+</script>
+
 </body>
 </html>
