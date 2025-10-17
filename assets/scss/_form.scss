@@ -120,3 +120,11 @@
 
 /* 蜜罐字段隐藏（不占空间） */
 .lead-form div[style*="display:none"]{ display: none !important; }
+
+@media (max-width: 640px){
+  .lead-form{
+    /* 同时兼顾普通设备与 iOS 安全区 */
+    padding-left:  max(env(safe-area-inset-left),  clamp(12px, 5vw, 24px));
+    padding-right: max(env(safe-area-inset-right), clamp(12px, 5vw, 24px));
+  }
+}
