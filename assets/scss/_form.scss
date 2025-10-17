@@ -121,6 +121,8 @@
 /* 蜜罐字段隐藏（不占空间） */
 .lead-form div[style*="display:none"]{ display: none !important; }
 
+.lead-form{ box-sizing: border-box; }
+.lead-form *{ min-width: 0; } /* 防止长内容撑出容器 */
 @media (max-width: 640px){
   .lead-form{
     /* 同时兼顾普通设备与 iOS 安全区 */
