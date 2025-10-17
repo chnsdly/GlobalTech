@@ -2,158 +2,65 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-10/</loc>
+    <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-2/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-3/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-4/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-5/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-6/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-7/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-8/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-9/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-11/</loc>
+    <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-2/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-3/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-4/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-5/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-6/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-7/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-8/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-9/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-12/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-13/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-14/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-15/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-16/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-17/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-18/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-19/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-2/</loc>
+    <loc>http://localhost:1313/products/waste/cnc-milling-machine-x1-copy-2/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-20/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-21/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-22/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-23/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-24/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-25/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-26/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-27/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-28/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-29/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-3/</loc>
+    <loc>http://localhost:1313/products/waste/cnc-milling-machine-x1-copy-3/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-30/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-31/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-32/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-33/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-34/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-4/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-5/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-6/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-7/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-8/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy-9/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/cnc-milling-machine-x1-copy/</loc>
+    <loc>http://localhost:1313/products/waste/cnc-milling-machine-x1-copy-4/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>
@@ -169,10 +76,23 @@
                 href="http://localhost:1313/"
                 />
   </url><url>
-    <loc>http://localhost:1313/products/</loc>
+    <loc>http://localhost:1313/products/crate/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url><url>
+    <loc>http://localhost:1313/products/pallet/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url><url>
+    <loc>http://localhost:1313/products/waste/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url><url>
+    <loc>http://localhost:1313/products/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/resources/articles/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>

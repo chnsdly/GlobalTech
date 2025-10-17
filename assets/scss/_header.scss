@@ -198,11 +198,10 @@ body.header-hidden {
 /* 语言下拉菜单 */
 .lang-switcher__dropdown {
   position: absolute;
-  top: calc(100% + calc(var(--space) * 2.5));
+  top: 100%;
   right: 0;
   min-width: 150px;
   background-color: var(--surface);
-  border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: var(--border-w) solid var(--border);
   padding: var(--space);

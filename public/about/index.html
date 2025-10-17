@@ -40,7 +40,7 @@
         
         
         <li class="has-dropdown">
-          <a href="/products/" class="">
+          <a href="/#" class="">
             <span>产品</span>
             
             <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -57,17 +57,17 @@
             
             
             <li>
-              <a href="/" class="">按样式</a>
+              <a href="/products/pallet/" class="">托盘</a>
             </li>
             
             
             <li>
-              <a href="/" class="">按承载</a>
+              <a href="/products/crate/" class="">周转筐</a>
             </li>
             
             
             <li>
-              <a href="/" class="">按尺寸</a>
+              <a href="/products/waste/" class="">垃圾桶</a>
             </li>
             
           </ul>
@@ -236,18 +236,18 @@
       
       
       <li>
-        <a href="/products/" class="">产品</a>
+        <a href="/#" class="">产品</a>
         
         <ul class="submenu">
           
           
-          <li><a href="/" class="">按样式</a></li>
+          <li><a href="/products/pallet/" class="">托盘</a></li>
           
           
-          <li><a href="/" class="">按承载</a></li>
+          <li><a href="/products/crate/" class="">周转筐</a></li>
           
           
-          <li><a href="/" class="">按尺寸</a></li>
+          <li><a href="/products/waste/" class="">垃圾桶</a></li>
           
         </ul>
         
@@ -798,38 +798,38 @@
     © 2025 GlobalTech
   </div>
 </footer>
-  
-<iframe id="chatbot-frame"
-  src="https://udify.app/chatbot/t6eJefK31JrzL2sI"
-  title="AI Chat"
-  style="position: fixed; right: 20px; bottom: 80px;
-         width: 380px; max-width: 90vw; height: 520px; max-height: 75vh;
-         border: 0; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.2);
-         display: none; z-index: 9999;"
-  frameborder="0"
-  allow="microphone">
-</iframe>
-
-
-<button id="chatbot-toggle"
-  style="position: fixed; right: 20px; bottom: 20px; z-index: 10000;
-         border: 0; padding: 12px 16px; border-radius: 999px;
-         box-shadow: 0 6px 20px rgba(0,0,0,.15); background: white; cursor: pointer;">
-  💬 Chat
-</button>
-
-<script>
-(function () {
-  var f = document.getElementById('chatbot-frame');
-  var b = document.getElementById('chatbot-toggle');
-  b.addEventListener('click', function () {
-    var open = f.style.display !== 'none';
-    f.style.display = open ? 'none' : 'block';
-    b.textContent = open ? '💬 Chat' : '✖ Close';
-    b.setAttribute('aria-expanded', !open);
-  });
-})();
+  <script>
+ window.difyChatbotConfig = {
+  token: 't6eJefK31JrzL2sI',
+  inputs: {
+    
+    
+    
+    
+  },
+  systemVariables: {
+    
+    
+  },
+  userVariables: {
+    
+    
+  },
+ }
 </script>
-
+<script
+ src="https://udify.app/embed.min.js"
+ id="t6eJefK31JrzL2sI"
+ defer>
+</script>
+<style>
+  #dify-chatbot-bubble-button {
+    background-color: #1C64F2 !important;
+  }
+  #dify-chatbot-bubble-window {
+    width: 24rem !important;
+    height: 40rem !important;
+  }
+</style>
 </body>
 </html>

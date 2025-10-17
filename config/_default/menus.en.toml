@@ -5,84 +5,30 @@ weight = 1
 
 [[main]]
 name = "产品"
-url = "/products/"
+url = "#"
 identifier = "products"
 weight = 10
 
   [[main]]
-  name = "按样式"
-  url = ""
+  name = "托盘"
+  url = "/products/pallet/"
   identifier = "products-style"
   parent = "products"
   weight = 11
 
-    [[main]]
-    name = "九脚系列"
-    url = "/products/style/nine-runners/"
-    parent = "products-style"
-    weight = 111
-
-    [[main]]
-    name = "田字系列"
-    url = "/products/style/cross-runners/"
-    parent = "products-style"
-    weight = 112
-
-    [[main]]
-    name = "川字系列"
-    url = "/products/style/skid-runners/"
-    parent = "products-style"
-    weight = 113
-
   [[main]]
-  name = "按承载"
-  url = ""
+  name = "周转筐"
+  url = "/products/crate/"
   identifier = "products-load"
   parent = "products"
   weight = 12
 
-    [[main]]
-    name = "轻型（载重<1T）"
-    url = "/products/load/light-duty/"
-    parent = "products-load"
-    weight = 121
-
-    [[main]]
-    name = "中型（载重1T-2T）"
-    url = "/products/load/medium-duty/"
-    parent = "products-load"
-    weight = 122
-
-    [[main]]
-    name = "重型（载重>2T）"
-    url = "/products/load/heavy-duty/"
-    parent = "products-load"
-    weight = 123
-
   [[main]]
-  name = "按尺寸"
-  url = ""
+  name = "垃圾桶"
+  url = "/products/waste/"
   identifier = "products-dimension"
   parent = "products"
   weight = 13
-
-    [[main]]
-    name = "1200x1000mm (欧标)"
-    url = "/products/dimension/1200x1000/"
-    parent = "products-dimension"
-    weight = 131
-
-    [[main]]
-    name = "1100x1100mm (日韩标)"
-    url = "/products/dimension/1100x1100/"
-    parent = "products-dimension"
-    weight = 132
-
-    [[main]]
-    name = "1200x800mm (欧标)"
-    url = "/products/dimension/1200x800/"
-    parent = "products-dimension"
-    weight = 133
 
 [[main]]
 name = "行业案例"
