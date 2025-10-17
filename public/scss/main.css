@@ -1605,3 +1605,20 @@ body[data-drawer-open='true'] {
 /* 蜜罐字段隐藏（不占空间） */
 .lead-form div[style*="display:none"] {
   display: none !important; }
+
+/* === Mobile 边距修正（Sass 兼容：用 calc 叠加 env） === */
+.lead-form {
+  box-sizing: border-box; }
+
+.lead-form * {
+  min-width: 0; }
+
+/* 防止长内容把容器撑爆 */
+@media (max-width: 640px) {
+  .lead-form {
+    /* 基础左右留白 */
+    padding-left: clamp(12px, 5vw, 24px);
+    padding-right: clamp(12px, 5vw, 24px);
+    /* 叠加 iOS 刘海安全区（env 在非 iOS 上为 0） */
+    padding-left: calc(clamp(12px, 5vw, 24px) + env(safe-area-inset-left));
+    padding-right: calc(clamp(12px, 5vw, 24px) + env(safe-area-inset-right)); } }
