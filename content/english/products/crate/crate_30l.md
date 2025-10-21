@@ -1,5 +1,5 @@
 ---
-title: "crate100"
+title: "crate30"
 featured_image_asset: "/images/products/cnc-machine.jpg"
 sku: "SKU-X1-CNC"
 product_type: "crate"
@@ -9,6 +9,12 @@ specs:
   weight: "12 kg"
   material: "HDPE"
   color: "blue/yellow"
+specs_order:
+  - dimensions
+  - capacity
+  - weight
+  - material
+  - color
 ---
 **Overview**  
 The X1 is a 5-axis CNC milling machine engineered for high accuracy and stable throughput.

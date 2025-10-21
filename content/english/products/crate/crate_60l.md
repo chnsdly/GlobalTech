@@ -1,26 +1,20 @@
 ---
-title: "Nine-Leg Nesting Pallet with Open Deck 1111"
+title: "crate60"
 featured_image_asset: "/images/products/cnc-machine.jpg"
 sku: "SKU-X1-CNC"
-product_type: "pallet"
+product_type: "crate"
 specs:
-  dimensions: "1100 × 1100 × 1400 mm"
-  static_load: "2t"
-  dynamic_load: "1t"
-  racking_load: "1t"
+  dimensions: "2000 × 1500 × 1800 mm"
+  capacity: "100L"
   weight: "12 kg"
   material: "HDPE"
   color: "blue/yellow"
 specs_order:
   - dimensions
-  - static_load
-  - dynamic_load
-  - racking_load
+  - capacity
   - weight
   - material
   - color
-
-
 ---
 **Overview**  
 The X1 is a 5-axis CNC milling machine engineered for high accuracy and stable throughput.
