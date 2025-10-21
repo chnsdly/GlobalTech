@@ -55,9 +55,22 @@
           <span>{{ .Site.Language.LanguageName }}</span>
         </button>
         <div class="lang-switcher__dropdown">
-          {{ range .Site.Home.AllTranslations }}
-          {{ if ne .Language.Lang $.Site.Language.Lang }}
-          <a href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+          {{ $currentPage := . }}
+          {{ $translations := $currentPage.AllTranslations }}
+          {{ $homeTranslations := $.Site.Home.AllTranslations }}
+          {{ $currentLang := $.Site.Language.Lang }}
+          {{ range $.Site.Languages }}
+          {{ if ne .Lang $currentLang }}
+          {{ $lang := . }}
+          {{ with (where $translations "Language.Lang" $lang.Lang) }}
+          {{ $translatedPage := index . 0 }}
+          <a href="{{ $translatedPage.RelPermalink }}">{{ $lang.LanguageName }}</a>
+          {{ else }}
+          {{ with (where $homeTranslations "Language.Lang" $lang.Lang) }}
+          {{ $homePage := index . 0 }}
+          <a href="{{ $homePage.RelPermalink }}">{{ $lang.LanguageName }}</a>
+          {{ end }}
+          {{ end }}
           {{ end }}
           {{ end }}
         </div>
@@ -102,8 +115,24 @@
   {{ if hugo.IsMultilingual }}
   <div class="drawer__footer">
     <div class="lang-switcher">
-      {{ range .Site.Home.AllTranslations }}
-      <a class="lang-switcher__button" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+      {{ $currentPage := . }}
+      {{ $translations := $currentPage.AllTranslations }}
+      {{ $homeTranslations := $.Site.Home.AllTranslations }}
+      {{ range $.Site.Languages }}
+      {{ $lang := . }}
+      {{ if eq $lang.Lang $.Site.Language.Lang }}
+      <a class="lang-switcher__button" href="{{ $currentPage.RelPermalink }}">{{ $lang.LanguageName }}</a>
+      {{ else }}
+      {{ with (where $translations "Language.Lang" $lang.Lang) }}
+      {{ $translatedPage := index . 0 }}
+      <a class="lang-switcher__button" href="{{ $translatedPage.RelPermalink }}">{{ $lang.LanguageName }}</a>
+      {{ else }}
+      {{ with (where $homeTranslations "Language.Lang" $lang.Lang) }}
+      {{ $homePage := index . 0 }}
+      <a class="lang-switcher__button" href="{{ $homePage.RelPermalink }}">{{ $lang.LanguageName }}</a>
+      {{ end }}
+      {{ end }}
+      {{ end }}
       {{ end }}
     </div>
   </div>
