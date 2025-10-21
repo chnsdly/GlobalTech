@@ -3,6 +3,14 @@ title: "Nine-Leg Nesting Pallet with Open Deck 1111"
 featured_image_asset: "/images/products/cnc-machine.jpg"
 sku: "SKU-X1-CNC"
 product_type: "pallet"
+specs_order:
+  - dimensions
+  - static_load
+  - dynamic_load
+  - racking_load
+  - weight
+  - material
+  - color
 specs:
   dimensions: "2000 × 1500 × 1800 mm"
   static_load: "2t"

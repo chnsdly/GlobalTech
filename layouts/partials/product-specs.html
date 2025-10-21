@@ -5,17 +5,55 @@
   <h2>{{ i18n "spec.heading" }}</h2>
 
   {{- if $specs -}}
-    <ul class="spec-list">
-      {{- range $k, $v := $specs -}}
-        {{- $norm := replace (lower $k) "-" "_" -}}   {{/* 规格键名规范化 */}}
-        {{- if $v -}}                                  {{/* 空值不渲染 */}}
-          {{- $label := (i18n (printf "spec.label.%s" $norm)) | default (humanize $k) -}}
-          {{- $type := printf "%T" $v -}}
-          {{- $val := cond (or (eq $type "[]string") (eq $type "[]interface {}")) (delimit $v ", ") $v -}}
-          <li><strong>{{ $label }}:</strong> {{ $val }}</li>
+    {{- $order := slice -}}
+    {{- with $p.Params.specs_order -}}
+      {{- range . -}}
+        {{- $order = $order | append (printf "%v" .) -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- $entries := slice -}}
+    {{- if gt (len $order) 0 -}}
+      {{- range $order -}}
+        {{- $key := . -}}
+        {{- with index $specs $key -}}
+          {{- $entries = $entries | append (dict "key" $key "value" .) -}}
         {{- end -}}
       {{- end -}}
-    </ul>
+      {{- range $k, $v := $specs -}}
+        {{- $key := printf "%v" $k -}}
+        {{- if not (in $order $key) -}}
+          {{- $entries = $entries | append (dict "key" $key "value" $v) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $keys := slice -}}
+      {{- range $k, $_ := $specs -}}
+        {{- $keys = $keys | append (printf "%v" $k) -}}
+      {{- end -}}
+      {{- $keys = sort $keys -}}
+      {{- range $keys -}}
+        {{- $entries = $entries | append (dict "key" . "value" (index $specs .)) -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- if gt (len $entries) 0 -}}
+      <ul class="spec-list">
+        {{- range $entries -}}
+          {{- $key := .key -}}
+          {{- $value := .value -}}
+          {{- if $value -}}
+            {{- $norm := replace (lower $key) "-" "_" -}}   {{/* 规格键名规范化 */}}
+            {{- $label := (i18n (printf "spec.label.%s" $norm)) | default (humanize $key) -}}
+            {{- $type := printf "%T" $value -}}
+            {{- $val := cond (or (eq $type "[]string") (eq $type "[]interface {}")) (delimit $value ", ") $value -}}
+            <li><strong>{{ $label }}:</strong> {{ $val }}</li>
+          {{- end -}}
+        {{- end -}}
+      </ul>
+    {{- else -}}
+      <p class="muted">{{ i18n "spec.no_specs" }}</p>
+    {{- end -}}
   {{- else -}}
     <p class="muted">{{ i18n "spec.no_specs" }}</p>
   {{- end -}}

@@ -3,6 +3,12 @@ title: "crate100"
 featured_image_asset: "/images/products/cnc-machine.jpg"
 sku: "SKU-X1-CNC"
 product_type: "crate"
+specs_order:
+  - dimensions
+  - capacity
+  - weight
+  - material
+  - color
 specs:
   dimensions: "2000 × 1500 × 1800 mm"
   capacity: "100L"
