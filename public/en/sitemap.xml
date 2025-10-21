@@ -23,14 +23,6 @@
     <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-8/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/products/crate/cnc-milling-machine-x1-copy-9/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url><url>
-    <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-2/</loc>
-    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/products/pallet/cnc-milling-machine-x1-copy-3/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
   </url><url>
@@ -76,6 +68,9 @@
                 href="http://localhost:1313/"
                 />
   </url><url>
+    <loc>http://localhost:1313/products/pallet/nine-leg_1210/</loc>
+    <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/products/crate/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -93,6 +88,9 @@
   </url><url>
     <loc>http://localhost:1313/products/</loc>
     <lastmod>2025-08-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/industries/</loc>
+    <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/resources/articles/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
@@ -127,6 +125,12 @@
     <loc>http://localhost:1313/tags/testing/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/industries/how-to-choose-pallets/</loc>
+    <lastmod>2025-07-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/industries/how-to-evaluate-product-quality/</loc>
+    <lastmod>2025-07-18T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/resources/articles/how-to-choose-pallets/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
@@ -148,13 +152,13 @@
     <loc>http://localhost:1313/resources/news/plastic-pallets-market/</loc>
     <lastmod>2025-07-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/industries/</loc>
-  </url><url>
-    <loc>http://localhost:1313/industries/indu-1/</loc>
-  </url><url>
     <loc>http://localhost:1313/about/</loc>
   </url><url>
     <loc>http://localhost:1313/resources/downloads/baoheng/</loc>
+  </url><url>
+    <loc>http://localhost:1313/products/crate/crate_30l/</loc>
+  </url><url>
+    <loc>http://localhost:1313/products/pallet/nine-leg_1111/</loc>
   </url><url>
     <loc>http://localhost:1313/contact/</loc>
   </url>

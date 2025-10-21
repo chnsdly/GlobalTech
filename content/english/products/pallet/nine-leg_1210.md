@@ -1,5 +1,5 @@
 ---
-title: "CNC Milling Machine X1"
+title: "Nine-Leg Nesting Pallet with Open Deck 1210"
 date: 2025-08-09
 draft: false
 sku: "SKU-X1-CNC"

@@ -1477,27 +1477,21 @@ body[data-drawer-open='true'] {
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0), 0 0 0 calc($offset + 2px) var(--focus); }
 
-/* === lead-form.css — 简洁、优雅、Token 友好 === */
+/* === lead-form — Token 原生版（不新建自定义变量） === */
 .lead-form {
-  /* 优先使用你站点的设计 Token，提供兜底值 */
-  --fg: var(--text, #111);
-  --bg: var(--surface, #fff);
-  --muted: var(--muted, #6b7280);
-  --accent: var(--brand, #1f63a3);
-  --on-accent: var(--on-brand, #fff);
-  --radius: var(--radius, .75rem);
-  --gap: clamp(.75rem, 2vw, 1rem);
-  --bd: color-mix(in oklab, var(--fg) 12%, transparent);
-  --bd-focus: color-mix(in oklab, var(--accent) 60%, white);
-  --danger: var(--danger, #d14343);
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--gap);
+  gap: clamp(0.75rem, 2vw, 1rem);
   max-width: 720px;
   margin-inline: auto;
-  color: var(--fg);
-  background: transparent; }
+  color: var(--text);
+  box-sizing: border-box;
+  /* 防止外层无内边距时被撑到边 */ }
 
+.lead-form * {
+  min-width: 0; }
+
+/* 防止长内容把容器撑爆 */
 .lead-form label {
   display: flex;
   flex-direction: column;
@@ -1505,12 +1499,12 @@ body[data-drawer-open='true'] {
   gap: .375rem;
   font-size: .95rem; }
 
+/* 输入与文本域 */
 .lead-form :is(input[type="text"], input[type="email"], input:not([type]), textarea) {
   appearance: none;
-  border: 1px solid var(--bd);
-  background: var(--bg);
-  color: var(--fg);
-  border-radius: var(--radius);
+  border: var(-on-surface);
+  background: var(--surface);
+  color: var(--text);
   padding: .65rem .8rem;
   line-height: 1.45;
   min-height: 2.5rem;
@@ -1521,51 +1515,44 @@ body[data-drawer-open='true'] {
   resize: vertical; }
 
 .lead-form :is(input, textarea)::placeholder {
-  color: color-mix(in oklab, var(--fg) 45%, transparent); }
+  color: color-mix(in oklab, var(--text) 45%, transparent); }
 
+/* 聚焦态 */
 .lead-form :is(input, textarea):focus {
   outline: none;
-  border-color: var(--bd-focus);
-  box-shadow: 0 0 0 0.2rem color-mix(in oklab, var(--accent) 20%, transparent); }
+  border-color: color-mix(in oklab, var(--brand) 60%, white);
+  box-shadow: 0 0 0 0.2rem color-mix(in oklab, var(--brand) 20%, transparent);
+  background: var(--surface); }
 
-/* HTML5 校验的温和提示 */
-.lead-form :is(input, textarea):invalid {
-  border-color: color-mix(in oklab, var(--danger) 55%, white); }
-
-/* —— 勾选同意框：一行显示 —— */
+/* —— 同意勾选：与文案保持一行 —— */
 .lead-form label.checkbox {
   display: inline-flex;
-  /* 关键：内联弹性布局，与正文同一行起始 */
   flex-direction: row;
-  /* 横向排布：复选框 + 文本 */
   align-items: center;
-  /* 垂直对齐 */
   gap: .6rem;
-  /* 复选框与文本间距 */
   line-height: 1.45;
   grid-column: 1 / -1;
-  /* 在网格中占整行 */
   flex-wrap: nowrap;
-  /* 不在首行就断开复选框与文本 */ }
+  /* 首行不拆开复选框与首个词 */ }
 
-/* 细节：去掉多余的上边距，避免视觉“掉线” */
 .lead-form label.checkbox > input {
   margin: 0;
   inline-size: 1.1rem;
   block-size: 1.1rem;
-  accent-color: var(--accent);
+  accent-color: var(--brand);
   flex: 0 0 auto; }
 
 /* Turnstile 与按钮占整行 */
 .lead-form .cf-turnstile {
   grid-column: 1 / -1; }
 
+/* 按钮 */
 .lead-form button {
   grid-column: 1 / -1;
   justify-self: start;
   border: none;
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--brand);
+  color: var(--on-brand);
   border-radius: var(--radius);
   padding: .7rem 1.1rem;
   font-weight: 600;
@@ -1583,42 +1570,35 @@ body[data-drawer-open='true'] {
   opacity: .6;
   cursor: not-allowed; }
 
-/* 两列自适应：消息、同意框、Turnstile、按钮仍然整行 */
+/* —— 自适应两列 —— */
 @media (min-width: 640px) {
   .lead-form {
     grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  /* 让“Message”那一项跨两列（现代浏览器支持） */
+  /* 让“Message”字段跨两列（现代浏览器） */
   .lead-form label:has(textarea[name="message"]) {
     grid-column: 1 / -1; }
-  /* 若需更强兼容性，在 HTML 给该行加 class="field-message" 并启用下一行 */
+  /* 兼容兜底：若需支持旧浏览器，请在 HTML 上给该行加 class="field-message" 并启用下一行 */
   /* .lead-form .field-message{ grid-column: 1 / -1; } */
   .lead-form label.checkbox,
   .lead-form .cf-turnstile,
   .lead-form button {
     grid-column: 1 / -1; } }
 
-/* 降低动画偏好尊重 */
+/* —— Mobile 左右安全间距（含 iOS 刘海），Sass 安全 —— */
+@media (max-width: 640px) {
+  .lead-form {
+    /* 基础留白 */
+    padding-left: clamp(12px, 5vw, 24px);
+    padding-right: clamp(12px, 5vw, 24px);
+    /* iOS 安全区叠加；在其他设备 env(...) 为 0，不影响 */
+    padding-left: calc(clamp(12px, 5vw, 24px) + env(safe-area-inset-left));
+    padding-right: calc(clamp(12px, 5vw, 24px) + env(safe-area-inset-right)); } }
+
+/* 降噪：降低动画偏好 */
 @media (prefers-reduced-motion: reduce) {
   .lead-form * {
     transition: none !important; } }
 
-/* 蜜罐字段隐藏（不占空间） */
+/* 蜜罐字段彻底隐藏（不占空间） */
 .lead-form div[style*="display:none"] {
   display: none !important; }
-
-/* === Mobile 边距修正（Sass 兼容：用 calc 叠加 env） === */
-.lead-form {
-  box-sizing: border-box; }
-
-.lead-form * {
-  min-width: 0; }
-
-/* 防止长内容把容器撑爆 */
-@media (max-width: 640px) {
-  .lead-form {
-    /* 基础左右留白 */
-    padding-left: clamp(12px, 5vw, 24px);
-    padding-right: clamp(12px, 5vw, 24px);
-    /* 叠加 iOS 刘海安全区（env 在非 iOS 上为 0） */
-    padding-left: calc(clamp(12px, 5vw, 24px) + env(safe-area-inset-left));
-    padding-right: calc(clamp(12px, 5vw, 24px) + env(safe-area-inset-right)); } }
