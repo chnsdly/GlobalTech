@@ -1,18 +1,74 @@
 {{- $p := . -}}
-{{- $specs := $p.Params.specs -}}
+{{- $specsParam := $p.Params.specs -}}
+{{- $specsOrder := $p.Params.specs_order -}}
 
 <section class="card">
   <h2>{{ i18n "spec.heading" }}</h2>
 
-  {{- if $specs -}}
+  {{- $items := slice -}}
+  {{- if $specsParam -}}
+    {{- $kind := kind $specsParam -}}
+    {{- if eq $kind "map" -}}
+      {{- $orderedKeys := slice -}}
+      {{- with $specsOrder -}}
+        {{- range . -}}
+          {{- $key := . -}}
+          {{- if and (not (in $orderedKeys $key)) (isset $specsParam $key) -}}
+            {{- $value := index $specsParam $key -}}
+            {{- if $value -}}
+              {{- $orderedKeys = $orderedKeys | append $key -}}
+              {{- $items = $items | append (dict "key" $key "value" $value) -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+
+      {{- $remaining := slice -}}
+      {{- range $k, $v := $specsParam -}}
+        {{- if and (not (in $orderedKeys $k)) $v -}}
+          {{- $remaining = $remaining | append (dict "key" $k "value" $v) -}}
+        {{- end -}}
+      {{- end -}}
+
+      {{- range sort $remaining "key" -}}
+        {{- $items = $items | append . -}}
+      {{- end -}}
+    {{- else if eq $kind "slice" -}}
+      {{- range $specsParam -}}
+        {{- $entry := . -}}
+        {{- $value := default (index $entry "val") (index $entry "value") -}}
+        {{- $key := index $entry "key" -}}
+        {{- $label := index $entry "label" -}}
+        {{- if and $value (or $label $key) -}}
+          {{- $item := dict "value" $value -}}
+          {{- with $key -}}
+            {{- $item = merge $item (dict "key" .) -}}
+          {{- end -}}
+          {{- with $label -}}
+            {{- $item = merge $item (dict "label" .) -}}
+          {{- end -}}
+          {{- $items = $items | append $item -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if gt (len $items) 0 -}}
     <ul class="spec-list">
-      {{- range $k, $v := $specs -}}
-        {{- $norm := replace (lower $k) "-" "_" -}}   {{/* 规格键名规范化 */}}
-        {{- if $v -}}                                  {{/* 空值不渲染 */}}
-          {{- $label := (i18n (printf "spec.label.%s" $norm)) | default (humanize $k) -}}
-          {{- $type := printf "%T" $v -}}
-          {{- $val := cond (or (eq $type "[]string") (eq $type "[]interface {}")) (delimit $v ", ") $v -}}
-          <li><strong>{{ $label }}:</strong> {{ $val }}</li>
+      {{- range $items -}}
+        {{- $value := .value | default (index . "value") -}}
+        {{- $type := printf "%T" $value -}}
+        {{- $display := cond (or (eq $type "[]string") (eq $type "[]interface {}")) (delimit $value ", ") $value -}}
+        {{- $key := .key | default (index . "key") -}}
+        {{- $labelOverride := .label | default (index . "label") -}}
+        {{- $autoLabel := "" -}}
+        {{- if $key -}}
+          {{- $norm := replace (lower (string $key)) "-" "_" -}}
+          {{- $autoLabel = or (i18n (printf "spec.label.%s" $norm)) (humanize $key) -}}
+        {{- end -}}
+        {{- $label := default $autoLabel $labelOverride -}}
+        {{- if $label -}}
+          <li><strong>{{ $label }}:</strong> {{ $display }}</li>
         {{- end -}}
       {{- end -}}
     </ul>

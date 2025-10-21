@@ -11,6 +11,14 @@ specs:
   weight: "12 kg"
   material: "HDPE"
   color: "blue/yellow"
+specs_order:
+  - dimensions
+  - static_load
+  - dynamic_load
+  - racking_load
+  - weight
+  - material
+  - color
 
 
 ---
