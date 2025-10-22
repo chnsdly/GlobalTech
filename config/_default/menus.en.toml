@@ -1,110 +1,109 @@
 [[main]]
-name = "首页"
+name = "Home"
 url = "/"
 weight = 1
 
 [[main]]
-name = "产品"
+name = "Products"
 url = "#"
 identifier = "products"
 weight = 10
 
   [[main]]
-  name = "托盘系列"
+  name = "Pallets"
   url = "/products/pallet/"
   identifier = "products-style"
   parent = "products"
   weight = 11
 
   [[main]]
-  name = "周转筐系列"
+  name = "Crates"
   url = "/products/crate/"
   identifier = "products-load"
   parent = "products"
   weight = 12
 
   [[main]]
-  name = "垃圾桶系列"
+  name = "Waste Bins"
   url = "/products/waste/"
   identifier = "products-dimension"
   parent = "products"
   weight = 13
 
 [[main]]
-name = "行业案例"
+name = "Industries"
 url = "/industries/"
 identifier = "industries"
 weight = 20
 
   [[main]]
-  name = "冷链物流解决方案"
+  name = "Cold Chain Logistics Solutions"
   url = "/industries/cold-chain/"
   parent = "industries"
   weight = 21
 
   [[main]]
-  name = "高位货架仓储方案"
+  name = "High-Bay Racking Storage Solutions"
   url = "/industries/warehousing/"
   parent = "industries"
   weight = 22
 
   [[main]]
-  name = "出口一次性托盘"
+  name = "Export One-Way Pallets"
   url = "/industries/export/"
   parent = "industries"
   weight = 23
 
   [[main]]
-  name = "食品级托盘应用"
+  name = "Food-Grade Pallet Applications"
   url = "/industries/food-grade/"
   parent = "industries"
   weight = 24
 
   [[main]]
-  name = "化工与危险品存储"
+  name = "Chemical & Hazardous Goods Storage"
   url = "/industries/chemical/"
   parent = "industries"
   weight = 25
 
 [[main]]
-name = "资源中心"
+name = "Resources"
 url = "/resources/"
 identifier = "resources"
 weight = 30
 
   [[main]]
-  name = "博客"
+  name = "Blog"
   url = "/resources/articles/"
   parent = "resources"
   weight = 31
 
   [[main]]
-  name = "新闻动态"
+  name = "News"
   url = "/resources/news/"
   parent = "resources"
   weight = 32
 
   [[main]]
-  name = "下载中心"
+  name = "Downloads"
   url = "/resources/downloads/"
   parent = "resources"
   weight = 33
 
   [[main]]
-  name = "常见问题"
+  name = "FAQ"
   url = "/resources/faq/"
   parent = "resources"
   weight = 34
 
 [[main]]
-name = "关于我们"
+name = "About Us"
 url = "/about/"
 identifier = "about"
 weight = 40
 
 [[main]]
-name = "联系我们"
+name = "Contact Us"
 url = "/contact/"
 identifier = "contact"
 weight = 50
-

@@ -961,8 +961,6 @@ body[data-drawer-open='true'] {
   background: var(--card);
   /* 原为 var(--on-brand) */
   color: var(--on-surface);
-  border: var(--border-w) solid var(--border);
-  border-radius: var(--radius);
   overflow: hidden;
   transition: transform var(--t-normal) var(--ease), box-shadow var(--t-normal) var(--ease); }
 
@@ -978,17 +976,11 @@ body[data-drawer-open='true'] {
   inline-size: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  /* 需要铺满裁切就用 cover；不裁切可改 contain */
-  border-block-end: var(--border-w) solid var(--border); }
-
-/* 统一左右间距，只在各自块内控制上下间距 */
-.product-card :is(h3, .muted, .sku) {
-  margin-inline: calc(var(--space) * 2); }
+  /* 需要铺满裁切就用 cover；不裁切可改 contain */ }
 
 .product-card h3 {
   margin-block: calc(var(--space) * 1.2) calc(var(--space) * 0.5);
   /* .6rem .25rem */
-  color: var(--brand);
   font-size: var(--fs-1); }
 
 .product-card .muted {
