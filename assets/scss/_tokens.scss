@@ -30,6 +30,8 @@
   --container-narrow: 60rem; /* 窄版：以阅读为主 */
   
   --header-height: 72px;    /* 导航栏高度 */
+  --layout-gap-top: clamp(2.5rem, calc(1.25rem + 5vw), 3.75rem);
+  --layout-gap-top-tight: calc(var(--layout-gap-top) * 0.5);
 
   /* 字体与排版 */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
@@ -64,6 +66,18 @@
   --z-overlay: 900;
   --z-modal: 1000;
   --z-tooltip: 1100;
+}
+
+@media (min-width: map-get($bp, md)) {
+  :root {
+    --layout-gap-top: clamp(3rem, calc(1.75rem + 4vw), 4.5rem);
+  }
+}
+
+@media (min-width: map-get($bp, lg)) {
+  :root {
+    --layout-gap-top: clamp(3.5rem, calc(2rem + 3vw), 5.5rem);
+  }
 }
 
 /* ---------------------------- 主题变量：暗色覆盖 ---------------------------- */

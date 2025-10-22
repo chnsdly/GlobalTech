@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{ $slug := .Params.download_slug }}
-  <article class="container container--narrow prose">
+  <article class="container container--narrow prose page-section">
     <h1>{{ .Title }}</h1>
     {{ .Content }}
     {{ partial "lead-form.html" (dict

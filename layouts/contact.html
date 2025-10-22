@@ -1,3 +1,7 @@
 {{ define "main" }}
-{{ partial "lead-form.html" (dict "type" "contact" "page" . "sitekey" .Site.Params.turnstile_site_key) }}
+<section class="page-section">
+  <div class="container container--narrow">
+    {{ partial "lead-form.html" (dict "type" "contact" "page" . "sitekey" .Site.Params.turnstile_site_key) }}
+  </div>
+</section>
 {{ end }}
