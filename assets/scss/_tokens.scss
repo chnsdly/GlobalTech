@@ -217,3 +217,16 @@ input, button, select, textarea { font: inherit; color: inherit; }
 
 /* 垂直流式间距：兄弟元素之间留白 */
 .flow > * + * { margin-block-start: var(--flow-gap, space(3)); }
+
+/* 多行截断工具类 */
+.clamp1,
+.clamp2,
+.clamp3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.clamp1 { -webkit-line-clamp: 1; }
+.clamp2 { -webkit-line-clamp: 2; }
+.clamp3 { -webkit-line-clamp: 3; }

@@ -5,7 +5,7 @@
   gap: clamp(.75rem, 2vw, 1rem);
   max-width: 720px;
   margin-inline: auto;
-  color: var(--text);
+  color: var(--on-surface);
   box-sizing: border-box; /* 防止外层无内边距时被撑到边 */
 }
 
@@ -21,9 +21,9 @@
 /* 输入与文本域 */
 .lead-form :is(input[type="text"], input[type="email"], input:not([type]), textarea){
   appearance: none;
-  border: var(-on-surface);
+  border: var(--border-w) solid var(--border);
   background: var(--surface);
-  color: var(--text);
+  color: var(--on-surface);
   padding: .65rem .8rem;
   line-height: 1.45;
   min-height: 2.5rem;
@@ -34,7 +34,7 @@
 .lead-form textarea{ resize: vertical; }
 
 .lead-form :is(input, textarea)::placeholder{
-  color: color-mix(in oklab, var(--text) 45%, transparent);
+  color: color-mix(in oklab, var(--on-surface) 45%, transparent);
 }
 
 /* 聚焦态 */

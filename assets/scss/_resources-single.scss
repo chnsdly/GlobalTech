@@ -181,12 +181,6 @@
   color: var(--on-surface);
 }
 
-/* ===== 小工具：多行省略（若项目全局已存在，可删） ===== */
-.clamp1, .clamp2, .clamp3 { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
-.clamp1 { -webkit-line-clamp: 1; }
-.clamp2 { -webkit-line-clamp: 2; }
-.clamp3 { -webkit-line-clamp: 3; }
-
 /* ===== 焦点可达 ===== */
 .post a:focus-visible,
 .post .btn:focus-visible { @include focus-ring(3px); }
