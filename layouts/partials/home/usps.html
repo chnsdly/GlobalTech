@@ -1,7 +1,7 @@
 {{ $lang := .Site.Language.Lang }}
 {{ $list := (index site.Data.usps $lang) | default (slice) }}
 
-<section class="home-usps">
+<section class="home-usps page-section">
   <div class="container usp-grid">
     {{ range $list }}
       <div class="usp-card">

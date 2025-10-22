@@ -1,8 +1,8 @@
 {{ $prods := where site.RegularPages "Section" "products" }}
 {{ $featured := where $prods ".Params.featured" true | first 3 }}
 
-<section class="home-featured">
-  <div class="container">
+<section class="home-featured page-section page-section--relaxed">
+  <div class="container stack stack--lg">
     <div class="head">
       <h2>{{ if eq .Site.Language.Lang "zh"}}核心产品{{else}}Featured Products{{end}}</h2>
       <a class="more-link" href='{{ "products/" | relLangURL }}'>{{ if eq .Site.Language.Lang "zh"}}全部产品 →{{else}}View all →{{end}}</a>

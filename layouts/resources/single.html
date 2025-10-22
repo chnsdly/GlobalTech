@@ -4,7 +4,8 @@
 {{ $lang := .Site.Language.Lang }}
 {{ $p := . }}
 
-<article class="post container">
+<section class="page-section page-section--relaxed">
+  <article class="post container stack stack--lg">
 
   <!-- 头部：标题 + 元信息 -->
   <header class="post-head">
@@ -128,5 +129,6 @@
     </section>
   {{ end }}
 
-</article>
+  </article>
+</section>
 {{ end }}

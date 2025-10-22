@@ -1,9 +1,11 @@
 {{ define "main" }}
-  <article>
-    <h1>{{ .Title }}</h1>
-    {{ if .Params.featured_image }}
-      <p><img src="{{ .Params.featured_image | relURL }}" alt="{{ .Title }}"></p>
-    {{ end }}
-    {{ .Content }}
-  </article>
+  <section class="page-section page-section--narrow">
+    <article class="container container--narrow stack">
+      <h1>{{ .Title }}</h1>
+      {{ if .Params.featured_image }}
+        <p><img src="{{ .Params.featured_image | relURL }}" alt="{{ .Title }}"></p>
+      {{ end }}
+      {{ .Content }}
+    </article>
+  </section>
 {{ end }}
