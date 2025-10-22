@@ -4,12 +4,16 @@
   {{ with .Paginator.Prev }}<link rel="prev" href="{{ .URL | absURL }}">{{ end }}
   {{ with .Paginator.Next }}<link rel="next" href="{{ .URL | absURL }}">{{ end }}
 {{ end }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  <ul>
-    {{ range .Pages }}
-      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-    {{ end }}
-  </ul>
+  <section class="page-section">
+    <div class="container stack">
+      <h1>{{ .Title }}</h1>
+      {{ .Content }}
+      <ul>
+        {{ range .Pages }}
+          <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+        {{ end }}
+      </ul>
+    </div>
+  </section>
 
 {{ end }}

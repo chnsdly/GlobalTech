@@ -1,0 +1,65 @@
+/* ---------------------------------------
+ * Layout primitives & spacing system
+ * --------------------------------------- */
+
+.page {
+  --page-gap: var(--space-section-gap);
+  --page-edge: var(--space-page-edge);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
+  padding-block-end: var(--page-edge);
+}
+
+.page > * {
+  margin: 0;
+}
+
+.page-section {
+  --section-py: var(--space-section-md);
+  padding-block: var(--section-py);
+}
+
+.page-section--dense { --section-py: var(--space-section-sm); }
+.page-section--narrow { --section-py: var(--space-section-sm); }
+.page-section--relaxed { --section-py: var(--space-section-lg); }
+.page-section--wide { --section-py: var(--space-section-lg); }
+.page-section--flush { --section-py: 0; }
+
+/* 拉伸至全宽（常用于具有视觉背景的区块） */
+.page-section--bleed {
+  padding-inline: 0;
+}
+
+/* Stack utility：用于在模块内部创建一致的垂直节奏 */
+.stack {
+  display: grid;
+  gap: var(--stack-gap, var(--space-md));
+}
+
+.stack--sm { --stack-gap: var(--space-sm); }
+.stack--lg { --stack-gap: var(--space-lg); }
+
+/* 解决锚点/跳转被固定头部遮挡的问题 */
+:where(h1, h2, h3, h4, h5, h6) {
+  scroll-margin-top: calc(var(--header-height) + var(--space-sm));
+}
+
+/* 在 page-section 内部，容器的左右安全间距随屏幕流动 */
+.page-section :where(.container) {
+  padding-inline: clamp(var(--space-2xs), 6vw, var(--space-sm));
+}
+
+/* 当模块需要更窄或更宽的容器时，依旧可以使用 container modifier */
+.page-section :where(.container.container--wide) {
+  padding-inline: clamp(var(--space-2xs), 4vw, var(--space-md));
+}
+.page-section :where(.container.container--narrow) {
+  padding-inline: clamp(var(--space-2xs), 8vw, var(--space-sm));
+}
+
+/* 默认流式排版的间距与新版空间体系对齐 */
+.flow { --flow-gap: var(--space-sm); }
+
+*** EOF

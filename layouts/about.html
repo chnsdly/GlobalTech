@@ -1,39 +1,34 @@
 {{ define "main" }}
-<section class="about">
-  <!-- 1) Hero：价值主张 + 快速证明点 -->
-  <div class="about__hero">
-    <div class="container container--wide">
-      <div class="about__hero-inner">
-        <div class="about__hero-badge">制造商 · OEM/ODM · 出口</div>
-        <h1 class="about__hero-title">值得信赖的塑料包装与托盘制造商</h1>
-        <p class="about__hero-sub">从模具到批量生产，我们为仓储、物流、食品加工与环卫提供稳定的大规模品质交付。</p>
-        <div class="about__hero-proof">
-          <div class="chip" title="成立时间">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 22V8l6-5 6 5v14H6zM9 22v-6h6v6"/></svg>
-            <span data-founded>成立于 2013</span>
-          </div>
-          <div class="chip" title="工厂面积">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 3h18v4H3zM5 7h14v14H5z"/></svg>
-            <span data-plant>工厂面积 20,000 m²</span>
-          </div>
-          <div class="chip" title="认证">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6-5.5-3-5.5 3 1-6L3 8.9 9 8z"/></svg>
-            <span data-certs>ISO 9001/14001 · REACH/RoHS</span>
-          </div>
-          <div class="chip" title="市场覆盖">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 0c3 2 5 6 5 10s-2 8-5 10m0-20C9 4 7 8 7 12s2 8 5 10"/></svg>
-            <span data-countries>覆盖 30+ 个国家/地区</span>
-          </div>
+  <section class="page-section page-section--relaxed about__hero">
+    <div class="container container--wide stack stack--lg">
+      <div class="about__hero-badge">制造商 · OEM/ODM · 出口</div>
+      <h1 class="about__hero-title">值得信赖的塑料包装与托盘制造商</h1>
+      <p class="about__hero-sub">从模具到批量生产，我们为仓储、物流、食品加工与环卫提供稳定的大规模品质交付。</p>
+      <div class="about__hero-proof">
+        <div class="chip" title="成立时间">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 22V8l6-5 6 5v14H6zM9 22v-6h6v6"/></svg>
+          <span data-founded>成立于 2013</span>
         </div>
-        <div class="about__hero-cta">
-          <a class="button button--primary" href="/contact" aria-label="获取报价">获取报价</a>
+        <div class="chip" title="工厂面积">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 3h18v4H3zM5 7h14v14H5z"/></svg>
+          <span data-plant>工厂面积 20,000 m²</span>
+        </div>
+        <div class="chip" title="认证">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6-5.5-3-5.5 3 1-6L3 8.9 9 8z"/></svg>
+          <span data-certs>ISO 9001/14001 · REACH/RoHS</span>
+        </div>
+        <div class="chip" title="市场覆盖">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 0c3 2 5 6 5 10s-2 8-5 10m0-20C9 4 7 8 7 12s2 8 5 10"/></svg>
+          <span data-countries>覆盖 30+ 个国家/地区</span>
         </div>
       </div>
+      <div class="about__hero-cta">
+        <a class="button button--primary" href="/contact" aria-label="获取报价">获取报价</a>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- 2) Stats：硬指标 -->
-  <div class="about__stats">
+  <section class="page-section about__stats">
     <div class="container">
       <ul class="stats-grid" role="list">
         <li class="stat">
@@ -54,11 +49,10 @@
         </li>
       </ul>
     </div>
-  </div>
+  </section>
 
-  <!-- 3) 能力矩阵 -->
-  <div id="capabilities" class="about__capabilities">
-    <div class="container">
+  <section id="capabilities" class="page-section about__capabilities">
+    <div class="container stack">
       <div class="section-head">
         <h2>制造能力</h2>
         <p class="muted">模具 · 成型 · 材料 · 质控 · 交付</p>
@@ -106,11 +100,10 @@
         </article>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- 4) 合规与认证 -->
-  <div class="about__compliance">
-    <div class="container container--narrow">
+  <section class="page-section page-section--narrow about__compliance">
+    <div class="container container--narrow stack">
       <div class="section-head">
         <h2>合规与认证</h2>
         <p class="muted">我们符合全球在质量、环境与安全方面的标准。</p>
@@ -125,11 +118,10 @@
       </ul>
       <p class="muted small">*适用于环卫垃圾桶等产品。</p>
     </div>
-  </div>
+  </section>
 
-  <!-- 5) 时间线/里程碑 -->
-  <div class="about__timeline">
-    <div class="container container--narrow">
+  <section class="page-section page-section--narrow about__timeline">
+    <div class="container container--narrow stack">
       <div class="section-head">
         <h2>我们的里程碑</h2>
       </div>
@@ -156,18 +148,16 @@
         </li>
       </ol>
     </div>
-  </div>
+  </section>
 
-  <!-- 6) 全球足迹 -->
-  <div class="about__global">
-    <div class="container">
+  <section class="page-section about__global">
+    <div class="container stack">
       <div class="section-head">
         <h2>全球客户的共同选择</h2>
         <p class="muted">主要市场涵盖 美国/加拿大、欧盟、东南亚、中东与拉美。</p>
       </div>
       <div class="global__grid">
         <div class="global__map" aria-hidden="true">
-          <!-- 使用你的静态世界地图图像或SVG -->
           <img src="/images/world-map.jpg" alt="" loading="lazy">
         </div>
         <div class="global__facts">
@@ -182,11 +172,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- 8) 可持续 -->
-  <div class="about__sustain">
-    <div class="container container--narrow">
+  <section class="page-section page-section--narrow about__sustain">
+    <div class="container container--narrow stack">
       <div class="section-head">
         <h2>可持续发展</h2>
       </div>
@@ -200,164 +189,10 @@
           <p>节能型设备；通过包装优化降低运输排放。</p>
         </article>
         <article class="card">
-          <h3>EPR 与合规</h3>
-          <p>支持并配合相关 EPR 法规要求（如适用）。</p>
+          <h3>循环合作</h3>
+          <p>与回收伙伴合作，建立可追溯的再生料闭环。</p>
         </article>
       </div>
     </div>
-  </div>
-
-  <!-- 9) FAQ（采购关注） -->
-  <div class="about__faq">
-    <div class="container container--narrow">
-      <div class="section-head">
-        <h2>常见问题</h2>
-      </div>
-      <details>
-        <summary>你们的 MOQ 与打样政策是什么？</summary>
-        <p>标准 MOQ 取决于型号与颜色；打样 <span data-samplelead-2>7–10</span> 天，批量下单可退样品费。</p>
-      </details>
-      <details>
-        <summary>如何确保质量一致性？</summary>
-        <p>我们实施 IQC/IPQC/OQC，保持批次追溯，并可按需提供 COA；按规格执行堆码/跌落/叉车测试。</p>
-      </details>
-      <details>
-        <summary>是否支持定制（颜色、Logo、结构）？</summary>
-        <p>支持，包括色母、烫印，以及依托自有模具的结构定制。</p>
-      </details>
-      <details>
-        <summary>可支持哪些贸易术语与交付时间？</summary>
-        <p>支持 EXW/FOB/CIF/DDP；常规交期 <span data-leadtime-2>20–35</span> 天，取决于订单规模与模具情况。</p>
-      </details>
-    </div>
-  </div>
-
-  <!-- 10) 强CTA -->
-  <div class="about__cta">
-    <div class="container">
-      <div class="cta__box">
-        <div class="cta__text">
-          <h2>准备好获取专属报价了吗？</h2>
-          <p>告诉我们尺寸、载重与应用需求——我们将在 24 小时内给出匹配方案。</p>
-        </div>
-        <div class="cta__actions">
-          <a class="button button--primary" href="/contact">联系销售</a>
-          <a class="button" href="/downloads">下载规格</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- JSON-LD：Organization（请用真实信息替换占位） -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Your Company Name",
-  "legalName": "Your Legal Entity",
-  "url": "https://www.example.com/",
-  "logo": "https://www.example.com/images/logo.png",
-  "foundingDate": "2013-01-01",
-  "founder": [{"@type":"Person","name":"Founder Name"}],
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Industrial Park Road 1",
-    "addressLocality": "Linyi",
-    "addressRegion": "Shandong",
-    "postalCode": "276000",
-    "addressCountry": "CN"
-  },
-  "contactPoint": [{
-    "@type": "ContactPoint",
-    "contactType": "sales",
-    "email": "sales@example.com",
-    "telephone": "+86-000-0000",
-    "areaServed": "Worldwide",
-    "availableLanguage": ["en","es","fr","de","it","zh"]
-  }],
-  "sameAs": [
-    "https://www.linkedin.com/company/yourcompany"
-  ]
-}
-</script>
-
-<style>
-/*****************************
-  About Page Scoped Styles
-*****************************/
-.about { --gap: calc(var(--space) * 3); }
-.muted { color: var(--muted); }
-.small { font-size: var(--fs-1); }
-.section-head { text-align: center; margin-block: calc(var(--space) * 6) calc(var(--space) * 4); }
-.section-head h2 { font-size: var(--fs-4); margin: 0 0 calc(var(--space) * 1); }
-.section-head p { margin: 0; }
-
-/* Hero */
-.about__hero { background: linear-gradient(180deg, color-mix(in oklch, var(--brand) 20%, transparent), transparent), var(--surface); padding-block: calc(var(--space) * 6); }
-.about__hero-inner { max-width: var(--container-narrow); margin: 0 auto; text-align: center; }
-.about__hero-badge { display: inline-block; padding: .35rem .75rem; border-radius: var(--radius-pill); background: color-mix(in oklch, var(--brand), white 85%); color: var(--on-surface); border: var(--border-w) solid var(--border); font-size: .875rem; }
-.about__hero-title { font-size: var(--fs-5); margin: calc(var(--space) * 2) 0 calc(var(--space) * 2); letter-spacing: -0.02em; }
-.about__hero-sub { font-size: var(--fs-2); color: var(--muted); margin: 0 auto calc(var(--space) * 3); max-width: 60ch; }
-.about__hero-proof { display: flex; flex-wrap: wrap; gap: var(--gap); justify-content: center; margin-block: calc(var(--space) * 3) calc(var(--space) * 4); }
-.chip { display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .75rem; border-radius: var(--radius-pill); border: var(--border-w) solid var(--border); background: var(--card); color: var(--on-card); box-shadow: var(--shadow); }
-.chip svg { width: 18px; height: 18px; fill: currentColor; opacity: .7; }
-.about__hero-cta { display: flex; gap: var(--gap); justify-content: center; }
-
-/* Stats */
-.about__stats { padding-block: calc(var(--space) * 6); }
-.stats-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); list-style: none; padding: 0; margin: 0; }
-@media (min-width: 48rem) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
-.stat { text-align: center; padding: calc(var(--space) * 3); border-radius: var(--radius); background: var(--card); border: var(--border-w) solid var(--border); box-shadow: var(--shadow); }
-.stat__num { font-size: clamp(2rem, 1.2rem + 3vw, 3rem); letter-spacing: -0.02em; font-weight: 700; }
-.stat__label { color: var(--muted); margin-top: .25rem; }
-
-/* Cards grid */
-.cards-grid { display: grid; gap: var(--gap); grid-template-columns: 1fr; }
-@media (min-width: 48rem) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
-.card { background: var(--card); color: var(--on-card); border: var(--border-w) solid var(--border); border-radius: var(--radius); padding: calc(var(--space) * 3); box-shadow: var(--shadow); }
-.card h3 { margin: 0 0 .5rem; font-size: var(--fs-3); letter-spacing: -0.01em; }
-.check-list { list-style: none; padding: 0; margin: 0; display: grid; gap: .5rem; }
-.check-list li { position: relative; padding-left: 1.5rem; }
-.check-list li::before { content: ""; position: absolute; left: 0; top: .5rem; width: .75rem; height: .75rem; border-radius: 50%; background: var(--brand); }
-
-/* Compliance */
-.about__compliance { padding-block: calc(var(--space) * 6); }
-.logos-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); list-style: none; padding: 0; margin: 0; }
-@media (min-width: 48rem) { .logos-grid { grid-template-columns: repeat(6, 1fr); } }
-.logo { display: grid; place-items: center; padding: 1rem; background: var(--card); border: var(--border-w) solid var(--border); border-radius: var(--radius); min-height: 72px; text-align: center; box-shadow: var(--shadow); font-weight: 600; }
-
-/* Timeline */
-.about__timeline { padding-block: calc(var(--space) * 6); }
-.timeline { --line: color-mix(in oklch, var(--brand), black 60%); list-style: none; padding: 0; margin: 0; position: relative; }
-.timeline li { display: grid; grid-template-columns: 6rem 1fr; gap: var(--gap); padding: calc(var(--space) * 2) 0; border-left: 2px solid var(--line); margin-left: 1rem; position: relative; }
-.timeline li::before { content: ""; position: absolute; left: -9px; top: calc(50% - 6px); width: 12px; height: 12px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 2px var(--surface); }
-.tl__year { font-weight: 700; color: var(--muted); }
-.tl__content { color: var(--on-surface); }
-
-/* Global */
-.about__global { padding-block: calc(var(--space) * 6); }
-.global__grid { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
-@media (min-width: 64rem) { .global__grid { grid-template-columns: 2fr 1fr; align-items: center; } }
-.global__map img { width: 100%; border-radius: var(--radius); border: var(--border-w) solid var(--border); box-shadow: var(--shadow); }
-
-/* Clients */
-.about__clients { padding-block: calc(var(--space) * 6); }
-
-/* Sustainability */
-.about__sustain { padding-block: calc(var(--space) * 6); }
-
-/* FAQ */
-.about__faq { padding-block: calc(var(--space) * 6); }
-.about__faq details { border: var(--border-w) solid var(--border); border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); padding: 1rem 1.25rem; margin-bottom: 1rem; }
-.about__faq summary { cursor: pointer; font-weight: 600; }
-
-/* CTA */
-.about__cta { padding-block: calc(var(--space) * 8); background: linear-gradient(180deg, transparent, color-mix(in oklch, var(--brand) 12%, transparent)); }
-.cta__box { display: grid; gap: var(--gap); align-items: center; background: var(--card); border-radius: var(--radius); border: var(--border-w) solid var(--border); padding: calc(var(--space) * 4); box-shadow: var(--shadow); }
-@media (min-width: 48rem) { .cta__box { grid-template-columns: 1fr auto; } }
-.cta__text h2 { margin: 0 0 .5rem; font-size: var(--fs-3); }
-.cta__text p { margin: 0; color: var(--muted); }
-.cta__actions { display: flex; flex-wrap: wrap; gap: var(--gap); }
-</style>
+  </section>
 {{ end }}

@@ -3,7 +3,7 @@
 {{- $data := index site.Data.testimonials $lang -}}
 {{- if not $data }}{{- $data = site.Data.testimonials.en -}}{{- end -}}
 {{- if $data }}
-<section class="testimonials" aria-label="{{ i18n `testimonials_aria` | default `Customer testimonials` }}">
+<section class="testimonials page-section page-section--relaxed" aria-label="{{ i18n `testimonials_aria` | default `Customer testimonials` }}">
   <div class="container testimonials__viewport">
     {{- range $i, $t := $data }}
     <figure class="tcard" id="tcard-{{ add $i 1 }}">

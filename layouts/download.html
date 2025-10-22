@@ -1,13 +1,15 @@
 {{ define "main" }}
 {{ $slug := .Params.download_slug }}
-  <article class="container container--narrow prose">
-    <h1>{{ .Title }}</h1>
-    {{ .Content }}
-    {{ partial "lead-form.html" (dict
-        "type" "download"
-        "slug" $slug
-        "page" .
-        "sitekey" .Site.Params.turnstile_site_key
-    ) }}
-  </article>
+  <section class="page-section page-section--narrow">
+    <article class="container container--narrow prose stack">
+      <h1>{{ .Title }}</h1>
+      {{ .Content }}
+      {{ partial "lead-form.html" (dict
+          "type" "download"
+          "slug" $slug
+          "page" .
+          "sitekey" .Site.Params.turnstile_site_key
+      ) }}
+    </article>
+  </section>
 {{ end }}

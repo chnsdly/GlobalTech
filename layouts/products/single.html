@@ -1,7 +1,8 @@
 {{ define "title" }}{{ .Title }} | {{ .Site.Title }}{{ end }}
 
 {{ define "main" }}
-<div class="container">
+<section class="page-section page-section--relaxed">
+  <div class="container">
 <article class="product-detail">
   <header class="product-hero">
     <h1>{{ .Title }}</h1>
@@ -36,5 +37,6 @@
     {{ .Content }}
   </section>
 </article>
-</div>
-{{ end }}
+  </div>
+</section>
+ {{ end }}
