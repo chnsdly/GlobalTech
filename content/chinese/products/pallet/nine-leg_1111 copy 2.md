@@ -2,6 +2,10 @@
 title: "Nine-Leg Nesting Pallet with Open Deck 1111"
 featured_image_asset: "/images/products/cnc-machine.jpg"
 sku: "SKU-X1-CNC"
+featured_image_asset: "/images/products/cnc-machine.jpg"
+featured_image: "/images/cnc-machine.jpg"
+featured: true
+summary: "5-axis high-precision CNC milling for aerospace & medical parts."
 product_type: "pallet"
 specs:
   dimensions: "1100 × 1100 × 1400 mm"

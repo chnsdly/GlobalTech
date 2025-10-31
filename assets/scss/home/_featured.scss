@@ -15,7 +15,7 @@
 .home-featured .product-grid{
   display:grid;
   gap:clamp(12px,2vw,20px);
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(4,minmax(0,1fr));
   align-items:stretch;
 }
 @media (max-width:1024px){

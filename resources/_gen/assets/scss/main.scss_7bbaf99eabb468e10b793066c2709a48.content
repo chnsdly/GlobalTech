@@ -217,6 +217,7 @@ input, button, select, textarea {
 .flow > * + * {
   margin-block-start: var(--flow-gap, calc(var(--space) * 3)); }
 
+/* 多行截断工具类 */
 .clamp1,
 .clamp2,
 .clamp3 {
@@ -340,13 +341,13 @@ body.header-hidden {
   background-color: var(--surface);
   box-shadow: var(--shadow);
   border: var(--border-w) solid var(--border);
-  list-style: none;
   padding: var(--space);
   margin-top: 0;
   opacity: 0;
   visibility: hidden;
   transform: translateY(var(--space));
-  transition: opacity var(--t-normal) var(--ease), transform var(--t-normal) var(--ease), visibility var(--t-normal) var(--ease); }
+  transition: opacity var(--t-normal) var(--ease), transform var(--t-normal) var(--ease), visibility var(--t-normal) var(--ease);
+  list-style: none; }
 
 .lang-switcher__dropdown {
   position: absolute;
@@ -471,10 +472,6 @@ body.header-hidden {
   transform: translate(-50%, -50%) rotate(-45deg); }
 
 /* 抽屉打开时，把 header 提到抽屉之上 */
-body[data-drawer-open="true"] #site-header {
-  z-index: calc(var(--z-modal) + 2);
-  /* > drawer(1000) 和 overlay(900) */ }
-
 /*
         * 移动端抽屉样式 (Drawer)
         */
@@ -503,15 +500,16 @@ body[data-drawer-open="true"] #site-header {
   flex-direction: column;
   padding: calc(var(--space) * 4); }
 
-body[data-drawer-open='true'] .drawer-overlay {
-  opacity: 1;
-  visibility: visible; }
-
-body[data-drawer-open='true'] .drawer {
-  transform: translateX(0); }
-
 body[data-drawer-open='true'] {
   overflow: hidden; }
+  body[data-drawer-open='true'] #site-header {
+    z-index: calc(var(--z-modal) + 2);
+    /* > drawer(1000) 和 overlay(900) */ }
+  body[data-drawer-open='true'] .drawer-overlay {
+    opacity: 1;
+    visibility: visible; }
+  body[data-drawer-open='true'] .drawer {
+    transform: translateX(0); }
 
 .drawer__header {
   display: flex;
@@ -757,7 +755,7 @@ body[data-drawer-open='true'] {
 .home-featured .product-grid {
   display: grid;
   gap: clamp(12px, 2vw, 20px);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: stretch; }
 
 @media (max-width: 1024px) {
@@ -821,6 +819,8 @@ body[data-drawer-open='true'] {
 .product-card.eq .card-body .muted {
   color: #6b7280; }
 
+/* 两行截断工具类（如你已有可忽略） */
+/* 多行截断工具类统一由 tokens 提供 */
 /* ===== Testimonials: 4列横滑 / Scroll Snap / 无JS ===== */
 .testimonials {
   /* 边缘渐隐，视觉上提示可滑动 */
@@ -1052,14 +1052,10 @@ body[data-drawer-open='true'] {
 
 .product-gallery img {
   width: 100%;
-  height: auto;
-  border-radius: var(--radius);
-  border: var(--border-w) solid var(--border); }
+  height: auto; }
 
 .card {
   background: var(--on-brand);
-  border: var(--border-w) solid var(--border);
-  border-radius: var(--radius);
   padding: calc(var(--space) * 2);
   /* 1rem */ }
 

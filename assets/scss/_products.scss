@@ -133,14 +133,10 @@
 .product-gallery img{
   width: 100%;
   height: auto;
-  border-radius: var(--radius);
-  border: var(--border-w) solid var(--border);
 }
 
 .card{
   background: var(--on-brand);
-  border: var(--border-w) solid var(--border);
-  border-radius: var(--radius);
   padding: space(2);                      /* 1rem */
 }
 
