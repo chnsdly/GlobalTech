@@ -1442,7 +1442,8 @@ body[data-drawer-open='true'] {
   margin-inline: auto;
   color: var(--on-surface);
   box-sizing: border-box;
-  /* 防止外层无内边距时被撑到边 */ }
+  /* 防止外层无内边距时被撑到边 */
+  margin-block-start: calc(var(--space) * 4); }
 
 .lead-form * {
   min-width: 0; }

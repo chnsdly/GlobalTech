@@ -1,14 +1,14 @@
 ---
-title: "1100 × 800 × 140 mm Nine-Leg Nesting with Open Deck"
-featured_image_asset: "/images/products/pallet/nine-leg_1108.jpg"
-sku: "1108"
+title: "1200 × 1100 × 140 mm Nine-Leg Nesting with Open Deck"
+featured_image_asset: "/images/products/pallet/nine-leg_1211.jpg"
+sku: "1211"
 product_type: "pallet"
 specs:
-  dimensions: "1100 × 800 × 140 mm"
-  static_load: "1.5 t"
-  dynamic_load: "0.5 t"
+  dimensions: "1200 × 1100 × 140 mm"
+  static_load: "1.8 t"
+  dynamic_load: "0.6 t"
   racking_load: ""
-  weight: "6.5 kg"
+  weight: "7 kg"
   material: "HDPE"
   process: "Injection molding"
 specs_order:

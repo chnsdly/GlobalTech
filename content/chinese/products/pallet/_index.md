@@ -1,6 +1,6 @@
 ---
-title: "Our Product Catalog"
-description: "Explore high-performance industrial machinery designed for reliability and throughput."
+title: "我们的产品目录"
+description: "以下是我们的所有产品"
 sitemap:
   changefreq: "weekly"
   priority: 0.8

@@ -5,7 +5,7 @@ weight = 1
 
 [[main]]
 name = "Products"
-url = "#"
+url = "/products/"
 identifier = "products"
 weight = 10
 

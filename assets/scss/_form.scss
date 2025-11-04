@@ -7,6 +7,7 @@
   margin-inline: auto;
   color: var(--on-surface);
   box-sizing: border-box; /* 防止外层无内边距时被撑到边 */
+  margin-block-start: space(4);
 }
 
 .lead-form *{ min-width: 0; } /* 防止长内容把容器撑爆 */
