@@ -1,0 +1,30 @@
+/* ================================================================
+   Global layout helpers
+   ================================================================ */
+
+.page-main {
+  padding-block-start: var(--layout-gap-top);
+  scroll-padding-top: max(var(--layout-gap-top), var(--header-height));
+}
+
+.page-main--compact,
+.page-main[data-first="compact"] {
+  padding-block-start: var(--layout-gap-top-tight);
+  scroll-padding-top: max(var(--layout-gap-top-tight), var(--header-height));
+}
+
+.page-main--flush,
+.page-main[data-first="flush"] {
+  padding-block-start: 0;
+  scroll-padding-top: var(--header-height);
+}
+
+.page-section {
+  padding-block: clamp(2.5rem, calc(1.25rem + 4vw), 4rem);
+  scroll-margin-top: max(var(--layout-gap-top), var(--header-height));
+}
+
+.page-section--compact {
+  padding-block: clamp(1.75rem, calc(1rem + 3vw), 3rem);
+}
+
