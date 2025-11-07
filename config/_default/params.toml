@@ -2,7 +2,7 @@
 company_name = "GlobalTech"
 contact_email = "sales@globaltech-industries.com"
 contact_phone = "+1-800-555-0199"
-logo = "images/logo.jpg"
+logo = "images/logo.png"
 
 turnstile_site_key = "0x4AAAAAAB43R0lGyzeXeIiK"
 

@@ -265,7 +265,7 @@
       <link>http://localhost:1313/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/contact/</guid>
-      <description></description>
+      <description>&lt;p&gt;告诉我们您的需求，我们将在24小时内回复！&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
