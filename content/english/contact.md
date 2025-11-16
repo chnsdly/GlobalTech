@@ -1,6 +1,5 @@
 ---
-title: "联系我们"
+title: "Contact Us"
 layout: "contact"
-url: "/contact/"
 ---
 Share your requirements — we’ll reply within 24 hours.
